@@ -1,40 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Interval Timer </title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interval Timer</title>
     <script src="index.js"></script>
-</head>
+  </head>
 
-<body>
-<nav id="navigation-menu">
-    <ul id="navigation-bar">
-        <li><a href="index.html">Interval Timer</a></li>
-        <li><a href="">Workouts</a></li>
-        <li><a href="">Progress</a></li>
-    </ul>
-</nav>
-<h1> Interval Timer </h1>
-<p> 00:00:00 </p>
-<section id="hiit-timer-setup">
-    <input type="button" value="Start">
-    <br>
-    <label for="excercise-display">Display excercise here</label>
-    <br>
-    <label for="warm-up-timer"> Warm-up timer: </label>
-    <input type="number"name="warm-up-timer" min="0" max="60">
-    <br>
-    <label for="excercise-timer"> Excercise timer: </label>
-    <input type="number" name="excercise-timer" min="0" max="60">
-    <br>
-    <label for="rest-timer"> Rest timer:</label>
-    <input type="number" name="rest-timer" min="0" max="60">
-    <br>
-    <label for="sets"> Sets: </label>
-    <input type="number" name="sets" min="1" max="10">
-</section>
+  <body>
+    <header>
+      <h1>Interval Timer</h1>
+      <nav id="navigation-menu">
+        <ul id="navigation-bar">
+          <li><a href="index.html">Interval Timer</a></li>
+          <li><a href="workout.html">Workouts</a></li>
+          <li><a href="progress.html">Progress</a></li>
+        </ul>
+      </nav>
+    </header>
 
-</body>
+    <main>
+      <div id="timer">
+        <p>00:00:00</p>
+        <p id="excercise-display">Display excercise here</p>
+        <input type="button" value="Start" />
+      </div>
 
+      <section id="hiit-timer-setup">
+        <label for="warm-up-timer"> Warm-up timer: </label>
+        <input type="number" name="warm-up-timer" min="0" max="60" />
+        <br />
+        <label for="excercise-timer"> Excercise timer: </label>
+        <input type="number" name="excercise-timer" min="0" max="60" />
+        <br />
+        <label for="rest-timer"> Rest timer:</label>
+        <input type="number" name="rest-timer" min="0" max="60" />
+        <br />
+        <label for="sets"> Sets: </label>
+        <input type="number" name="sets" min="1" max="10" />
+      </section>
+    </main>
+  </body>
 </html>
