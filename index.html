@@ -29,21 +29,33 @@
             <input type="button" id="startButton" value="Start">
         </section>
 
-        <section id="timerSetup">
-            <button id="warmUpTimer"> Warm-up timer </button>
-            <button id="exerciseTimer"> Exercise Timer</button>
-            <button id="restTimer"> Rest timer </button>
-            <label for="setsLabel"> Sets: </label>
-            <input type="number" id="setsLabel" name="sets" min="1" max="10">
-        </section>
+        <form id="exerciseTimer">
+            <label for="minutes-exercise"> Minutes </label>
+            <input type="number" id="minutes-exercise" name="minutes" min="1" max="60">
 
-        <form id="minutesSecondsForm" class="hidden">
-            <p id="formTitle" class="hidden"></p>
-            <label for="minutes" class="hidden"> Minutes </label>
-            <input type="number" id="minutes" class="hidden" name="minutes" min="1" max="60" >
-            <label for="seconds" class="hidden"> Seconds </label>
-            <input type="number" id="seconds" class="hidden" name="seconds" min="0" max="59">
+            <label for="seconds-exercise"> Seconds </label>
+            <input type="number" id="seconds-exercise" name="seconds" min="0" max="59">
+
+            <button id="setExerciseTimer">Set exercise timer</button>
         </form>
+
+        <form id="restTimer">
+            <label for="minutes-rest"> Minutes </label>
+            <input type="number" id="minutes-rest" name="minutes" min="1" max="60">
+
+            <label for="seconds-rest"> Seconds </label>
+            <input type="number" id="seconds-rest" name="seconds" min="0" max="59">
+
+            <button id="setRestTimer"> Set rest timer</button>
+        </form>
+
+        <form id="sets-setup">
+            <label for="sets"> Sets </label>
+            <input type="number" id="sets" name="sets" min="1" max="60">
+
+            <button id="setButton"> Sets setup</button>
+        </form>
+
     </main>
 </body>
 
