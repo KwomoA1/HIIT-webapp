@@ -8,19 +8,14 @@ function pageInit(){
     const restTimerButton = document.querySelector('#restTimer');
     const setsButton = document.querySelector('#setsLabel');
     const minutesSecondsEditor = document.querySelector('#minutesSecondsForm');
+    const minutesInput = document.querySelector('#minutes');
+    const secondsInput = document.querySelector('#seconds');
+
     // Event Listeners
-     
+    
+
 }
 
-
-//Display element on page.
-function displayElement(element){
-    if(element.classList.contains('hidden')){
-        element.classList.remove('hidden');
-        return;
-    }
-    element.classList.add('hidden');
-}
 
 /*
 // Update each timer value 
