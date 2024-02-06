@@ -1,25 +1,15 @@
 
-window.addEventListener('load',init)
+window.addEventListener('load',pageInit)
 
-function init(){
+function pageInit(){
     // elements 
-    const stopwatchLabel = document.querySelector('#stopwatch');
-    const startTimerButton = document.querySelector('#startButton');
     const warmUpTimerButton = document.querySelector('#warmUpTimer');
     const exerciseTimerButton = document.querySelector('#exerciseTimer')
     const restTimerButton = document.querySelector('#restTimer');
     const setsButton = document.querySelector('#setsLabel');
     const minutesSecondsEditor = document.querySelector('#minutesSecondsForm');
-    const minutesInput = document.querySelector('#minutes');
-    const secondsInput = document.querySelector('#seconds');
-
-    // Event Listeners 
-
-    warmUpTimerButton.addEventListener('click',displayElement(minutesSecondsEditor));
-    startTimerButton.addEventListener('click', displayElement(minutesSecondsEditor));
-    exerciseTimerButton.addEventListener('click',displayElement(minutesSecondsEditor));
-    restTimerButton.addEventListener('click',displayElement(minutesSecondsEditor));
-
+    // Event Listeners
+     
 }
 
 
@@ -30,19 +20,6 @@ function displayElement(element){
         return;
     }
     element.classList.add('hidden');
-}
-
-
-
-function displayTimerSetForm(event){
-    const form = document.querySelector('#minutesSecondsForm');
-    const formTitle = document.querySelector('#formTitle');
-    formTitle.textContent = `${event.target.textContent}`;
-    if(form.classList.contains('hidden')){
-        form.classList.remove('hidden');
-        return;
-    }
-    form.classList.add('hidden');
 }
 
 /*
