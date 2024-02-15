@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -8,40 +9,34 @@
 </head>
 
 <body>
+
   <header>
-    <h1>Workouts</h1>
     <nav id="navigation-menu">
-      <ul id="navigation-bar">
+      <ul id="navigation-list">
         <li><a href="index.html">Interval Timer</a></li>
-        <li><a href="progress.html">Progress</a></li>
       </ul>
     </nav>
   </header>
 
   <main>
-    <button id="create-workouts">Create Workout</button>
+    <button id="create-workout"> Create Workout </button>
+    <section id="setup-workout">
+      <label for="workout-name"> Workout-name: </label>
+      <input type="text" id="workout-name">
 
-    <section id="beginner-workouts">
-      <h2>
-        Beginner <abbr title="High intensity interval training">HIIT</abbr>
-        preset-workouts
-      </h2>
+      <label for="exercise-name"> Exercise-name: </label>
+      <input type="text" id="exercise-name">
+
+      <label for="description"> Exercise-description: </label>
+      <input type="text" id="description">
+
+      <label for="duration"> Duration: </label>
+      <input type="number" id="duration">
+
     </section>
 
-    <section id="intermediate-workouts">
-      <h2>
-        Intimidate
-        <abbr title="High intensity interval training"> HIIT </abbr>preset-workouts
-      </h2>
-    </section>
-
-    <section id="advanced-workouts">
-      <h2>
-        Advanced
-        <abbr title="High intensity interval training"> HIIT </abbr>preset-workouts
-      </h2>
-    </section>
   </main>
+
 </body>
 
 </html>
