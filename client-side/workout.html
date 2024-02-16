@@ -6,6 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Workouts</title>
+  <script src="scripts/workouts.js"></script>
 </head>
 
 <body>
@@ -20,10 +21,17 @@
 
   <main>
     <button id="create-workout"> Create Workout </button>
-    <section id="setup-workout">
-      <label for="workout-name"> Workout-name: </label>
+
+    <section id="workout-form-init" class="hidden">
+      <label for="workout-name"> Workout Name: </label>
       <input type="text" id="workout-name">
 
+      <label for="exercise-number">Number of exercises: </label>
+      <input type="number" id="exercise-number">
+
+    </section>
+
+    <section id="setup-workout" class="hidden">
       <label for="exercise-name"> Exercise-name: </label>
       <input type="text" id="exercise-name">
 
