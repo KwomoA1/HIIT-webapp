@@ -1,5 +1,6 @@
-
-function obtainInfo(){
-    const workoutName = document.querySelector("#workout-name");
-    const numberOfExercises = document.querySelector("exercise-number");
+/*
+Removes the hidden class from HTML element 
+*/
+function displayObject(obj){
+    
 }
