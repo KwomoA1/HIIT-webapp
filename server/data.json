@@ -1,0 +1,35 @@
+
+
+[
+    {
+        "workoutName1":{
+            "exercises":[
+                {
+                    "name": "push-ups",
+                    "description": "example",
+                    "duration": 10
+                },
+                {
+                    "name": "sit-ups",
+                    "description":"example",
+                    "duration": 2 
+                }
+            ]
+        },
+
+        "workoutName2":{
+            "exercises":[
+                {
+                    "name": "push-ups",
+                    "description": "example",
+                    "duration": 10  
+                },
+                {
+                    "name": "push-ups",
+                    "description": "example",
+                    "duration": 10
+                }
+            ]
+        }
+    }
+]
