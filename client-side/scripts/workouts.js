@@ -6,6 +6,7 @@ Each user can have multiple workouts therefore an array is needed.
 */
 
 //TODO: Complete code so once the submit button is pressed input fields are generated for each exercise and stored as json
+
 function init(){
     const createWorkoutBtn = document.querySelector('#create-workout');
     createWorkoutBtn.addEventListener('click',displayElement);
