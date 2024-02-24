@@ -5,7 +5,7 @@ Because there is multiple exercises an array is needed
 Each user can have multiple workouts therefore an array is needed.
 */
 
-//TODO: Complete code so once the submit button is pressed input fields are generated for each exercise and stored as json
+//TODO: Display each workout and create a function allowing the edit button to edit specific exercises. 
 
 
 const workoutObj = {
@@ -13,6 +13,7 @@ const workoutObj = {
     "exercises": [] 
 }
 
+// Loads buttons and event listeners once the page loads 
 function init(){
     const createWorkoutBtn = document.querySelector('#create-workout');
     createWorkoutBtn.addEventListener('click',displayElement);
@@ -33,21 +34,10 @@ function displayElement(){
     }
 }
 
-//Obtains Workout name and number exercises to store 
-function obtainInfo(){
-    const workoutNameInput = document.querySelector('#workout-name');
-    const exerciseNumberInput = document.querySelector('#exercise-number');
-    
-    let workoutName =  workoutNameInput.value;
-    let exerciseNum = exerciseNumberInput.value; 
-    console.log(workoutName);
-    console.log(exerciseNum);
-}
-
 // Sends objects arguments in
 const pastObject = createWorkoutObject.bind(workoutObj);
 
-// Create workout object and stores it in json format 
+// Create workout object and then stores data into the object   
 function createWorkoutObject(workoutObject){
     const workoutName = document.querySelector('#workout-name');
     const exerciseNumInput = document.querySelector('#exercise-number');
@@ -60,7 +50,7 @@ function createWorkoutObject(workoutObject){
             "description": `This is exercise ${index + 1}`,
             "duration": 0
         }
-        workoutObj["exercises"].push(exerciseObj)
+        workoutObj["exercises"].push(exerciseObj) //Pushing each exercise object into the array 
     }
     console.log(workoutObj["workout name"]);
     console.log(workoutObj["exercises"]);
