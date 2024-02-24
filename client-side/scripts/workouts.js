@@ -12,7 +12,7 @@ function init(){
     createWorkoutBtn.addEventListener('click',displayElement);
 
     const workoutFormSubmitBtn = document.querySelector('#submit-workout-form');
-    workoutFormSubmitBtn.addEventListener('click',obtainInfo);
+    workoutFormSubmitBtn.addEventListener('click',generateExerciseInputs);
 }
 
 
@@ -35,6 +35,25 @@ function obtainInfo(){
     let exerciseNum = exerciseNumberInput.value; 
     console.log(workoutName);
     console.log(exerciseNum);
+}
+
+// Generate buttons to edit each exercise 
+function generateExerciseInputs(){
+    const exerciseNumInput = document.querySelector('#exercise-number');
+    const setupWorkoutSection = document.querySelector('#edit-exercises-buttons');
+    const createWorkoutBtn = document.querySelector('#create-workout');
+    const workoutForm = document.querySelector('#workout-form-init');
+
+    createWorkoutBtn.classList.add('hidden');
+    workoutForm.classList.add('hidden');
+
+    for(let index = 0; index < exerciseNumInput.value; index++){
+        const editExerciseBtn = document.createElement('button');
+        editExerciseBtn.setAttribute('id',`Exercise${index}-button`);
+        editExerciseBtn.setAttribute('class','wrapper');
+        editExerciseBtn.textContent = `Edit exercise ${index + 1}`;
+        setupWorkoutSection.appendChild(editExerciseBtn);
+    }
 }
 
 
