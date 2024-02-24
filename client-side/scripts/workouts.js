@@ -19,8 +19,13 @@ function init(){
     createWorkoutBtn.addEventListener('click',displayElement);
 
     const workoutFormSubmitBtn = document.querySelector('#submit-workout-form');
-    workoutFormSubmitBtn.addEventListener('click',generateEditButtons);
-    workoutFormSubmitBtn.addEventListener('click',createWorkoutObject);
+    workoutFormSubmitBtn.addEventListener('click', workoutFormSubmitHandler);
+
+}
+
+function workoutFormSubmitHandler(){
+    createWorkoutObject();
+    generateEditButtons();
 }
 
 
@@ -35,10 +40,10 @@ function displayElement(){
 }
 
 // Sends objects arguments in
-const pastObject = createWorkoutObject.bind(workoutObj);
+
 
 // Create workout object and then stores data into the object   
-function createWorkoutObject(workoutObject){
+function createWorkoutObject(){
     const workoutName = document.querySelector('#workout-name');
     const exerciseNumInput = document.querySelector('#exercise-number');
 
@@ -56,29 +61,132 @@ function createWorkoutObject(workoutObject){
     console.log(workoutObj["exercises"]);
 }
 
-// Generate buttons to edit each exercise 
+
+
+// Generate buttons to each exercise and edit buttons  
 function generateEditButtons(){
     const exerciseNumInput = document.querySelector('#exercise-number');
     const setupWorkoutSection = document.querySelector('#edit-exercises-buttons');
     const createWorkoutBtn = document.querySelector('#create-workout');
     const workoutForm = document.querySelector('#workout-form-init');
-
     createWorkoutBtn.classList.add('hidden');
     workoutForm.classList.add('hidden');
 
+    const workoutTitle = document.createElement('h2');
+    workoutTitle.textContent = `Workout name: ${workoutObj['workout name']}`;
+    setupWorkoutSection.appendChild(workoutTitle);
+
 // Creates buttons based on number of exercises and sets the attribute 
     for(let index = 0; index < exerciseNumInput.value; index++){
+        // Creating unordered list
+        const exerciseList = document.createElement('ul');
+        exerciseList.setAttribute('id',`exercise${index + 1}-data`);
+        setupWorkoutSection.appendChild(exerciseList);
+
+        const exerciseUL = document.querySelector(`#exercise${index + 1}-data`);
+
+
+        //Create list item for name 
+        const exerciseNameItem = document.createElement('li');
+        exerciseNameItem.setAttribute('id',`exercise${index + 1}-name`);
+        exerciseNameItem.textContent = `Exercise name: ${workoutObj["exercises"][index]['name']}`;
+        exerciseUL.appendChild(exerciseNameItem);
+
+        
+        //Create list item for description  
+        const exerciseDescItem = document.createElement('li');
+        exerciseDescItem.setAttribute('id',`exercise${index + 1}-desc`);
+        exerciseDescItem.textContent = `Description: ${workoutObj['exercises'][index]['description']}`;
+        exerciseUL.appendChild(exerciseDescItem);
+
+        //Create list item for duration 
+        const exerciseDurItem = document.createElement('li');
+        exerciseDurItem.setAttribute('id',`exercise${index + 1}-dur`);
+        exerciseDurItem.textContent = `Duration: ${workoutObj['exercises'][index]['duration']} minutes`;
+        exerciseUL.appendChild(exerciseDurItem);
+        
+        
+
+        // Creating buttons 
         const editExerciseBtn = document.createElement('button');
         editExerciseBtn.setAttribute('id',`Exercise${index}-button`);
         editExerciseBtn.setAttribute('class','wrapper'); //wrapper is a class element which sets element display to block
+        editExerciseBtn.setAttribute('value',`Exercise ${index + 1}`);
         editExerciseBtn.textContent = `Edit exercise ${index + 1}`;
         setupWorkoutSection.appendChild(editExerciseBtn);
 
-        editExerciseBtn.addEventListener('click',clickSpecial);
+        editExerciseBtn.addEventListener('click',editExercise);
     }
 
-    function clickSpecial(){
-        console.log("Hello")
+    function editExercise(event){
+        const editPanel = document.querySelector('#edit-exercise-panel');
+        const buttonId = event.target.id;
+        const buttonValue = event.target.value;
+        // Creates Title 
+        const editFormTitle = document.createElement('h3');
+        for ( let item of workoutObj["exercises"]){
+            if(item['name'] == buttonValue){
+                editFormTitle.textContent = `Editing: ${item['name']}`;
+                editPanel.appendChild(editFormTitle);
+
+                 // Name input field 
+                const editExerciseName = document.createElement('input');
+                editExerciseName.setAttribute('id',`${item['name']}`)
+                editExerciseName.setAttribute('type','text');
+                editExerciseName.setAttribute('placeholder',`${item['name']}`);
+                editExerciseName.setAttribute('size',30);
+                editPanel.appendChild(editExerciseName);
+
+                // Description input field 
+                const editDescription = document.createElement('input');
+                editDescription.setAttribute('id',`${item['description']}`);
+                editDescription.setAttribute('type','text');
+                editDescription.setAttribute('placeholder',`${item['description']}`);
+                editDescription.setAttribute('size',80);
+                editPanel.appendChild(editDescription);
+
+                //Duration input field
+                const editDuration = document.createElement('input');
+                editDuration.setAttribute('id',`${item['duration']}`)
+                editDuration.setAttribute('type','number');
+                editDuration.setAttribute('placeholder',`${item['duration']} Minutes`);
+                editPanel.appendChild(editDuration);
+
+                // Submit button creation 
+                const editSubmitBtn = document.createElement('button');
+                editSubmitBtn.setAttribute('value',`${item['name']}`);
+                editSubmitBtn.textContent = "Submit edit"
+                editPanel.appendChild(editSubmitBtn);
+            
+
+                editSubmitBtn.addEventListener('click',submitData);
+                
+                function submitData(){
+                    const arraylength = workoutObj['exercises'].length;
+                    for (index = 0; index < arraylength; index++){
+                        if(workoutObj['exercises'][index]['name'] == editSubmitBtn.value){
+                            const exerciseNameElement = document.querySelector(`#exercise${index + 1}-name`);
+                            const exerciseDescElement = document.querySelector(`#exercise${index + 1}-desc`);
+                            const exerciseDurElement = document.querySelector(`#exercise${index + 1}-dur`);
+
+                            item['name'] = editExerciseName.value;
+                            item['description'] = editDescription.value;
+                            item['duration'] = editDuration.value;
+
+                        
+                
+                            // Update text content of name, description, and duration elements
+                            exerciseNameElement.textContent = `Exercise name: ${item['name']}`;
+                            exerciseDescElement.textContent = `Description: ${item['description']}`;
+                            exerciseDurElement.textContent = `Duration: ${item['duration']} minutes`;
+
+                            
+                            console.log(item);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
