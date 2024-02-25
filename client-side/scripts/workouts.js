@@ -4,8 +4,14 @@ Each excerise is an object with a property of name, description and duration
 Because there is multiple exercises an array is needed 
 Each user can have multiple workouts therefore an array is needed.
 */
+/*
+Completed: 
+- Creates workout
+- Edit workouts 
+- Store workouts 
+*/
 
-//TODO: Display each workout and create a function allowing the edit button to edit specific exercises. 
+//TODO: Messy Code! Update function and variables names, include validation and error handling for functions 
 
 
 const workoutObj = {
