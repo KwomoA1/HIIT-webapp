@@ -87,7 +87,6 @@ function createExerciseInputs(){
 
         // Creates unordered list to store all list items under 
         let exerciseList = document.createElement('ul');
-        exerciseList.setAttribute('id',`exercise${index + 1}-data`);
         createExerciseForm.appendChild(exerciseList);
 
         // Create li element and title for each exercise;
@@ -101,12 +100,11 @@ function createExerciseInputs(){
 
         //Creating the li element and input for the name property of each exercise
         let exerciseNameItem = document.createElement('li');
-        exerciseNameItem.setAttribute('id',`exercise${index + 1}-name`);
         exerciseList.appendChild(exerciseNameItem);
 
 
         let exerciseNameInput = document.createElement('input');
-        exerciseNameInput.setAttribute('id','');
+        exerciseNameInput.setAttribute('id',`exercise${index + 1}-name`);
         exerciseNameInput.setAttribute('type','text');
         exerciseNameInput.setAttribute('placeholder','Name');
         exerciseNameInput.setAttribute('size','');
@@ -114,11 +112,10 @@ function createExerciseInputs(){
 
         //Creating the li element and input for the description property of each exercise
         let exerciseDescItem = document.createElement('li');
-        exerciseDescItem.setAttribute('id',``);
         exerciseList.appendChild(exerciseDescItem);
 
         let exerciseDescInput = document.createElement('input');
-        exerciseDescInput.setAttribute('id','');
+        exerciseDescInput.setAttribute('id',`exercise${index + 1}-desc`);
         exerciseDescInput.setAttribute('type','text');
         exerciseDescInput.setAttribute('placeholder','Description')
         exerciseDescInput.setAttribute('size','');
@@ -126,11 +123,10 @@ function createExerciseInputs(){
 
         //Creating the li element and input for the duration property of each exercise
         let exerciseDurItem = document.createElement('li');
-        exerciseDurItem.setAttribute('id','');
         exerciseList.appendChild(exerciseDurItem);
 
         let exerciseDurInput = document.createElement('input');
-        exerciseDurInput.setAttribute('id','');
+        exerciseDurInput.setAttribute('id',`exercise${index + 1}-dur`);
         exerciseDurInput.setAttribute('type','number');
         exerciseDurInput.setAttribute('placeholder','0 seconds');
         exerciseDurInput.setAttribute('size','');
