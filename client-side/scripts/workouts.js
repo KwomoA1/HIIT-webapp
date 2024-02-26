@@ -6,12 +6,10 @@ Each user can have multiple workouts therefore an array is needed.
 */
 /*
 Completed: 
-- Creates workout
-- Edit workouts 
-- Store workouts 
+ 
 */
 
-//TODO: Messy Code! Update function and variables names, include validation and error handling for functions 
+//TODO: Complete the submit and cancel button 
 
 
 const workoutObj = {
@@ -136,11 +134,22 @@ function createExerciseInputs(){
    const submitExerciseBtn = document.createElement('button');
    submitExerciseBtn.textContent = "Submit";
    createExerciseForm.appendChild(submitExerciseBtn);
+
+   submitExerciseBtn.addEventListener('click',submitExerciseData);
+
+   // This function will store the data inputted into the object 
+   function submitExerciseData(){
+    for (let index = 0; index < exerciseNumInput; index++){
+        let exerciseName =  document.querySelector(`#exercise${index + 1}-name`).value;
+        let exerciseDesc = document.querySelector(`#exercise${index + 1}-desc`).value;
+        let exerciseDur= document.querySelector(`#exercise${index + 1}-dur`).value;
+    }
+   }
    
+   // This function will reset the page to only include the create workout button and edit exercise button
    const cancelExerciseBtn = document.createElement('button');
    cancelExerciseBtn.textContent = "Cancel";
    createExerciseForm.appendChild(cancelExerciseBtn);
-
 }
 
 window.addEventListener('load', init);
