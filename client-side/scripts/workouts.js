@@ -87,40 +87,64 @@ function createExerciseInputs(){
 
         // Creates unordered list to store all list items under 
         let exerciseList = document.createElement('ul');
-        let exerciseUL = document.querySelector(`#exercise${index + 1}-data`);
         exerciseList.setAttribute('id',`exercise${index + 1}-data`);
         createExerciseForm.appendChild(exerciseList);
+
+        // Create li element and title for each exercise;
+
+        let titleItem = document.createElement('li');
+        titleItem.setAttribute('id','');
+        titleItem.textContent = `Exercise ${ index + 1}`;
+        exerciseList.appendChild(titleItem);
+    
        
 
-        //Create list item for name 
+        //Creating the li element and input for the name property of each exercise
         let exerciseNameItem = document.createElement('li');
         exerciseNameItem.setAttribute('id',`exercise${index + 1}-name`);
-        let nameLi = document.querySelector('#exercise${index + 1}-name')
-        exerciseUL.appendChild(exerciseNameItem);
+        exerciseList.appendChild(exerciseNameItem);
+
 
         let exerciseNameInput = document.createElement('input');
         exerciseNameInput.setAttribute('id','');
-        exerciseNameInput.setAttribute('type','');
-        exerciseNameInput.setAttribute('placeholder','');
+        exerciseNameInput.setAttribute('type','text');
+        exerciseNameInput.setAttribute('placeholder','Name');
         exerciseNameInput.setAttribute('size','');
-        nameLi.appendChild(exerciseNameInput);
+        exerciseNameItem.appendChild(exerciseNameInput);
 
+        //Creating the li element and input for the description property of each exercise
+        let exerciseDescItem = document.createElement('li');
+        exerciseDescItem.setAttribute('id',``);
+        exerciseList.appendChild(exerciseDescItem);
 
-        /*
-        //Create list item for description  
-        const exerciseDescItem = document.createElement('li');
-        exerciseDescItem.setAttribute('id',`exercise${index + 1}-desc`);
-        exerciseDescItem.textContent = `Description: ${workoutObj['exercises'][index]['description']}`;
-        exerciseUL.appendChild(exerciseDescItem);
+        let exerciseDescInput = document.createElement('input');
+        exerciseDescInput.setAttribute('id','');
+        exerciseDescInput.setAttribute('type','text');
+        exerciseDescInput.setAttribute('placeholder','Description')
+        exerciseDescInput.setAttribute('size','');
+        exerciseList.appendChild(exerciseDescInput);
 
-        //Create list item for duration 
-        const exerciseDurItem = document.createElement('li');
-        exerciseDurItem.setAttribute('id',`exercise${index + 1}-dur`);
-        exerciseDurItem.textContent = `Duration: ${workoutObj['exercises'][index]['duration']} minutes`;
-        exerciseUL.appendChild(exerciseDurItem);
-        */
-    
+        //Creating the li element and input for the duration property of each exercise
+        let exerciseDurItem = document.createElement('li');
+        exerciseDurItem.setAttribute('id','');
+        exerciseList.appendChild(exerciseDurItem);
+
+        let exerciseDurInput = document.createElement('input');
+        exerciseDurInput.setAttribute('id','');
+        exerciseDurInput.setAttribute('type','number');
+        exerciseDurInput.setAttribute('placeholder','0 seconds');
+        exerciseDurInput.setAttribute('size','');
+        exerciseList.appendChild(exerciseDurInput);
+    }
+
+   const submitExerciseBtn = document.createElement('button');
+   submitExerciseBtn.textContent = "Submit";
+   createExerciseForm.appendChild(submitExerciseBtn);
+   
+   const cancelExerciseBtn = document.createElement('button');
+   cancelExerciseBtn.textContent = "Cancel";
+   createExerciseForm.appendChild(cancelExerciseBtn);
+
 }
-
 
 window.addEventListener('load', init);
