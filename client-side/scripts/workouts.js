@@ -1,16 +1,3 @@
-/*
-A workout is considered an object it's attribute being its name and multiple exercises in it
-Each excerise is an object with a property of name, description and duration
-Because there is multiple exercises an array is needed 
-Each user can have multiple workouts therefore an array is needed.
-*/
-/*
-Completed: 
- 
-*/
-
-//TODO: Complete the submit and cancel button 
-
 
 const workoutObj = {
     "workout name": "",
