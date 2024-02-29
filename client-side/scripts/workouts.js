@@ -139,4 +139,6 @@ function createExerciseInputs(){
    createExerciseForm.appendChild(cancelExerciseBtn);
 }
 
+// fixing git issue 
+
 window.addEventListener('load', init);
