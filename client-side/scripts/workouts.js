@@ -64,6 +64,7 @@ function createExerciseInputs(){
     
     //Create workout heading so user knows which workout these exercises will fall under 
     const workoutTitle = document.createElement('h2');
+    workoutTitle.setAttribute('id','#workout');
     workoutTitle.textContent = `Workout name: ${workoutObj['workout name']}`;
     createExerciseForm.appendChild(workoutTitle);
 
@@ -72,12 +73,13 @@ function createExerciseInputs(){
 
         // Creates unordered list to store all list items under 
         let exerciseList = document.createElement('ul');
+        exerciseList.setAttribute('id',`exerciseUl${index}`);
         createExerciseForm.appendChild(exerciseList);
 
         // Create li element and title for each exercise;
 
         let titleItem = document.createElement('li');
-        titleItem.setAttribute('id','');
+        titleItem.setAttribute('id',`title${index + 1}`);
         titleItem.textContent = `Exercise ${ index + 1}`;
         exerciseList.appendChild(titleItem);
     
@@ -85,6 +87,7 @@ function createExerciseInputs(){
 
         //Creating the li element and input for the name property of each exercise
         let exerciseNameItem = document.createElement('li');
+        exerciseNameItem.setAttribute('id',`exerciseLi${index}`);
         exerciseList.appendChild(exerciseNameItem);
 
 
@@ -119,24 +122,61 @@ function createExerciseInputs(){
     }
 
    const submitExerciseBtn = document.createElement('button');
+   submitExerciseBtn.setAttribute('id','#submitExerciseBtn');
    submitExerciseBtn.textContent = "Submit";
    createExerciseForm.appendChild(submitExerciseBtn);
-
    submitExerciseBtn.addEventListener('click',submitExerciseData);
+
+    // This function will reset the page to only include the create workout button and edit exercise button
+    const cancelExerciseBtn = document.createElement('button');
+    cancelExerciseBtn.setAttribute('id','cancelExerciseBtn');
+    cancelExerciseBtn.textContent = "Cancel";
+    createExerciseForm.appendChild(cancelExerciseBtn);
+
 
    // This function will store the data inputted into the object 
    function submitExerciseData(){
-    for (let index = 0; index < exerciseNumInput; index++){
-        let exerciseName =  document.querySelector(`#exercise${index + 1}-name`).value;
-        let exerciseDesc = document.querySelector(`#exercise${index + 1}-desc`).value;
-        let exerciseDur= document.querySelector(`#exercise${index + 1}-dur`).value;
+    for (let index = 0; index < exerciseNumInput.value; index++){
+        let exerciseTitle = document.querySelector(`#title${index + 1}`).textContent;
+
+        if(exerciseTitle == workoutObj["exercises"][index]["name"]){
+            workoutObj["exercises"][index]["name"] = document.querySelector(`#exercise${index + 1}-name`).value;
+            workoutObj["exercises"][index]["description"] = document.querySelector(`#exercise${index + 1}-desc`).value;
+            workoutObj["exercises"][index]["duration"] = document.querySelector(`#exercise${index + 1}-dur`).value;
+            console.log(workoutObj["exercises"][index]);
+        }
+
+   
+        
+        
+        let exerciseNameLi = document.querySelector(`#exercise${index + 1}-name`);
+        exerciseNameLi.remove();
+        let exerciseDescLi = document.querySelector(`#exercise${index + 1}-desc`);
+        exerciseDescLi.remove();
+        let exerciseDurLi = document.querySelector(`#exercise${index + 1}-dur`);
+        exerciseDurLi.remove();
+        let exerciseTitleItem = document.querySelector(`#title${index + 1}`);
+        exerciseTitleItem.remove();
+        let exerciseLiItem = document.querySelector(`#exerciseLi${index}`);
+        exerciseLiItem.remove();
+        let exerciseUlItem = document.querySelector(`#exerciseUl${index}`);
+        exerciseUlItem.remove();
+
+        workoutTitle.remove();
+        
+        submitExerciseBtn.remove();
+
+        cancelExerciseBtn.remove();
+     
+    
+        const createWorkoutBtn = document.querySelector('#createWorkoutBtn');
+        createWorkoutBtn.classList.remove('hidden');
+       
+
     }
    }
    
-   // This function will reset the page to only include the create workout button and edit exercise button
-   const cancelExerciseBtn = document.createElement('button');
-   cancelExerciseBtn.textContent = "Cancel";
-   createExerciseForm.appendChild(cancelExerciseBtn);
+
 }
 
 window.addEventListener('load', init);
