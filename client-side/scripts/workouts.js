@@ -146,9 +146,6 @@ function createExerciseInputs(){
             console.log(workoutObj["exercises"][index]);
         }
 
-   
-        
-        
         let exerciseNameLi = document.querySelector(`#exercise${index + 1}-name`);
         exerciseNameLi.remove();
         let exerciseDescLi = document.querySelector(`#exercise${index + 1}-desc`);
@@ -163,16 +160,11 @@ function createExerciseInputs(){
         exerciseUlItem.remove();
 
         workoutTitle.remove();
-        
         submitExerciseBtn.remove();
-
         cancelExerciseBtn.remove();
-     
     
         const createWorkoutBtn = document.querySelector('#createWorkoutBtn');
-        createWorkoutBtn.classList.remove('hidden');
-       
-
+        createWorkoutBtn.classList.remove('hidden');\
     }
    }
    
