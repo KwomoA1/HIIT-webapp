@@ -145,26 +145,27 @@ function createExerciseInputs(){
             workoutObj["exercises"][index]["duration"] = document.querySelector(`#exercise${index + 1}-dur`).value;
             console.log(workoutObj["exercises"][index]);
         }
+        removeFormElements()
+    }
 
-        let exerciseNameLi = document.querySelector(`#exercise${index + 1}-name`);
-        exerciseNameLi.remove();
-        let exerciseDescLi = document.querySelector(`#exercise${index + 1}-desc`);
-        exerciseDescLi.remove();
-        let exerciseDurLi = document.querySelector(`#exercise${index + 1}-dur`);
-        exerciseDurLi.remove();
-        let exerciseTitleItem = document.querySelector(`#title${index + 1}`);
-        exerciseTitleItem.remove();
-        let exerciseLiItem = document.querySelector(`#exerciseLi${index}`);
-        exerciseLiItem.remove();
-        let exerciseUlItem = document.querySelector(`#exerciseUl${index}`);
-        exerciseUlItem.remove();
-
+    // Called within the submit event handler to remove all the form elements.
+    function removeFormElements(){
+        
+        for(index = 0; index < exerciseNumInput.value; index++){
+            let exerciseNameLi = document.querySelector(`#exercise${index + 1}-name`).remove();
+            let exerciseDescLi = document.querySelector(`#exercise${index + 1}-desc`).remove();
+            let exerciseDurLi = document.querySelector(`#exercise${index + 1}-dur`).remove();
+            let exerciseTitleItem = document.querySelector(`#title${index + 1}`).remove();
+            let exerciseLiItem = document.querySelector(`#exerciseLi${index}`).remove(); 
+            let exerciseUlItem = document.querySelector(`#exerciseUl${index}`).remove(); 
+        }
+    
         workoutTitle.remove();
+        submitExerciseBtn.removeEventListener('click',submitExerciseData)
         submitExerciseBtn.remove();
         cancelExerciseBtn.remove();
-    
         const createWorkoutBtn = document.querySelector('#createWorkoutBtn');
-        createWorkoutBtn.classList.remove('hidden');\
+        createWorkoutBtn.classList.remove('hidden');
     }
    }
    
