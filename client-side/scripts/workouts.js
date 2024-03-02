@@ -164,7 +164,7 @@ function createExerciseInputs(){
         cancelExerciseBtn.remove();
     
         const createWorkoutBtn = document.querySelector('#createWorkoutBtn');
-        createWorkoutBtn.classList.remove('hidden');\
+        createWorkoutBtn.classList.remove('hidden');
     }
    }
    
