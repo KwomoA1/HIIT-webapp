@@ -4,13 +4,13 @@ const workoutObj = {
     "exercises": [] 
 }
 
-// Loads buttons and event listeners once the page loads 
+// Upon page loading buttons will be loaded 
 function init(){
     const createWorkoutBtn = document.querySelector('#createWorkoutBtn');
     createWorkoutBtn.addEventListener('click',displayWorkoutForm);
 }
 
-//Display initial form to create workout
+//Display form to create workout
 function displayWorkoutForm(event){
     const formContainer = document.querySelector('#formContainer');
     const workoutFormTemplate = document.querySelector('#workoutFormTemplate');
@@ -50,15 +50,8 @@ function submitWorkoutHandler(){
     }
     formTemplateContainer.remove();
 
-    // Adds the exercise form template to the DOM
-    let formIndex = 0;
-    const exerciseFormTemplate = document.querySelector('#exerciseFormTemplate');
-    const cloneExerciseForm = exerciseFormTemplate.content.cloneNode(true); 
-    cloneExerciseForm.querySelector('#workout').textContent = workoutObj['workout name'];
-    cloneExerciseForm.querySelector('#exercise').textContent = workoutObj['exercises'][formIndex]['name'];
-    formContainer.append(cloneExerciseForm);
-
-
+    loadExerciseTemplate();
+    
 
     const exerciseTitle = document.querySelector('#exercise');
     const nextBtn = document.querySelector('#nextBtn');
@@ -99,4 +92,23 @@ function submitWorkoutHandler(){
         } 
     });
 }
+
+// Loads the exercise form onto webpage
+function loadExerciseTemplate(){
+    let formIndex = 0;
+    const exerciseFormTemplate = document.querySelector('#exerciseFormTemplate');
+    const cloneExerciseTemplate = exerciseFormTemplate.content.cloneNode(true);
+    cloneExerciseTemplate.querySelector('#workout').textContent = workoutObj['workout name'];
+    cloneExerciseTemplate.querySelector('#exercise').textContent = workoutObj['exercises'][0]['name'];
+    formContainer.append(cloneExerciseTemplate);
+}
+
+function nextBtnHandler(){
+ 
+}
+
+function previousBtnHandler(){
+
+}
+
 window.addEventListener('load', init);
