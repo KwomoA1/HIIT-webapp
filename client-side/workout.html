@@ -11,34 +11,38 @@
 </head>
 
 <body>
-  <template id="createWorkoutForm">
-    <label for="workoutName"></label>
-    <input type="text" id="workoutName" placeholder="Enter workout Name" size="50">
+  <template id="workoutFormTemplate">
+    <section id="removeWorkoutForm">
+      <label for="workoutName">Workout name:</label>
+      <input type="text" id="workoutName" placeholder="enter workout name" size="30">
 
-    <label for="numberExercises"></label>
-    <input type="number" id="numberExercises" placeholder="Seconds" min="1">
+      <label for="numberExercises"> Number of exercises:</label>
+      <input type="number" id="numberExercises" min="1" max="20">
 
-    <button id="submitWorkout">Submit</button>
-    <button id="cancelWorkout">Cancel</button>
+      <button id="submitWorkout">Submit</button>
+      <button id="cancelWorkout">Cancel</button>
+    </section>
   </template>
 
 
-  <template id="createExerciseForm">
-    <h1 id="Workout"></h1>
-    <h2 id="exercise"></h2>
+  <template id="exerciseFormTemplate">
+    <section id="removeExerciseForm">
+      <h1 id="workout"></h1>
+      <h2 id="exercise"></h2>
 
-    <label for="exerciseName"></label>
-    <input type="text" id="exerciseName" placeholder=" Enter exercise name" size="50" class="wrapper">
+      <label for="exerciseName" class="wrapper">Exercise name: </label>
+      <input type="text" id="exerciseName" placeholder="name" size="30" class="wrapper">
 
-    <label for="exerciseDescription"></label>
-    <input type="text" id="exerciseDescription" placeholder="Enter exercise Description" size="50" class="wrapper">
+      <label for="exerciseDescription" class="wrapper">Description:</label>
+      <input type="text" id="exerciseDescription" placeholder="description" size="50" class="wrapper">
 
-    <label for="exerciseDuration"></label>
-    <input type="number" id="exerciseDuration" placeholder="0 Seconds" min="0" class="wrapper">
-    <button id="previousBtn">Previous</button>
-    <button id="submitBtn">Submit</button>
-    <button id="cancelBtn">Cancel</button>
-    <button id="nextBtn">Next</button>
+      <label for="exerciseDuration" class="wrapper">Duration(minutes):</label>
+      <input type="number" id="exerciseDuration" min="0" max="60" class="wrapper">
+      <button id="previousBtn" class="hidden">Previous</button>
+      <button id="submitBtn" class="hidden">Submit</button>
+      <button id="cancelBtn" class="hidden">Cancel</button>
+      <button id="nextBtn" class="">Next</button>
+    </section>
   </template>
 
   <header>
