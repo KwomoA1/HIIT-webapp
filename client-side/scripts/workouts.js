@@ -16,7 +16,7 @@ function displayWorkoutForm(event){
     const workoutFormTemplate = document.querySelector('#workoutFormTemplate');
     const clonedTemplate = workoutFormTemplate.content.cloneNode(true);
     formContainer.append(clonedTemplate); 
-    event.target.remove(); 
+    event.target.classList.add('hidden'); 
 
     const submitWorkoutBtn = document.querySelector('#submitWorkout');
     submitWorkoutBtn.addEventListener('click',submitWorkoutHandler)
@@ -43,55 +43,17 @@ function submitWorkoutHandler(){
     for(index = 0; index < exerciseNumInput.value; index++){
         let exerciseObj = {
             "name": `exercise ${index + 1}`,
-            "description": "",
-            "duration": "" 
+            "description": "Enter description",
+            "duration": 0
         };
         workoutObj["exercises"].push(exerciseObj);
     }
     formTemplateContainer.remove();
 
     loadExerciseTemplate();
-    
-
-    const exerciseTitle = document.querySelector('#exercise');
-    const nextBtn = document.querySelector('#nextBtn');
-    const prevBtn = document.querySelector('#previousBtn');
-    const submitWorkoutForm = document.querySelector('#submitBtn');
-    const cancelBtn = document.querySelector('#cancelBtn');
-
-
-
-    nextBtn.addEventListener('click',()=>{
-        if(formIndex !== exerciseNumInput.value-1){
-            formIndex += 1
-            exerciseTitle.textContent = workoutObj['exercises'][formIndex]['name']
-            if(formIndex > 0){
-                prevBtn.classList.remove('hidden');
-            }
-            if(formIndex == exerciseNumInput.value-1){
-                submitWorkoutForm.classList.remove('hidden');
-                cancelBtn.classList.remove('hidden');
-                nextBtn.classList.add('hidden');
-            }
-            
-        }
-    });
-
-    prevBtn.addEventListener('click',()=>{
-        if(formIndex !== 0){
-            formIndex -= 1
-            exerciseTitle.textContent = workoutObj['exercises'][formIndex]['name']
-            if(formIndex == 0){
-                prevBtn.classList.add('hidden');
-            }
-            if(formIndex < exerciseNumInput.value-1){
-                submitWorkoutForm.classList.add('hidden');
-                cancelBtn.classList.add('hidden');
-                nextBtn.classList.remove('hidden');
-            }
-        } 
-    });
 }
+   
+    
 
 // Loads the exercise form onto webpage
 function loadExerciseTemplate(){
@@ -99,16 +61,88 @@ function loadExerciseTemplate(){
     const exerciseFormTemplate = document.querySelector('#exerciseFormTemplate');
     const cloneExerciseTemplate = exerciseFormTemplate.content.cloneNode(true);
     cloneExerciseTemplate.querySelector('#workout').textContent = workoutObj['workout name'];
-    cloneExerciseTemplate.querySelector('#exercise').textContent = workoutObj['exercises'][0]['name'];
+    cloneExerciseTemplate.querySelector('#exercise').textContent = `Exercise: ${workoutObj['exercises'][0]['name']}`;
+    cloneExerciseTemplate.querySelector('#exerciseName').value = workoutObj['exercises'][0]['name'];
+    cloneExerciseTemplate.querySelector('#exerciseDescription').value = workoutObj['exercises'][0]['description'];
+    cloneExerciseTemplate.querySelector('#exerciseDuration').value = workoutObj['exercises'][0]['duration'];
     formContainer.append(cloneExerciseTemplate);
+
+    // Obtaining form input elements and buttons 
+    const exerciseTitle = document.querySelector('#exercise');
+    const exerciseNameInput = document.querySelector('#exerciseName');
+    const exerciseDescInput = document.querySelector('#exerciseDescription');
+    const exerciseDurInput = document.querySelector('#exerciseDuration');
+    const nextBtn = document.querySelector('#nextBtn');
+    const prevBtn = document.querySelector('#previousBtn');
+    const submitWorkoutForm = document.querySelector('#submitBtn');
+    const cancelBtn = document.querySelector('#cancelBtn');
+
+    const exerciseLen = workoutObj['exercises'].length
+
+    nextBtn.addEventListener('click',nextBtnHandler);
+    prevBtn.addEventListener('click',prevBtnHandler);
+    submitWorkoutForm.addEventListener('click',cancelBtnHandler);
+    cancelBtn.addEventListener('click',cancelBtnHandler);
+    exerciseNameInput.addEventListener('input',inputChangeHandler);
+    exerciseDescInput.addEventListener('input',inputChangeHandler);
+    exerciseDurInput.addEventListener('input',inputChangeHandler);
+
+    function inputChangeHandler(){
+        workoutObj['exercises'][formIndex]['name'] = exerciseNameInput.value;
+        workoutObj['exercises'][formIndex]['description'] = exerciseDescInput.value;
+        workoutObj['exercises'][formIndex]['duration'] = exerciseDurInput.value;
+    }
+
+    function nextBtnHandler(){
+        if(formIndex !== exerciseLen-1){
+            formIndex += 1;
+            exerciseTitle.textContent = `Exercise: ${workoutObj['exercises'][formIndex]['name']}`;
+            exerciseNameInput.value = workoutObj['exercises'][formIndex]['name'];
+            exerciseDescInput.value = workoutObj['exercises'][formIndex]['description'];
+            exerciseDurInput.value = workoutObj['exercises'][formIndex]['duration'];
+
+            if(formIndex === exerciseLen-1){
+                nextBtn.classList.add('hidden');
+                submitWorkoutForm.classList.remove('hidden');
+                cancelBtn.classList.remove('hidden');
+            }
+            if(formIndex > 0){
+                prevBtn.classList.remove('hidden'); 
+            }
+        }
+    }
+
+    function prevBtnHandler(){
+        if(formIndex !== 0){
+            formIndex -= 1;
+            exerciseTitle.textContent = `Exercise: ${workoutObj['exercises'][formIndex]['name']}`;
+            exerciseNameInput.value = workoutObj['exercises'][formIndex]['name'];
+            exerciseDescInput.value = workoutObj['exercises'][formIndex]['description'];
+            exerciseDurInput.value = workoutObj['exercises'][formIndex]['duration'];
+            if(formIndex < exerciseLen -1){
+                nextBtn.classList.remove('hidden');
+                submitWorkoutForm.classList.add('hidden');
+                cancelBtn.classList.add('hidden');
+            }
+            if(formIndex === 0){
+                prevBtn.classList.add('hidden');
+            }
+        }
+    }
+
+    function cancelBtnHandler(event){
+        if(event.target === submitWorkoutForm){
+            console.log("Workout sent to database");
+        }
+        const createWorkoutBtn = document.querySelector('#createWorkoutBtn');
+        const removeExerciseForm = document.querySelector('#removeExerciseForm');
+        workoutObj['workout name'] = "";
+        workoutObj['exercises'] = []; 
+        removeExerciseForm.remove()
+        createWorkoutBtn.classList.remove('hidden');
+    }
+
 }
 
-function nextBtnHandler(){
- 
-}
-
-function previousBtnHandler(){
-
-}
 
 window.addEventListener('load', init);
