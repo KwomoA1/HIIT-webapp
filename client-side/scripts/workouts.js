@@ -3,7 +3,9 @@ const userWorkoutsArray = []
 const createWorkoutBtn = document.querySelector('#createWorkoutBtn');
 createWorkoutBtn.addEventListener('click',displayWorkoutForm);
 
-//Display form to create workout
+
+/*
+//Display form to create workout 
 function displayWorkoutForm(event){
     const formContainer = document.querySelector('#formContainer');
     const workoutFormTemplate = document.querySelector('#workoutFormTemplate');
@@ -144,3 +146,4 @@ function loadExerciseTemplate(createdWorkoutIndex){
     }
 
 }
+*/
