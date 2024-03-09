@@ -1,14 +1,7 @@
+const userWorkoutsArray = []
 
-const workoutObj = {
-    "workout name": "",
-    "exercises": [] 
-}
-
-// Upon page loading buttons will be loaded 
-function init(){
-    const createWorkoutBtn = document.querySelector('#createWorkoutBtn');
-    createWorkoutBtn.addEventListener('click',displayWorkoutForm);
-}
+const createWorkoutBtn = document.querySelector('#createWorkoutBtn');
+createWorkoutBtn.addEventListener('click',displayWorkoutForm);
 
 //Display form to create workout
 function displayWorkoutForm(event){
@@ -39,32 +32,37 @@ function submitWorkoutHandler(){
         },5000)
     }
 
-    workoutObj["workout name"] = workoutNameInput.value;
+    const workoutObj = {
+        "workout name": workoutNameInput.value,
+        "exercises": []
+    }
+
+    userWorkoutsArray.push(workoutObj);
+    const userWorkoutsIndex = userWorkoutsArray.length - 1;
+    
     for(index = 0; index < exerciseNumInput.value; index++){
         let exerciseObj = {
             "name": `exercise ${index + 1}`,
             "description": "Enter description",
             "duration": 0
         };
-        workoutObj["exercises"].push(exerciseObj);
+        userWorkoutsArray[userWorkoutsIndex]['exercises'].push(exerciseObj);
     }
     formTemplateContainer.remove();
 
-    loadExerciseTemplate();
+    loadExerciseTemplate(userWorkoutsIndex);
 }
    
-    
-
 // Loads the exercise form onto webpage
-function loadExerciseTemplate(){
+function loadExerciseTemplate(createdWorkoutIndex){
     let formIndex = 0;
     const exerciseFormTemplate = document.querySelector('#exerciseFormTemplate');
     const cloneExerciseTemplate = exerciseFormTemplate.content.cloneNode(true);
-    cloneExerciseTemplate.querySelector('#workout').textContent = workoutObj['workout name'];
-    cloneExerciseTemplate.querySelector('#exercise').textContent = `Exercise: ${workoutObj['exercises'][0]['name']}`;
-    cloneExerciseTemplate.querySelector('#exerciseName').value = workoutObj['exercises'][0]['name'];
-    cloneExerciseTemplate.querySelector('#exerciseDescription').value = workoutObj['exercises'][0]['description'];
-    cloneExerciseTemplate.querySelector('#exerciseDuration').value = workoutObj['exercises'][0]['duration'];
+    cloneExerciseTemplate.querySelector('#workout').textContent = userWorkoutsArray[createdWorkoutIndex]['workout name'];
+    cloneExerciseTemplate.querySelector('#exercise').textContent = `Exercise: ${userWorkoutsArray[createdWorkoutIndex]['exercises'][0]['name']}`;
+    cloneExerciseTemplate.querySelector('#exerciseName').value = userWorkoutsArray[createdWorkoutIndex]['exercises'][0]['name'];
+    cloneExerciseTemplate.querySelector('#exerciseDescription').value = userWorkoutsArray[createdWorkoutIndex]['exercises'][0]['description'];
+    cloneExerciseTemplate.querySelector('#exerciseDuration').value = userWorkoutsArray[createdWorkoutIndex]['exercises'][0]['duration'];
     formContainer.append(cloneExerciseTemplate);
 
     // Obtaining form input elements and buttons 
@@ -77,7 +75,7 @@ function loadExerciseTemplate(){
     const submitWorkoutForm = document.querySelector('#submitBtn');
     const cancelBtn = document.querySelector('#cancelBtn');
 
-    const exerciseLen = workoutObj['exercises'].length
+    const exerciseLen = userWorkoutsArray[createdWorkoutIndex]['exercises'].length
 
     nextBtn.addEventListener('click',nextBtnHandler);
     prevBtn.addEventListener('click',prevBtnHandler);
@@ -88,18 +86,20 @@ function loadExerciseTemplate(){
     exerciseDurInput.addEventListener('input',inputChangeHandler);
 
     function inputChangeHandler(){
-        workoutObj['exercises'][formIndex]['name'] = exerciseNameInput.value;
-        workoutObj['exercises'][formIndex]['description'] = exerciseDescInput.value;
-        workoutObj['exercises'][formIndex]['duration'] = exerciseDurInput.value;
+        const createdWorkoutIndex = userWorkoutsArray.length - 1;
+        userWorkoutsArray[createdWorkoutIndex]['exercises'][formIndex]['name'] = exerciseNameInput.value;
+        userWorkoutsArray[createdWorkoutIndex]['exercises'][formIndex]['description'] = exerciseDescInput.value;
+        userWorkoutsArray[createdWorkoutIndex]['exercises'][formIndex]['duration'] = exerciseDurInput.value;
     }
 
     function nextBtnHandler(){
+        const createdWorkoutIndex = userWorkoutsArray.length - 1;
         if(formIndex !== exerciseLen-1){
             formIndex += 1;
-            exerciseTitle.textContent = `Exercise: ${workoutObj['exercises'][formIndex]['name']}`;
-            exerciseNameInput.value = workoutObj['exercises'][formIndex]['name'];
-            exerciseDescInput.value = workoutObj['exercises'][formIndex]['description'];
-            exerciseDurInput.value = workoutObj['exercises'][formIndex]['duration'];
+            exerciseTitle.textContent = `Exercise: ${userWorkoutsArray[createdWorkoutIndex]['exercises'][formIndex]['name']}`;
+            exerciseNameInput.value = userWorkoutsArray[createdWorkoutIndex]['exercises'][formIndex]['name'];
+            exerciseDescInput.value = userWorkoutsArray[createdWorkoutIndex]['exercises'][formIndex]['description'];
+            exerciseDurInput.value = userWorkoutsArray[createdWorkoutIndex]['exercises'][formIndex]['duration'];
 
             if(formIndex === exerciseLen-1){
                 nextBtn.classList.add('hidden');
@@ -113,12 +113,13 @@ function loadExerciseTemplate(){
     }
 
     function prevBtnHandler(){
+        const createdWorkoutIndex = userWorkoutsArray.length - 1;
         if(formIndex !== 0){
             formIndex -= 1;
-            exerciseTitle.textContent = `Exercise: ${workoutObj['exercises'][formIndex]['name']}`;
-            exerciseNameInput.value = workoutObj['exercises'][formIndex]['name'];
-            exerciseDescInput.value = workoutObj['exercises'][formIndex]['description'];
-            exerciseDurInput.value = workoutObj['exercises'][formIndex]['duration'];
+            exerciseTitle.textContent = `Exercise: ${userWorkoutsArray[createdWorkoutIndex]['exercises'][formIndex]['name']}`;
+            exerciseNameInput.value = userWorkoutsArray[createdWorkoutIndex]['exercises'][formIndex]['name'];
+            exerciseDescInput.value = userWorkoutsArray[createdWorkoutIndex]['exercises'][formIndex]['description'];
+            exerciseDurInput.value = userWorkoutsArray[createdWorkoutIndex]['exercises'][formIndex]['duration'];
             if(formIndex < exerciseLen -1){
                 nextBtn.classList.remove('hidden');
                 submitWorkoutForm.classList.add('hidden');
@@ -131,18 +132,15 @@ function loadExerciseTemplate(){
     }
 
     function cancelBtnHandler(event){
+        const createdWorkoutIndex = userWorkoutsArray.length - 1;
         if(event.target === submitWorkoutForm){
             console.log("Workout sent to database");
         }
         const createWorkoutBtn = document.querySelector('#createWorkoutBtn');
         const removeExerciseForm = document.querySelector('#removeExerciseForm');
-        workoutObj['workout name'] = "";
-        workoutObj['exercises'] = []; 
+        userWorkoutsArray.splice(createdWorkoutIndex,1);
         removeExerciseForm.remove()
         createWorkoutBtn.classList.remove('hidden');
     }
 
 }
-
-
-window.addEventListener('load', init);
