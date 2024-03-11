@@ -11,35 +11,28 @@
 </head>
 
 <body>
-  <template id="createWorkoutFormTemplate">
-    <form id="createWorkoutForm">
-      <section id="formStep1">
-        <label for="workoutName"> Workout Name: </label>
-        <input type="text" id="workoutName" size="40">
+  <template id="exerciseFormStep">
+    <section class="formStep" data-step="" data-exercise-index="">
 
-        <label for="numOfExercises"> Number of exercises: </label>
-        <input type="number" id="numOfExercises" min="1">
-      </section>
+      <h3 id="exerciseTitle"></h3>
+      <label for="exerciseName">Exercise name: </label>
+      <input type="text" id="exerciseName" size="20">
 
-      <section id="formStep2">
-        <h2 id="workoutTitle"> Workout title</h2>
-        <h3 id="exerciseTitle">exercise</h3>
-        <label for="exerciseName">Exercise name: </label>
-        <input type="text" id="exercisesName" size="40">
+      <label for="exerciseDescription">Exercise description: </label>
+      <input type="text" id="exerciseDescription" size="30">
 
-        <label for="exerciseDesc">Exercise description: </label>
-        <input type="text" id="exerciseDesc" size="40">
+      <label for="exerciseDuration">Exercise duration: </label>
+      <input type="number" id="exerciseDuration" min="1">
 
-        <label for="exerciseDuration">Exercise duration: </label>
-        <input type="number" id="exerciseDuration" min="1">
+      <button class="previousBtn active">previous</button>
+      <button class="submitBtn">submit</button>
+      <button class="cancelBtn">cancel</button>
+      <button class="nextBtn active">next</button>
 
-        <button id="previousBtn"> previous </button>
-        <button type="submit" id="submitBtn">submit</button>
-        <button id="cancelBtn">cancel</button>
-        <button id="nextBtn" class="active"> Next </button>
-      </section>
-    </form>
+    </section>
   </template>
+
+
 
   <header>
     <nav id="navigation-menu">
@@ -51,8 +44,19 @@
 
   <main>
     <button id="createWorkoutBtn"> Create Workout </button>
-    <section id="formContainer"></section>
+    <form id="createWorkoutForm">
+      <section class="formStep" data-step="1">
+        <label for="workoutName"> Workout Name: </label>
+        <input type="text" id="workoutName" size="20" class="wrapper">
+
+        <label for="numOfExercises"> Number of exercises: </label>
+        <input type="number" id="numOfExercises" min="1" class="wrapper">
+        <button id="stepOneNextBtn">next</button>
+      </section>
+
+    </form>
   </main>
+
 </body>
 
 </html>

@@ -1,5 +1,33 @@
-.hidden{
-    display: none;
+
+.formStep{
+    display:none;
+}
+
+.formStep.active{
+    display:block;
+}
+
+.submitBtn{
+    display:none; 
+}
+.cancelBtn{
+    display:none;
+}
+
+.submitBtn.active{
+    display:inline;
+}
+
+.cancelBtn.active{
+    display:inline;
+}
+
+.previousBtn.active{
+    display:inline;
+}
+
+.nextBtn.active{
+    display:inline;
 }
 
 .wrapper{
