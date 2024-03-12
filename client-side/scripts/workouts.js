@@ -12,6 +12,8 @@ nextStepBtn.addEventListener('click',nextBtnHandler);
 // Group functions associated with next button behaviour 
 function nextBtnHandler(){
     createWorkoutInstance();
+    cloneExerciseTemplate();
+    navigatingForm(event);
 }
 
 // Creates an object storing workout name submitted by user and exercise objects with default values
@@ -50,4 +52,13 @@ function navigatingForm(event){
             element.classList.add('active');
         }
     })
+}
+
+function cloneExerciseTemplate(){
+    const formContainer = document.querySelector('#createWorkoutForm');
+    const exerciseFormTemplate = document.querySelector('#exerciseFormStep');
+    const cloneExerciseForm = exerciseFormTemplate.content.cloneNode(true);
+    const section = cloneExerciseForm.querySelector('#exerciseForm');
+    cloneExerciseForm.querySelector('#exerciseTitle').textContent = userWorkoutsArray[0]['exercises'][section.dataset.exerciseIndex]['name'];
+    formContainer.append(cloneExerciseForm);
 }
