@@ -1,9 +1,9 @@
 
-.formStep{
+.formSteps{
     display:none;
 }
 
-.formStep.active{
+.formSteps.active{
     display:block;
 }
 
