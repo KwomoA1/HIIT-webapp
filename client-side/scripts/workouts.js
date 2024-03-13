@@ -20,6 +20,56 @@ function nextBtnHandler(event){
     navigatingForm(event);
 }
 
+// Clones the exercise template to the page. 
+function cloneExerciseTemplate(){
+    const formContainer = document.querySelector('#createWorkoutForm');
+    const exerciseFormTemplate = document.querySelector('#exerciseFormStep');
+    const cloneExerciseForm = exerciseFormTemplate.content.cloneNode(true);
+    const section = cloneExerciseForm.querySelector('#exerciseForm');
+    cloneExerciseForm.querySelector('#exerciseTitle').textContent = userWorkoutsArray[0]['exercises'][section.dataset.exerciseIndex]['name'];
+    formContainer.append(cloneExerciseForm);
+
+    //Obtaining button elements and adding event listeners 
+    const nextBtn = document.querySelector('#exNextBtn');
+    const previousBtn = document.querySelector('#exPreBtn');
+
+    nextBtn.addEventListener('click',nextAndPreBtnHandler);
+    previousBtn.addEventListener('click',nextAndPreBtnHandler);
+
+    function nextAndPreBtnHandler(event){
+        exerciseNavigation(event);
+        workoutUpdate();
+    }
+
+}
+
+//Navigate through exercises and form steps
+function exerciseNavigation(event){
+    const formStep2Section = document.querySelector('#exerciseForm');
+    
+    if(event.target.classList.contains('nextBtn')){
+        formStep2Section.dataset.exerciseIndex = parseInt(formStep2Section.dataset.exerciseIndex) + 1;
+        for(const child of formStep2Section.children){
+            if(child.id == 'exerciseTitle'){
+                child.textContent = userWorkoutsArray[0]['exercises'][formStep2Section.dataset.exerciseIndex]['name'];
+            }
+        }
+    }
+    else if (event.target.classList.contains('previousBtn')){
+        formStep2Section.dataset.exerciseIndex = parseInt(formStep2Section.dataset.exerciseIndex) - 1;
+        for(const child of formStep2Section.children){
+            if(child.id == 'exerciseTitle'){
+                child.textContent = userWorkoutsArray[0]['exercises'][formStep2Section.dataset.exerciseIndex]['name'];
+            }
+        }
+    }
+
+}
+
+function workoutUpdate(){
+
+}
+
 // Creates an object storing workout name submitted by user and exercise objects with default values
 function createWorkoutInstance(){ 
     const numOfExercisesInput = document.querySelector('#numOfExercises').value;
@@ -40,34 +90,26 @@ function createWorkoutInstance(){
 
 // Display different form steps depending on which button was clicked.
 function navigatingForm(event){
-    const formSteps = document.querySelectorAll('[data-step]');
-
-    if(event.target.textContent == "Create Workout"){
-        formIndex = 1;
-    }
-    else if(event.target.classList.contains('nextButton')){
+    
+    if(event.target.classList.contains('nextButton') || event.target.textContent == "Create Workout"){
         formIndex +=1;
     }
     else if(event.target.classList.contains('previousButton')){
         formIndex -= 1;
     }
 
-    formSteps.forEach((element) => {
+    formElementsValidation() 
+}
+
+function formElementsValidation(){
+    const formSteps = document.querySelectorAll('[data-step]');
+    
+    formSteps.forEach((element)=>{
         if(element.dataset.step == formIndex){
             element.classList.add('active');
-        } 
-        else if (element.dataset.step != formIndex && element.classList.contains('active')){
+        }
+        else if(element.dataset.step != formIndex && element.classList.contains('active')){
             element.classList.remove('active');
         }
     })
-}
-
-// Clones the exercise template to the page. 
-function cloneExerciseTemplate(){
-    const formContainer = document.querySelector('#createWorkoutForm');
-    const exerciseFormTemplate = document.querySelector('#exerciseFormStep');
-    const cloneExerciseForm = exerciseFormTemplate.content.cloneNode(true);
-    const section = cloneExerciseForm.querySelector('#exerciseForm');
-    cloneExerciseForm.querySelector('#exerciseTitle').textContent = userWorkoutsArray[0]['exercises'][section.dataset.exerciseIndex]['name'];
-    formContainer.append(cloneExerciseForm);
 }
