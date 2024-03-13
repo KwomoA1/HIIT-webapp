@@ -1,16 +1,20 @@
 const userWorkoutsArray = []
 const createWorkoutBtn = document.querySelector('#createWorkoutBtn');
-const formSteps = document.querySelectorAll('[data-step]');
 const nextStepBtn = document.querySelector('#stepOneNextBtn');
 let formIndex = 0;
 
 
-createWorkoutBtn.addEventListener('click',navigatingForm);
-
+createWorkoutBtn.addEventListener('click',createWorkoutBtnHandler);
 nextStepBtn.addEventListener('click',nextBtnHandler);
 
+// Group functions associated with create workout behaviour
+function createWorkoutBtnHandler(event){
+    createWorkoutBtn.classList.add('hidden');
+    navigatingForm(event);
+}
+
 // Group functions associated with next button behaviour 
-function nextBtnHandler(){
+function nextBtnHandler(event){
     createWorkoutInstance();
     cloneExerciseTemplate();
     navigatingForm(event);
@@ -36,10 +40,11 @@ function createWorkoutInstance(){
 
 // Display different form steps depending on which button was clicked.
 function navigatingForm(event){
+    const formSteps = document.querySelectorAll('[data-step]');
 
-    if(event.target.textContent === "Create Workout"){
-        formIndex = 1;  
-    } 
+    if(event.target.textContent == "Create Workout"){
+        formIndex = 1;
+    }
     else if(event.target.classList.contains('nextButton')){
         formIndex +=1;
     }
@@ -50,10 +55,14 @@ function navigatingForm(event){
     formSteps.forEach((element) => {
         if(element.dataset.step == formIndex){
             element.classList.add('active');
+        } 
+        else if (element.dataset.step != formIndex && element.classList.contains('active')){
+            element.classList.remove('active');
         }
     })
 }
 
+// Clones the exercise template to the page. 
 function cloneExerciseTemplate(){
     const formContainer = document.querySelector('#createWorkoutForm');
     const exerciseFormTemplate = document.querySelector('#exerciseFormStep');
