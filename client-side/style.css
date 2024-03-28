@@ -1,0 +1,7 @@
+.form{
+    display:block;
+}
+
+.formSection.hidden{
+    display:none;
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="scripts/index.js" defer></script>
+    <title> Home| HIIT havoc </title>
+</head>
+
+<body>
+    <main>
+        <button type="button" id="create-Btn">Create HIIT workout</button>
+        <form>
+            <section class="formSection hidden" data-step="1">
+                <label for="workout-name">Workout name</label>
+                <input type="text" id="workout-name" class="form" maxlength="30">
+                <label for="num-exercises">Number of exercises</label>
+                <input type="number" id="num-exercises" class="form" min="1" max="15">
+                <button type="button" class="nextBtns">next step</button>
+            </section>
+
+            <section class="formSection hidden" data-step="2" data-workoutIndex="0">
+                <label for="exercise-name">Exercise name</label>
+                <input type="text" id="exercise-name" class="form" maxlength="30">
+                <label for="exercise-desc">Exercise description</label>
+                <input type="text" id="exercise-desc" class="form" maxlength="50">
+                <label for="exercise-dur">Exercise duration </label>
+                <input type="number" id="exercise-dur" class="form" max="60" > 
+                <button type="button" class="prevStepBtns">previous step</button>
+                <button type="button" class="prevBtns">previous</button>
+                <button type="button" class="nextBtns">next</button>
+            </section>
+
+            <section class="formSection hidden" data-step="3">
+                <p>Insert list of exercises</p>
+                <button type="submit" class="submitBtns">submit</button>
+                <button type="button" class="cancelBtns">cancel</button>
+                <button type="button" class="prevStepBtns">previous step</button>
+            </section>
+        </form>
+    </main>
+</body>
+
+</html>
