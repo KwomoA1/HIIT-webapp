@@ -59,6 +59,7 @@ function createExerciseInputs(){
     createWorkoutBtn.classList.add('hidden');
     workoutForm.classList.add('hidden');
 
+<<<<<<< Updated upstream
     const exerciseNumInput = document.querySelector('#exercise-number');
     const createExerciseForm = document.querySelector('#edit-exercises-buttons');
     
@@ -70,6 +71,42 @@ function createExerciseInputs(){
 
 // Creates buttons based on number of exercises and sets the attribute 
     for(let index = 0; index < exerciseNumInput.value; index++){
+=======
+// Group functions associated with next button behaviour 
+function nextBtnHandler(event){
+    createWorkoutInstance();
+    cloneExerciseTemplate();
+    navigatingForm(event);
+}
+
+// Clones the exercise template to the page. 
+function cloneExerciseTemplate(){
+    const formContainer = document.querySelector('#createWorkoutForm');
+    const exerciseFormTemplate = document.querySelector('#exerciseFormStep');
+    const cloneExerciseForm = exerciseFormTemplate.content.cloneNode(true);
+    const section = cloneExerciseForm.querySelector('#exerciseForm');
+    cloneExerciseForm.querySelector('#exerciseTitle').textContent = userWorkoutsArray[0]['exercises'][section.dataset.exerciseIndex]['name'];
+    formContainer.append(cloneExerciseForm);
+
+    //Obtaining button elements and adding event listeners 
+    const nextBtn = document.querySelector('#exNextBtn');
+    const previousBtn = document.querySelector('#exPreBtn');
+
+    nextBtn.addEventListener('click',nextAndPreBtnHandler);
+    previousBtn.addEventListener('click',nextAndPreBtnHandler);
+
+    function nextAndPreBtnHandler(event){
+        exerciseNavigation(event);
+        workoutUpdate();
+    }
+
+}
+
+//Navigate through exercises and form steps
+function exerciseNavigation(event){
+    const formStep2Section = document.querySelector('#exerciseForm');
+}
+>>>>>>> Stashed changes
 
         // Creates unordered list to store all list items under 
         let exerciseList = document.createElement('ul');
