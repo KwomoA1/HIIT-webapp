@@ -22,7 +22,7 @@ function setupUiReferences(){
 function FormElemReferences(){
     formElems.wrkName = document.querySelector('#workout-name');
     formElems.numEx = document.querySelector('#num-exercises');
-    formElems.exTitle = document.querySelector('.exTitle');
+    formElems.exTitle = document.querySelector('#exerTitle');
     formElems.exName = document.querySelector('#exercise-name');
     formElems.exDesc = document.querySelector('#exercise-desc');
     formElems.exDur = document.querySelector('#exercise-dur');
@@ -55,7 +55,7 @@ function formNavigation(event){
                 createWrkObject()
                 ui.formSections.forEach(section=>{
                     if(section.dataset.step ==2){
-                        formElems.exTitle.textContent = `Exercise ${workoutObj.exercises[section.dataset.workoutIndex + 1]}`
+                        exerciseNavigation();
                     }
                 })
             }
@@ -78,11 +78,36 @@ function formNavigation(event){
 }
 
 function exerciseNavigation(){
+    const form2Section = document.querySelector('#exercise-form');
+    let exerciseIndex = parseInt(form2Section.dataset.workoutindex);
+    console.log(exerciseIndex)
+    formElems.exTitle.textContent = ` ${workoutObj.exercises[exerciseIndex].exerciseName}`;
+
+    for(i=0; i < ui.nextBtns.length; i++){
+        ui.nextBtns[i].addEventListener('click',function(){
+            if(exerciseIndex < workoutObj.exercises.length-1){
+                exerciseIndex += 1;
+                formElems.exTitle.textContent = `${workoutObj.exercises[exerciseIndex].exerciseName}`;
+            } 
+            
+        })
+    }
+
+    for(i=0; i < ui.prevBtns.length; i++){
+        ui.prevBtns[i].addEventListener('click',function(){
+            if(exerciseIndex > 0){
+                exerciseIndex -= 1;
+                formElems.exTitle.textContent = `${workoutObj.exercises[exerciseIndex].exerciseName}`
+            } 
+
+            
+        })
+    }
 
 }
 
 function createWrkObject(){
-    workoutObj.workoutName = formElems.wrkName.textContent; 
+    workoutObj.workoutName = formElems.wrkName.value; 
     for(let i = 0; i < formElems.numEx.value; i++){
         exerciseObj = {
             exerciseName: `exercises ${i+1}`,

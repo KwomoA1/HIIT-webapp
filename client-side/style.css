@@ -9,3 +9,7 @@
 .formSection.active{
     display:block;
 }
+
+.hidden{
+    display:none;
+}
