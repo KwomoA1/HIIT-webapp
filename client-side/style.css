@@ -2,6 +2,10 @@
     display:block;
 }
 
-.formSection.hidden{
+.formSection{
     display:none;
+}
+
+.formSection.active{
+    display:block;
 }
