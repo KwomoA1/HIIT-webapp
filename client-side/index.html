@@ -12,7 +12,7 @@
 <body>
     <main>
         <button type="button" id="create-Btn">Create HIIT workout</button>
-        <form>
+        <form id="workout-form">
             <section class="formSection" data-step="1">
                 <label for="workout-name">Workout name</label>
                 <input type="text" id="workout-name" class="form" maxlength="30">
@@ -37,10 +37,10 @@
                 <label for="rest-dur">Rest period</label>
                 <input type="number" id="rest-dur" class="form" max="60">
                 
-                <button type="button" class="prevStepBtns hidden">previous step</button>
+                <button id="section2-prevSbtn" type="button" class="prevStepBtns">previous step</button>
                 <button type="button" class="prevBtns">previous</button>
                 <button type="button" class="nextBtns">next</button>
-                <button type="button" class="nextStepBtns hidden">next step</button>
+                <button id="section2-nextSbtn " type="button" class="nextStepBtns">next step</button>
             </section>
 
             <section class="formSection" data-step="3">
