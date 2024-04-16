@@ -1,8 +1,8 @@
 /*
 TODO:
-- Add functionality for 3rd step of the form
+- Ensure there are no bugs in the code for the form and make sure functions are readable and maintainable.
 BUGS:
-- During the 2nd step of the form the exercise obj data is removed likely an issue with clearvalues function or the order of steps
+- None 
 */
 
 // Stores references to objects 
