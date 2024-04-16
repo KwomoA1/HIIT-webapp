@@ -82,28 +82,30 @@ function createWrkObject(){
                 }
                 workoutObj.exercises.push(exerciseObj)
             }
-            exerciseHandler();
+            formStep2Handler();
         }
     })
 }
 
 // Updates the exercise in the workout object / Clears input values / Updates input values 
-function exerciseHandler(){
+function formStep2Handler(){
     let workoutIndex = parseInt(document.querySelector('#exercise-form').dataset.workoutindex);
     formElems.exerciseTitle.textContent = workoutObj.exercises[workoutIndex]['exercise-name'];
+    obtainObjectValues(workoutIndex);
     checker(workoutIndex, workoutObj.exercises.length);
 
     formElems.workoutForm.addEventListener('click',event=>{
-        if((event.target.classList.contains('nextBtns') || event.target.classList.contains('nextStepBtn'))&& workoutIndex < workoutObj.exercises.length - 1){
+        if((event.target.classList.contains('nextBtns') || event.target.classList.contains('nextStepBtns'))&& workoutIndex < workoutObj.exercises.length - 1){ // Next step btn condition is included for the final exercise
             updateExercise(workoutIndex);
             workoutIndex += 1;
-            clearValues(workoutIndex);
-            console.log(workoutObj.exercises[workoutIndex]['exercise-name']);
+            obtainExerciseValues(workoutIndex);
             formElems.exerciseTitle.textContent = workoutObj.exercises[workoutIndex]['exercise-name'];
             checker(workoutIndex,workoutObj.exercises.length);
+
         } else if (event.target.classList.contains('prevBtns') && workoutIndex > 0){
+            updateExercise(workoutIndex);
             workoutIndex -= 1;
-            console.log(workoutObj.exercises[workoutIndex]['exercise-name']);
+            obtainExerciseValues(workoutIndex);
             formElems.exerciseTitle.textContent = workoutObj.exercises[workoutIndex]['exercise-name'];
             checker(workoutIndex,workoutObj.exercises.length);
         }
@@ -137,12 +139,12 @@ function updateExercise(exerciseIndex){
     })
 }
 
-// Clears the input values on the form.
-function clearValues(exerciseIndex){
+// Obtains each exercises attributes and sets the corresponding input boxes values to those attributes
+function obtainExerciseValues(exerciseIndex){
     const step2 = document.querySelector('#exercise-form');
     const step2Inputs = [...step2.querySelectorAll('input')];
     step2Inputs.forEach((inputBox)=>{
-        inputBox.value = '';
+        inputBox.value = workoutObj.exercises[exerciseIndex][inputBox.id];
     })
   
 }
