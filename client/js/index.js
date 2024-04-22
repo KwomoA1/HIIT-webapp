@@ -7,7 +7,7 @@ BUGS:
 /* Stores references to objects */
 const ui = {};
 const formElems = {};
-const workoutObj = {};
+let workoutObj = {};
 
 // Obtains handles on UI objects
 function uiHandles() {
@@ -33,6 +33,7 @@ function formElemHandles() {
 // Finds the step which contains the active class and displays it
 // ? Chaining operator returns undefined and prevents type error if no class contains the active class
 function formStepHandler() {
+  ui.createWrkBtn.classList.add('hidden');
   let currentStep = parseInt(
     formElems.formSteps.find((step) => {
       return step.classList.contains('active');
@@ -63,7 +64,7 @@ function displayCurrentStep(currentStep) {
 // Creates the workout object and adds exercise objects in it.
 function createWrkObject() {
   formElems.workoutForm.addEventListener('click', event => {
-    if (event.target.value == 'submitWrkData') {
+    if (event.target.value === 'submitWrkData') {
       workoutObj.workoutName = formElems.workoutNameInput.value;
       workoutObj.exercises = [];
       for (let i = 0; i < formElems.numExInput.value; i++) {
@@ -85,41 +86,44 @@ function createWrkObject() {
 // Updates the exercise in the workout object / Clears input values / Updates input values
 function formStep2Handler() {
   let workoutIndex = parseInt(document.querySelector('#exercise-form').dataset.workoutindex);
-  formElems.exerciseTitle.textContent = workoutObj.exercises[workoutIndex]['exercise-name'];
-  obtainExerciseValues(workoutIndex);
-  checker(workoutIndex, workoutObj.exercises.length);
+  updateExerciseAndDisplay(workoutIndex);
 
   formElems.workoutForm.addEventListener('click', event => {
-    if ((event.target.classList.contains('nextBtns') || event.target.classList.contains('nextStepBtns')) && workoutIndex < workoutObj.exercises.length) { // Next step btn condition is included for the final exercise
-      updateExercise(workoutIndex);
-      workoutIndex += 1;
-      obtainExerciseValues(workoutIndex);
-      formElems.exerciseTitle.textContent = workoutObj.exercises[workoutIndex]['exercise-name'];
-      checker(workoutIndex, workoutObj.exercises.length);
+    // Next step btn condition is included for the final exercise
+    if (event.target.classList.contains('nextBtns') && workoutIndex < workoutObj.exercises.length) {
+      if (workoutIndex < workoutObj.exercises.length - 1) {
+        updateExercise(workoutIndex);
+        workoutIndex++;
+        updateExerciseAndDisplay(workoutIndex);
+      }
     } else if (event.target.classList.contains('prevBtns') && workoutIndex > 0) {
       updateExercise(workoutIndex);
-      workoutIndex -= 1;
-      obtainExerciseValues(workoutIndex);
-      formElems.exerciseTitle.textContent = workoutObj.exercises[workoutIndex]['exercise-name'];
-      checker(workoutIndex, workoutObj.exercises.length);
-    }
-  });
-
-  formElems.workoutForm.addEventListener('click', event => {
-    if (event.target.classList.contains('nextStepBtns')) {
+      workoutIndex--;
+      updateExerciseAndDisplay(workoutIndex);
+    } else if (event.target.classList.contains('nextStepBtns')) {
       formStep3Handler();
+    } else if (event.target.classList.contains('prevStepBtns') && workoutIndex === 0) {
+      workoutObj = {};
     }
   });
 }
 
+function updateExerciseAndDisplay(workoutIndex) {
+  obtainExerciseValues(workoutIndex);
+  formElems.exerciseTitle.textContent = workoutObj.exercises[workoutIndex]['exercise-name'];
+  checker(workoutIndex, workoutObj.exercises.length);
+}
+
 // Displays the whole workout to allow user to verify they're happy with the data
 function formStep3Handler() {
+  console.log(workoutObj.exercises);
   const mainBody = document.querySelector('#validationContainer');
 
   for (const exercise of workoutObj.exercises) {
     const exerciseIndex = workoutObj.exercises.indexOf(exercise);
     const exerciseList = document.createElement('ul');
-    for (const attribute of exercise) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const attribute in exercise) {
       const attributeItem = document.createElement('li');
       attributeItem.textContent = workoutObj.exercises[exerciseIndex][attribute];
       exerciseList.append(attributeItem);
@@ -131,17 +135,23 @@ function formStep3Handler() {
 // Displays previous step or next step button depending on the exercises position within the array
 function checker(exerciseStep, exerciseLength) {
   const prevStepBtn = document.querySelector('#section2-prevSbtn');
+  const prevBtns = document.querySelector('#section2-prevBtn');
+  const nextBtns = document.querySelector('#section2-nextBtn');
   const nextStepBtn = document.querySelector('#section2-nextSbtn');
 
   if (exerciseStep === 0) {
     prevStepBtn.classList.remove('hidden');
+    prevBtns.classList.add('hidden');
   } else {
     prevStepBtn.classList.add('hidden');
+    prevBtns.classList.remove('hidden');
   }
 
   if (exerciseStep === exerciseLength - 1) {
     nextStepBtn.classList.remove('hidden');
+    nextBtns.classList.add('hidden');
   } else {
+    nextBtns.classList.remove('hidden');
     nextStepBtn.classList.add('hidden');
   }
 }
