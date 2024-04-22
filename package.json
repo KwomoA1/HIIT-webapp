@@ -1,0 +1,16 @@
+{
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-portsoc": "github:portsoc/eslint-config-portsoc"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "eslintConfig": {
+    "extends": "portsoc",
+    "root": true,
+    "env":{
+      "browser":true 
+    }
+  }
+}
