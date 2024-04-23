@@ -1,12 +1,16 @@
 /*
+
 TODO:
 - Empty workout object when the navigation goes back to step 1
 - Update workout title
 - Add functionality for submit button
-BUGS:
-- None */
 
-/* Stores references to objects */
+BUGS:
+- None
+
+*/
+
+// Stores references to objects
 const ui = {};
 const formElements = {};
 const workoutObj = {};
@@ -77,7 +81,7 @@ function cloneTemplate(exerciseIndex) {
 
 // Create workout object and clone input boxes
 function createWrkObject() {
-  formElements.workoutForm.addEventListener('click', event => { 
+  formElements.workoutForm.addEventListener('click', event => {
     if (event.target.classList.contains('submitWrkData')) {
       workoutObj.workoutName = formElements.workoutNameInput.value;
       workoutObj.exercises = [];
