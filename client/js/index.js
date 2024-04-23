@@ -1,9 +1,6 @@
 /*
 
 TODO:
-- Empty workout object when the navigation goes back to step 1
-- Update workout title
-- Add functionality for submit button
 
 BUGS:
 - None
@@ -13,7 +10,7 @@ BUGS:
 // Stores references to objects
 const ui = {};
 const formElements = {};
-const workoutObj = {};
+let workoutObj = {};
 
 // Stores main DOM ui element handles in ui
 function uiHandles() {
@@ -52,6 +49,10 @@ function displayActiveStep() {
     } else if (event.target.classList.contains('prevStepBtns')) {
       currentStep -= 1;
       displayCurrentStep(currentStep);
+      if (currentStep === 1) {
+        clearWorkoutObj();
+        clearInputFields();
+      }
     }
   });
 }
@@ -71,7 +72,7 @@ function cloneTemplate(exerciseIndex) {
   const cloned = exerciseTemplate.content.cloneNode(true);
   const title = cloned.querySelector('#exercise-title');
   title.textContent = `exercise ${exerciseIndex + 1}`;
-  const group = [...cloned.querySelectorAll('input')];
+  const group = [...cloned.querySelectorAll('.exerciseInput')];
   group.forEach((inputBox) => {
     inputBox.dataset.exerciseIndex = exerciseIndex;
   });
@@ -118,6 +119,9 @@ function submitExercises() {
 
 function formStep3Handler() {
   const mainBody = document.querySelector('#validationContainer');
+  const workoutTitle = document.createElement('h2');
+  workoutTitle.textContent = `Workout name: ${workoutObj.workoutName}`;
+  mainBody.append(workoutTitle);
 
   for (const exercise of workoutObj.exercises) {
     const exerciseIndex = workoutObj.exercises.indexOf(exercise);
@@ -136,6 +140,19 @@ function formStep3Handler() {
     exerciseList.append(restDurItem);
 
     mainBody.append(exerciseList);
+  }
+}
+
+// Clears the entire workout object
+function clearWorkoutObj() {
+  workoutObj = {};
+}
+
+// Removes the clone template fields from step 2 of the form
+function clearInputFields() {
+  const exerciseInputField = [...document.querySelectorAll('.exerciseInput'), ...document.querySelectorAll('.exerciseLabel'), ...document.querySelectorAll('ul'), ...document.querySelectorAll('h2')];
+  for (const input of exerciseInputField) {
+    input.remove();
   }
 }
 

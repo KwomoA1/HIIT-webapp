@@ -10,28 +10,28 @@
 </head>
 
 <template id="exerciseFormTemplate">
-    <h2 id="exercise-title">Testing</h2>
-    <label for="exercise-name">Exercise name: </label>
+    <h2 id="exercise-title" class="exerciseLabel">Testing</h2>
+    <label for="exercise-name" class="exerciseLabel">Exercise name: </label>
     <input type="text" id="exercise-name" maxlength="50" class="form exerciseInput" required>
 
-    <label for="exercise-desc">Exercise description: </label>
+    <label for="exercise-desc" class="exerciseLabel">Exercise description: </label>
     <input type="text" id="exercise-desc" maxlength="50" class="form exerciseInput" required>
 
-    <label for="exercise-duration" class="form">Exercise duration: </label>
+    <label for="exercise-duration" class="form exerciseLabel">Exercise duration: </label>
 
-    <label for="exercise-hour">Hour:</label>
+    <label for="exercise-hour" class="exerciseLabel">Hour:</label>
     <input type="number" id="exercise-hour" value="0" min="0" max="23" class="exerciseInput">
-    <label for="minutes">Minutes:</label>
+    <label for="minutes" class="exerciseLabel">Minutes:</label>
     <input type="number" id="exercise-min" value="0" min="0" max="59" class="exerciseInput">
-    <label for="seconds">Seconds:</label>
+    <label for="seconds" class="exerciseLabel">Seconds:</label>
     <input type="number" id="exercise-sec" value="0" min="0" max="59" class="exerciseInput">
 
-    <label for="rest-duration" class="form">Rest duration:</label>
-    <label for="rest-hour">Hour:</label>
+    <label for="rest-duration" class="form exerciseLabel">Rest duration:</label>
+    <label for="rest-hour" class="exerciseLabel">Hour:</label>
     <input type="number" id="rest-hour" value="0" min="0" max="23" class="exerciseInput">
-    <label for="rest-min">Minutes:</label>
+    <label for="rest-min" class="exerciseLabel">Minutes:</label>
     <input type="number" id="rest-min" value="0" min="0" max="59" class="exerciseInput">
-    <label for="rest-sec">Seconds:</label>
+    <label for="rest-sec" class="exerciseLabel">Seconds:</label>
     <input type="number" id="rest-sec" value="0" min="0" max="59" class="exerciseInput">
 </template>
 
@@ -41,7 +41,7 @@
 
         <form id="workout-form">
             <section class="formSection" data-step="1">
-                <h1 class="formTitle"> Workout Details</h1>
+                <h1> Workout Details</h1>
                 <label for="workout-name">Workout name</label>
                 <input type="text" id="workout-name" class="form" maxlength="30" required>
 
@@ -52,7 +52,7 @@
             </section>
 
             <section id="exercise-form" class="formSection" data-step="2">
-                <h1> Exercises</h1>
+                <h1> Exercise details</h1>
                 <div id="nav-buttons">
                     <button type="button" class="prevStepBtns">previous</button>
                     <button type="button" class="nextStepBtns">next</button>
@@ -60,7 +60,7 @@
             </section>
 
             <section class="formSection" data-step="3">
-                <h1> Exercise validation </h1>
+                <h1> workout validation </h1>
                 <div id="validationContainer"></div>
                 <div>
                     <button type="button" class="prevStepBtns">previous</button>
