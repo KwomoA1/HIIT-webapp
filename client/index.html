@@ -9,50 +9,63 @@
     <title> Home | HIIT havoc </title>
 </head>
 
+<template id="exerciseFormTemplate">
+    <h2 id="exercise-title">Testing</h2>
+    <label for="exercise-name">Exercise name: </label>
+    <input type="text" id="exercise-name" maxlength="50" class="form exerciseInput" required>
+
+    <label for="exercise-desc">Exercise description: </label>
+    <input type="text" id="exercise-desc" maxlength="50" class="form exerciseInput" required>
+
+    <label for="exercise-duration" class="form">Exercise duration: </label>
+
+    <label for="exercise-hour">Hour:</label>
+    <input type="number" id="exercise-hour" value="0" min="0" max="23" class="exerciseInput">
+    <label for="minutes">Minutes:</label>
+    <input type="number" id="exercise-min" value="0" min="0" max="59" class="exerciseInput">
+    <label for="seconds">Seconds:</label>
+    <input type="number" id="exercise-sec" value="0" min="0" max="59" class="exerciseInput">
+
+    <label for="rest-duration" class="form">Rest duration:</label>
+    <label for="rest-hour">Hour:</label>
+    <input type="number" id="rest-hour" value="0" min="0" max="23" class="exerciseInput">
+    <label for="rest-min">Minutes:</label>
+    <input type="number" id="rest-min" value="0" min="0" max="59" class="exerciseInput">
+    <label for="rest-sec">Seconds:</label>
+    <input type="number" id="rest-sec" value="0" min="0" max="59" class="exerciseInput">
+</template>
+
 <body>
     <main>
         <button type="button" id="create-Btn">Create HIIT workout</button>
+
         <form id="workout-form">
             <section class="formSection" data-step="1">
+                <h1 class="formTitle"> Workout Details</h1>
                 <label for="workout-name">Workout name</label>
                 <input type="text" id="workout-name" class="form" maxlength="30" required>
 
                 <label for="num-exercises">Number of exercises</label>
                 <input type="number" id="num-exercises" class="form" min="1" max="15" required>
 
-                <button type="button" class="nextStepBtns" value="submitWrkData">next step</button>
+                <button type="button" class="nextStepBtns submitWrkData">next</button>
             </section>
 
-            <section id="exercise-form" class="formSection" data-step="2" data-workoutindex="0">
-                <h2 id="exerTitle"></h2>
-                <label for="exerciseName">Exercise name</label>
-                <input type="text" id="exercise-name" class="form" maxlength="30">
-
-                <label for="exerciseDesc">Exercise description</label>
-                <input type="text" id="exercise-desc" class="form" maxlength="50">
-
-                <label for="exerciseMin">Exercise min:</label>
-                <input type="number" id="exercise-min" class="form" max="60">
-                <label for="exerciseSec">Exercise secs:</label>
-                <input type="number" id="exercise-sec" class="form" max="59">
-
-                <label for="restMin">Rest min:</label>
-                <input type="number" id="rest-min" class="form" max="60">
-                <label for="restSec">Rest sec:</label>
-                <input type="number" id="rest-sec" class="form" max="59">
-
-                <button id="section2-prevSbtn" type="button" class="prevStepBtns hidden">previous step</button>
-                <button type="button" id="section2-prevBtn" class="prevBtns">previous</button>
-                <button type="button" id="section2-nextBtn" class="nextBtns">next</button>
-                <button id="section2-nextSbtn" type="button" class="nextStepBtns hidden" value="submitExData">next
-                    step</button>
+            <section id="exercise-form" class="formSection" data-step="2">
+                <h1> Exercises</h1>
+                <div id="nav-buttons">
+                    <button type="button" class="prevStepBtns">previous</button>
+                    <button type="button" class="nextStepBtns">next</button>
+                </div>
             </section>
 
             <section class="formSection" data-step="3">
+                <h1> Exercise validation </h1>
                 <div id="validationContainer"></div>
-                <button type="submit" class="submitBtns">submit</button>
-                <button type="button" class="cancelBtns">cancel</button>
-                <button type="button" class="prevStepBtns">previous step</button>
+                <div>
+                    <button type="button" class="prevStepBtns">previous</button>
+                    <button type="submit" class="submitBtns">submit</button>
+                </div>
             </section>
         </form>
 

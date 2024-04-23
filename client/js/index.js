@@ -6,47 +6,43 @@ BUGS:
 
 /* Stores references to objects */
 const ui = {};
-const formElems = {};
-let workoutObj = {};
+const formElements = {};
+const workoutObj = {};
 
-// Obtains handles on UI objects
+// Stores main DOM ui element handles in ui
 function uiHandles() {
   ui.createWrkBtn = document.querySelector('#create-Btn');
 }
 
-/* Obtain handles on form element objects */
+// Stores the form element ui handles in formElements
 function formElemHandles() {
-  formElems.workoutForm = document.querySelector('#workout-form');
-  formElems.formSteps = [...formElems.workoutForm.querySelectorAll('.formSection')];
-  formElems.workoutNameInput = document.querySelector('#workout-name');
-  formElems.numExInput = document.querySelector('#num-exercises');
-  formElems.exerciseTitle = document.querySelector('#exerTitle');
-
-  formElems.exName = document.querySelector('#exerciseName');
-  formElems.exDesc = document.querySelector('#exerciseDesc');
-  formElems.exMin = document.querySelector('#exerciseMin');
-  formElems.exSec = document.querySelector('#exerciseSec');
-  formElems.restMin = document.querySelector('#restMin');
-  formElems.restSec = document.querySelector('#restSec');
+  formElements.title = document.querySelector('.formTitle');
+  formElements.workoutForm = document.querySelector('#workout-form');
+  formElements.formSteps = [...formElements.workoutForm.querySelectorAll('.formSection')];
+  formElements.workoutNameInput = document.querySelector('#workout-name');
+  formElements.numExInput = document.querySelector('#num-exercises');
 }
 
-// Finds the step which contains the active class and displays it
-// ? Chaining operator returns undefined and prevents type error if no class contains the active class
-function formStepHandler() {
+// This function displays the step in the multi-step form which contains the class 'active'
+function displayActiveStep() {
   ui.createWrkBtn.classList.add('hidden');
   let currentStep = parseInt(
-    formElems.formSteps.find((step) => {
+    formElements.formSteps.find((step) => {
       return step.classList.contains('active');
-    })?.dataset.step);
-  if (isNaN(currentStep)) { /* Checks if the value is NaN and sets it to 0 */
+    })?.dataset.step); // If not active class is found it sets it to null
+  if (isNaN(currentStep)) { /* Checks if the value is NaN and sets it to 1 */
     currentStep = 1;
     displayCurrentStep(currentStep);
   }
 
-  formElems.workoutForm.addEventListener('click', event => {
+  formElements.workoutForm.addEventListener('click', event => {
     if (event.target.classList.contains('nextStepBtns')) {
       currentStep += 1;
       displayCurrentStep(currentStep);
+      if (currentStep === 3) {
+        submitExercises();
+        formStep3Handler();
+      }
     } else if (event.target.classList.contains('prevStepBtns')) {
       currentStep -= 1;
       displayCurrentStep(currentStep);
@@ -54,131 +50,94 @@ function formStepHandler() {
   });
 }
 
+
 // Displays the current step on the web page
 function displayCurrentStep(currentStep) {
-  formElems.formSteps.forEach((step) => {
+  formElements.formSteps.forEach((step) => {
     step.classList.toggle('active', parseInt(step.dataset.step) === currentStep);
   });
 }
 
-// Creates the workout object and adds exercise objects in it.
+// Duplicates exercises form template to DOM
+function cloneTemplate(exerciseIndex) {
+  const exerciseTemplate = document.querySelector('#exerciseFormTemplate');
+  const step2Form = document.querySelector('#exercise-form');
+  const cloned = exerciseTemplate.content.cloneNode(true);
+  const title = cloned.querySelector('#exercise-title');
+  title.textContent = `exercise ${exerciseIndex + 1}`;
+  const group = [...cloned.querySelectorAll('input')];
+  group.forEach((inputBox) => {
+    inputBox.dataset.exerciseIndex = exerciseIndex;
+  });
+  const navBtns = document.querySelector('#nav-buttons');
+  step2Form.insertBefore(cloned, navBtns);
+}
+
+// Create workout object and clone input boxes
 function createWrkObject() {
-  formElems.workoutForm.addEventListener('click', event => {
-    if (event.target.value === 'submitWrkData') {
-      workoutObj.workoutName = formElems.workoutNameInput.value;
+  formElements.workoutForm.addEventListener('click', event => { 
+    if (event.target.classList.contains('submitWrkData')) {
+      workoutObj.workoutName = formElements.workoutNameInput.value;
       workoutObj.exercises = [];
-      for (let i = 0; i < formElems.numExInput.value; i++) {
+      for (let i = 0; i < formElements.numExInput.value; i++) {
         const exerciseObj = {
           'exercise-name': `exercises ${i + 1}`,
           'exercise-desc': '',
+          'exercise-hour': '',
           'exercise-min': '',
           'exercise-sec': '',
+          'rest-hour': '',
           'rest-min': '',
           'rest-sec': '',
         };
         workoutObj.exercises.push(exerciseObj);
+        cloneTemplate(i);
       }
-      formStep2Handler();
     }
   });
 }
 
-// Updates the exercise in the workout object / Clears input values / Updates input values
-function formStep2Handler() {
-  let workoutIndex = parseInt(document.querySelector('#exercise-form').dataset.workoutindex);
-  updateExerciseAndDisplay(workoutIndex);
-
-  formElems.workoutForm.addEventListener('click', event => {
-    // Next step btn condition is included for the final exercise
-    if (event.target.classList.contains('nextBtns') && workoutIndex < workoutObj.exercises.length) {
-      if (workoutIndex < workoutObj.exercises.length - 1) {
-        updateExercise(workoutIndex);
-        workoutIndex++;
-        updateExerciseAndDisplay(workoutIndex);
+// Adds input values to workout object
+function submitExercises() {
+  const exerciseInputBoxes = [...document.querySelectorAll('.exerciseInput')];
+  for (const input of exerciseInputBoxes) {
+    if (input.type === 'number') {
+      if (input.value.length === 1) {
+        input.value = `0${input.value}`;
       }
-    } else if (event.target.classList.contains('prevBtns') && workoutIndex > 0) {
-      updateExercise(workoutIndex);
-      workoutIndex--;
-      updateExerciseAndDisplay(workoutIndex);
-    } else if (event.target.classList.contains('nextStepBtns')) {
-      formStep3Handler();
-    } else if (event.target.classList.contains('prevStepBtns') && workoutIndex === 0) {
-      workoutObj = {};
     }
-  });
+    workoutObj.exercises[input.dataset.exerciseIndex][input.id] = input.value;
+  }
 }
 
-function updateExerciseAndDisplay(workoutIndex) {
-  obtainExerciseValues(workoutIndex);
-  formElems.exerciseTitle.textContent = workoutObj.exercises[workoutIndex]['exercise-name'];
-  checker(workoutIndex, workoutObj.exercises.length);
-}
-
-// Displays the whole workout to allow user to verify they're happy with the data
 function formStep3Handler() {
-  console.log(workoutObj.exercises);
   const mainBody = document.querySelector('#validationContainer');
 
   for (const exercise of workoutObj.exercises) {
     const exerciseIndex = workoutObj.exercises.indexOf(exercise);
     const exerciseList = document.createElement('ul');
-    // eslint-disable-next-line no-restricted-syntax
-    for (const attribute in exercise) {
-      const attributeItem = document.createElement('li');
-      attributeItem.textContent = workoutObj.exercises[exerciseIndex][attribute];
-      exerciseList.append(attributeItem);
-    }
+    const exerciseNameItem = document.createElement('li');
+    exerciseNameItem.textContent = `Exercise name: ${workoutObj.exercises[exerciseIndex]['exercise-name']}`;
+    exerciseList.append(exerciseNameItem);
+    const exerciseDescItem = document.createElement('li');
+    exerciseDescItem.textContent = `Exercise description: ${workoutObj.exercises[exerciseIndex]['exercise-desc']}`;
+    exerciseList.append(exerciseDescItem);
+    const exerciseDurItem = document.createElement('li');
+    exerciseDurItem.textContent = `Exercise duration: ${workoutObj.exercises[exerciseIndex]['exercise-hour']}:${workoutObj.exercises[exerciseIndex]['exercise-min']}:${workoutObj.exercises[exerciseIndex]['exercise-sec']}`;
+    exerciseList.append(exerciseDurItem);
+    const restDurItem = document.createElement('li');
+    restDurItem.textContent = `Rest duration: ${workoutObj.exercises[exerciseIndex]['rest-hour']}:${workoutObj.exercises[exerciseIndex]['rest-min']}:${workoutObj.exercises[exerciseIndex]['rest-sec']}`;
+    exerciseList.append(restDurItem);
+
     mainBody.append(exerciseList);
   }
-}
-
-// Displays previous step or next step button depending on the exercises position within the array
-function checker(exerciseStep, exerciseLength) {
-  const prevStepBtn = document.querySelector('#section2-prevSbtn');
-  const prevBtns = document.querySelector('#section2-prevBtn');
-  const nextBtns = document.querySelector('#section2-nextBtn');
-  const nextStepBtn = document.querySelector('#section2-nextSbtn');
-
-  if (exerciseStep === 0) {
-    prevStepBtn.classList.remove('hidden');
-    prevBtns.classList.add('hidden');
-  } else {
-    prevStepBtn.classList.add('hidden');
-    prevBtns.classList.remove('hidden');
-  }
-
-  if (exerciseStep === exerciseLength - 1) {
-    nextStepBtn.classList.remove('hidden');
-    nextBtns.classList.add('hidden');
-  } else {
-    nextBtns.classList.remove('hidden');
-    nextStepBtn.classList.add('hidden');
-  }
-}
-
-// Adds the input values from the form to the workout object.
-function updateExercise(exerciseIndex) {
-  const step2 = document.querySelector('#exercise-form');
-  const step2Inputs = [...step2.querySelectorAll('input')];
-  step2Inputs.forEach((inputBox) => {
-    workoutObj.exercises[exerciseIndex][inputBox.id] = inputBox.value;
-  });
-}
-
-// Obtains each exercises attributes and sets the corresponding input boxes values to those attributes
-function obtainExerciseValues(exerciseIndex) {
-  const step2 = document.querySelector('#exercise-form');
-  const step2Inputs = [...step2.querySelectorAll('input')];
-  step2Inputs.forEach((inputBox) => {
-    inputBox.value = workoutObj.exercises[exerciseIndex][inputBox.id];
-  });
 }
 
 // calls every function to run application
 function main() {
   uiHandles();
   formElemHandles();
-  ui.createWrkBtn.addEventListener('click', formStepHandler);
+  ui.createWrkBtn.addEventListener('click', displayActiveStep);
   ui.createWrkBtn.addEventListener('click', createWrkObject);
 }
 

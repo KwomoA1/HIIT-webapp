@@ -13,3 +13,11 @@
 .hidden{
     display:none;
 }
+
+.nextStepBtns{
+    display: inline-block;
+}
+
+.prevStepBtns{
+    display:inline-block;
+}
