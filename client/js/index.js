@@ -1,6 +1,8 @@
 /*
 TODO:
-- Ensure there are no bugs in the code for the form and make sure functions are readable and maintainable.
+- Empty workout object when the navigation goes back to step 1
+- Update workout title
+- Add functionality for submit button
 BUGS:
 - None */
 
