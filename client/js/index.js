@@ -7,6 +7,9 @@ BUGS:
 
 */
 
+// Imports
+
+
 // Stores references to objects
 const ui = {};
 const formElements = {};
@@ -155,6 +158,7 @@ function clearInputFields() {
     input.remove();
   }
 }
+
 
 // calls every function to run application
 function main() {
