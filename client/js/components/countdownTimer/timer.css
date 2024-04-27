@@ -1,0 +1,50 @@
+
+.startBtn{
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    background-color: #3C7616;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.container{
+    background-color: #D1D1D1;
+    display: block;
+    width: 300px;
+    height: 45px;
+    border-radius: 10px;
+}
+
+.startBtn:focus{
+    background-color:#54B513;
+}
+
+.pauseBtn{
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    background-color: #891616;
+    display: inline-block;
+    margin-left: 0px;
+}
+
+.pauseBtn:focus{
+    background-color:#FF0D0D;
+}
+
+
+
+
+:host{
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    color: #fff;
+    font-size: 30px;
+    display: block;
+    font-style: normal;
+}
+
+
