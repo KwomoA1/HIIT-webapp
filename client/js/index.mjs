@@ -13,7 +13,7 @@ BUGS:
 // Stores references to objects
 const ui = {};
 const formElements = {};
-let workoutObj = {};
+export let workoutObj = {};
 
 // Stores main DOM ui element handles in ui
 function uiHandles() {
@@ -116,6 +116,11 @@ function submitExercises() {
     workoutObj.exercises[input.dataset.exerciseIndex][input.id] = input.value;
   }
   calculateDuration();
+  const workoutDuration = [...workoutObj.exercises];
+  workoutObj.totalWorkoutDuration = 0;
+  for (const exercise of workoutDuration) {
+    workoutObj.totalWorkoutDuration += exercise['exercise-dur'];
+  }
 }
 
 // Calculate the total duration of the exercise and its rest period using the hour, minutes, seconds values
@@ -159,6 +164,12 @@ function formStep3Handler() {
 
     mainBody.append(exerciseList);
   }
+
+  formElements.workoutForm.addEventListener('click', event => {
+    if (event.target.classList.contains('submitBtns')) {
+      submitWorkout();
+    }
+  });
 }
 
 // Clears the entire workout object
@@ -172,6 +183,13 @@ function clearInputFields() {
   for (const input of exerciseInputField) {
     input.remove();
   }
+}
+
+// Creates array to pass through to web component
+function submitWorkout() {
+  const container = document.querySelector('.timer');
+  const time = document.createElement('timer-Item');
+  container.append(time);
 }
 
 

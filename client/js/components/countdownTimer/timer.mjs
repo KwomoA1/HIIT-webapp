@@ -1,51 +1,103 @@
 // The key to solving this problem is setInterval and understanding how many milisecs in a sec, minute , hour
-
+import { workoutObj } from '/client/js/index.mjs';
 export class Timer extends HTMLElement {
   constructor() {
     super();
-    const shadow = this.attachShadow({ mode: 'open' });
+    this.shadow = this.attachShadow({ mode: 'open' });
+    this.shadow.innerHTML = `
+        <div id='workoutDuration'></div>
+        <div id='currentExercise'></div>
+        <div id='currentDescription'></div>
+        <div id='exerciseCountdown'></div>
+        <div id='upcomingExercise'> testing </div>
+        <button type='button' class='resetBtn'> Reset </button>
+        <button type='button' class='startBtn'> Start </button>
+        <button type='button' class='pauseBtn'> pause </button>
+    `;
 
     // Creating the stylesheet
     const style = document.createElement('link');
     style.setAttribute('rel', 'stylesheet');
     style.setAttribute('href', import.meta.resolve('./timer.css'));
-    shadow.append(style);
+    this.shadow.append(style);
 
-    // Setting attributes
-    this.seconds = parseInt(this.getAttribute('seconds'));
-    this.intervalID = null;
+    // Obtaining attributes
+    this.workoutDuration = parseInt(workoutObj.totalWorkoutDuration);
+    this.exerciseDuration = parseInt(workoutObj.exercises[0]['exercise-dur']);
+    this.status = this.getAttribute('status');
+    this.nextExercise = workoutObj.exercises[1]['exercise-name'];
+    this.workout = workoutObj;
+    this.exerciseNames = this.getExerciseNames();
+    this.exerciseDescription = this.getExerciseDescription();
+    this.exerciseDuration = this.getExerciseDuration();
+    this.exerciseRestDuration = this.getExerciseRestDuration();
 
-    // Create container
-    this.container = document.createElement('div');
-    this.container.setAttribute('class', 'container');
-    shadow.append(this.container);
+    // Setting components HTML text content
+    this.shadow.querySelector('#workoutDuration').textContent = this.setTimer(this.workoutDuration);
+    this.shadow.querySelector('#currentExercise').textContent = this.exerciseNames[0];
+    this.shadow.querySelector('#exerciseCountdown').textContent = this.setTimer(this.exerciseDuration[0]);
+    this.shadow.querySelector('#upcomingExercise').textContent = `Up next: ${this.exerciseNames[1]}`;
+    
 
-    // Create the text content
-    this.div = document.createElement('div');
-    this.div.textContent = this.setTimer(this.seconds);
-    this.container.append(this.div);
-
-    // Create buttons
-    this.startBtn = document.createElement('button');
-    this.startBtn.setAttribute('class', 'startBtn');
-    this.startBtn.setAttribute('type', 'button');
-    this.startBtn.textContent = 'Start';
-    this.container.append(this.startBtn);
-
-    this.pauseBtn = document.createElement('button');
-    this.pauseBtn.setAttribute('class', 'pauseBtn');
-    this.pauseBtn.setAttribute('type', 'button');
-    this.pauseBtn.textContent = 'Pause';
-    this.container.append(this.pauseBtn);
-
+    // Binding function buttons
     this.start = this.start.bind(this);
     this.pause = this.pause.bind(this);
     this.updateTimer = this.updateTimer.bind(this);
     this.setTimer = this.setTimer.bind(this);
   }
 
-  setTimer() {
-    const duration = [Math.floor(this.seconds / 3600), Math.floor((this.seconds % 3600) / 60), this.seconds % 60];
+  connectedCallback() {
+  }
+
+  updateTimerDetails(index) {
+    this.shadow.querySelector('#workoutDuration').textContent = this.setTimer(this.workoutDuration);
+    this.shadow.querySelector('#currentExercise').textContent = this.exerciseName[index];
+    this.shadow.querySelector('#exerciseCountdown').textContent = this.exerciseDuration[index];
+    this.shadow.querySelector('#upcomingExercise').textContent = this.exerciseName[index + 1];
+  }
+
+  getExerciseRestDuration() {
+    const exerciseDetails = [...workoutObj.exercises];
+    const restDurations = [];
+    for (const exercise of exerciseDetails) {
+      restDurations.push(exercise['rest-dur']);
+    }
+    return restDurations;
+  }
+
+  getExerciseDuration() {
+    const exerciseDetails = [...workoutObj.exercises];
+    const exerciseDuration = [];
+    for (const exercise of exerciseDetails) {
+      exerciseDuration.push(exercise['exercise-dur']);
+    }
+    return exerciseDuration;
+  }
+
+  getExerciseDescription() {
+    const exerciseDetails = [...workoutObj.exercises];
+    const exerciseDescription = [];
+    for (const exercise of exerciseDetails) {
+      exerciseDescription.push(exercise['exercise-desc']);
+    }
+    return exerciseDescription;
+  }
+
+  getExerciseNames() {
+    const exerciseDetails = [...workoutObj.exercises];
+    const exerciseNames = [];
+    for (const exercise of exerciseDetails) {
+      exerciseNames.push(exercise['exercise-name']);
+    }
+    return exerciseNames;
+  }
+
+  updateExercise() {
+
+  }
+
+  setTimer(timeSecs) {
+    const duration = [Math.floor(timeSecs / 3600), Math.floor((timeSecs % 3600) / 60), timeSecs % 60];
     for (const attribute of duration) {
       if (attribute.toString().length === 1) {
         const number = attribute;
@@ -54,30 +106,28 @@ export class Timer extends HTMLElement {
         duration[index] = newAttribute;
       }
     }
-    this.div.textContent = `${duration[0]}:${duration[1]}:${duration[2]}`;
+    this.shadow.querySelector('#exerciseCountdown').textContent = `${duration[0]}:${duration[1]}:${duration[2]}`;
     return `${duration[0]}:${duration[1]}:${duration[2]}`;
   }
 
-  updateTimer() {
+  updateTimer(index) {
     this.intervalID = window.setInterval(() => {
-      if (this.seconds > 0) {
-        this.seconds -= 1;
-        this.setTimer();
+      if (this.exerciseDuration[index] > 0) {
+        this.exerciseDuration[index] -= 1;
+        this.setTimer(this.exerciseDuration[index]);
       }
     }, 1000);
   }
 
   start() {
-    this.updateTimer();
+    const workoutLength = this.exerciseDuration.length;
+    for (let i = 0; i < workoutLength; i++) {
+      this.updateTimer(i);
+    }
   }
 
   pause() {
     clearInterval(this.intervalID);
-  }
-
-  connectedCallback() {
-    this.pauseBtn.addEventListener('click', this.pause);
-    this.startBtn.addEventListener('click', this.start);
   }
 }
 

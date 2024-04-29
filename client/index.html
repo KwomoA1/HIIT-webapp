@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
         rel="stylesheet">
-    <script src="js/index.js" type="module" defer></script>
+    <script src="js/index.mjs" type="module" defer></script>
     <script src="js/components/countdownTimer/timer.mjs" type="module" defer></script>
 
     <title> Home | HIIT havoc </title>
@@ -45,7 +45,7 @@
 
 <body>
     <main>
-        <button type="button" id="create-Btn">Create HIIT workout</button>
+        <button type="button" id="create-Btn">Setup timer</button>
 
         <form id="workout-form">
             <section class="formSection" data-step="1">
@@ -72,14 +72,12 @@
                 <div id="validationContainer"></div>
                 <div>
                     <button type="button" class="prevStepBtns">previous</button>
-                    <button type="submit" class="submitBtns">submit</button>
+                    <button type="button" class="submitBtns">submit</button>
                 </div>
             </section>
         </form>
 
         <section class="timer">
-            <timer-Item seconds="223"></timer-Item>
-            <timer-item seconds="123"></timer-item>
         </section>
 
     </main>
