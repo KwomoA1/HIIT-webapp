@@ -22,7 +22,7 @@ export class Timer extends HTMLElement {
 
     // Create the text content
     this.span = document.createElement('span');
-    this.span.textContent = `00:00:${this.seconds}`;
+    this.span.textContent = this.setTimer(this.seconds);
     this.container.append(this.span);
 
     // Create buttons
@@ -41,13 +41,30 @@ export class Timer extends HTMLElement {
     this.start = this.start.bind(this);
     this.pause = this.pause.bind(this);
     this.updateTimer = this.updateTimer.bind(this);
+    this.setTimer = this.setTimer.bind(this);
+  }
+
+  setTimer() {
+    const duration = [Math.floor(this.seconds / 3600), Math.floor((this.seconds % 3600) / 60), this.seconds % 60];
+    for (const attribute of duration) {
+      if (attribute.toString().length === 1) {
+        const number = attribute;
+        console.log(number);
+        const index = duration.indexOf(attribute);
+        const newAttribute = `0${number}`;
+        duration[index] = newAttribute;
+        console.log(duration);
+      }
+    }
+    this.span.textContent = `${duration[0]}:${duration[1]}:${duration[2]}`;
+    return `${duration[0]}:${duration[1]}:${duration[2]}`;
   }
 
   updateTimer() {
     this.intervalID = window.setInterval(() => {
       if (this.seconds > 0) {
         this.seconds -= 1;
-        this.span.textContent = `00:00:${this.seconds}`;
+        this.setTimer();
       }
     }, 1000);
   }
