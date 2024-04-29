@@ -96,9 +96,11 @@ function createWrkObject() {
           'exercise-hour': '',
           'exercise-min': '',
           'exercise-sec': '',
+          'exercise-dur': '',
           'rest-hour': '',
           'rest-min': '',
           'rest-sec': '',
+          'rest-dur': '',
         };
         workoutObj.exercises.push(exerciseObj);
         cloneTemplate(i);
@@ -111,13 +113,26 @@ function createWrkObject() {
 function submitExercises() {
   const exerciseInputBoxes = [...document.querySelectorAll('.exerciseInput')];
   for (const input of exerciseInputBoxes) {
-    if (input.type === 'number') {
-      if (input.value.length === 1) {
-        input.value = `0${input.value}`;
-      }
-    }
     workoutObj.exercises[input.dataset.exerciseIndex][input.id] = input.value;
   }
+  calculateDuration();
+}
+
+// Calculate the total duration of the exercise and its rest period using the hour, minutes, seconds values
+function calculateDuration() {
+  const exercises = workoutObj.exercises;
+  for (const exercise of exercises) {
+    const exerciseDuration = [parseInt(exercise['exercise-hour']), parseInt(exercise['exercise-min']), parseInt(exercise['exercise-sec'])];
+    const restDuration = [parseInt(exercise['rest-hour']), parseInt(exercise['rest-min']), parseInt(exercise['rest-sec'])];
+    exercise['exercise-dur'] = convertToSeconds(exerciseDuration);
+    exercise['rest-dur'] = convertToSeconds(restDuration);
+  }
+}
+
+// Converts time duration to seconds array format must be [hour, minutes, seconds]
+function convertToSeconds(digitalTime) {
+  const totalSeconds = digitalTime[0] * 3600 + digitalTime[1] * 60 + digitalTime[2];
+  return totalSeconds;
 }
 
 function formStep3Handler() {
