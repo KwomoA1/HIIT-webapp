@@ -21,9 +21,9 @@ export class Timer extends HTMLElement {
     shadow.append(this.container);
 
     // Create the text content
-    this.span = document.createElement('span');
-    this.span.textContent = this.setTimer(this.seconds);
-    this.container.append(this.span);
+    this.div = document.createElement('div');
+    this.div.textContent = this.setTimer(this.seconds);
+    this.container.append(this.div);
 
     // Create buttons
     this.startBtn = document.createElement('button');
@@ -49,14 +49,12 @@ export class Timer extends HTMLElement {
     for (const attribute of duration) {
       if (attribute.toString().length === 1) {
         const number = attribute;
-        console.log(number);
         const index = duration.indexOf(attribute);
         const newAttribute = `0${number}`;
         duration[index] = newAttribute;
-        console.log(duration);
       }
     }
-    this.span.textContent = `${duration[0]}:${duration[1]}:${duration[2]}`;
+    this.div.textContent = `${duration[0]}:${duration[1]}:${duration[2]}`;
     return `${duration[0]}:${duration[1]}:${duration[2]}`;
   }
 
