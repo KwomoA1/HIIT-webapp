@@ -23,30 +23,30 @@ export class Timer extends HTMLElement {
 
     // Obtaining attributes
     this.workoutDuration = parseInt(workoutObj.totalWorkoutDuration);
-    this.exerciseDuration = parseInt(workoutObj.exercises[0]['exercise-dur']);
     this.status = this.getAttribute('status');
-    this.nextExercise = workoutObj.exercises[1]['exercise-name'];
     this.workout = workoutObj;
     this.exerciseNames = this.getExerciseNames();
     this.exerciseDescription = this.getExerciseDescription();
     this.exerciseDuration = this.getExerciseDuration();
     this.exerciseRestDuration = this.getExerciseRestDuration();
+    this.intervalID = null;
 
     // Setting components HTML text content
     this.shadow.querySelector('#workoutDuration').textContent = this.setTimer(this.workoutDuration);
     this.shadow.querySelector('#currentExercise').textContent = this.exerciseNames[0];
     this.shadow.querySelector('#exerciseCountdown').textContent = this.setTimer(this.exerciseDuration[0]);
     this.shadow.querySelector('#upcomingExercise').textContent = `Up next: ${this.exerciseNames[1]}`;
-    
+
+    // Getting buttons
+    this.startBtn = this.shadow.querySelector('.startBtn');
+    this.pauseBtn = this.shadow.querySelector('.pauseBtn');
 
     // Binding function buttons
     this.start = this.start.bind(this);
     this.pause = this.pause.bind(this);
     this.updateTimer = this.updateTimer.bind(this);
     this.setTimer = this.setTimer.bind(this);
-  }
-
-  connectedCallback() {
+    this.updateExercise = this.updateExercise.bind(this);
   }
 
   updateTimerDetails(index) {
@@ -92,8 +92,8 @@ export class Timer extends HTMLElement {
     return exerciseNames;
   }
 
-  updateExercise() {
-
+  updateExercise(exerciseName) {
+    this.shadow.querySelector('#currentExercise').textContent = exerciseName;
   }
 
   setTimer(timeSecs) {
@@ -110,24 +110,45 @@ export class Timer extends HTMLElement {
     return `${duration[0]}:${duration[1]}:${duration[2]}`;
   }
 
-  updateTimer(index) {
-    this.intervalID = window.setInterval(() => {
-      if (this.exerciseDuration[index] > 0) {
-        this.exerciseDuration[index] -= 1;
-        this.setTimer(this.exerciseDuration[index]);
+  updateTimer() {
+    let exerciseIndex = 0;
+  
+    const update = () => {
+      if (exerciseIndex < this.exerciseDuration.length) {
+        this.intervalID = setInterval(() => {
+          if (this.exerciseDuration[exerciseIndex] > 0) {
+            this.exerciseDuration[exerciseIndex] -= 1;
+            this.setTimer(this.exerciseDuration[exerciseIndex]);
+          } else {
+            clearInterval(this.intervalID);
+            exerciseIndex++;
+            if (exerciseIndex < this.exerciseDuration.length) {
+              this.updateExercise(this.exerciseNames[exerciseIndex]);
+              this.setTimer(this.exerciseDuration[exerciseIndex]);
+              this.shadow.querySelector('#upcomingExercise').textContent = `Up next: ${this.exerciseNames[exerciseIndex + 1]}`;
+              update();
+            } else {
+              // No more exercises, you can do something here, like showing a message
+              console.log('Workout finished!');
+            }
+          }
+        }, 1000);
       }
-    }, 1000);
+    };
+  
+    update();
   }
-
   start() {
-    const workoutLength = this.exerciseDuration.length;
-    for (let i = 0; i < workoutLength; i++) {
-      this.updateTimer(i);
-    }
+    this.updateTimer();
   }
 
   pause() {
     clearInterval(this.intervalID);
+  }
+
+  connectedCallback() {
+    this.pauseBtn.addEventListener('click', this.pause);
+    this.startBtn.addEventListener('click', this.start);
   }
 }
 
