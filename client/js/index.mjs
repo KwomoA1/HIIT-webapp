@@ -8,12 +8,13 @@ BUGS:
 */
 
 // Imports
-
+import { Timer } from './components/countdownTimer/timer.mjs';
 
 // Stores references to objects
 const ui = {};
 const formElements = {};
-export let workoutObj = {};
+let workoutObj = {};
+
 
 // Stores main DOM ui element handles in ui
 function uiHandles() {
@@ -185,11 +186,14 @@ function clearInputFields() {
   }
 }
 
-// Creates array to pass through to web component
+// Set the workout countdown and exercise countdown
 function submitWorkout() {
-  const container = document.querySelector('.timer');
-  const time = document.createElement('timer-Item');
-  container.append(time);
+  const timeComponent = document.querySelector('timer-item');
+  if (timeComponent) {
+    timeComponent.setTimer();
+  } else {
+    console.log('element not found');
+  }
 }
 
 

@@ -9,8 +9,18 @@
   "eslintConfig": {
     "extends": "portsoc",
     "root": true,
-    "env":{
-      "browser":true 
+    "env": {
+      "browser": true
     }
-  }
+  },
+  "name": "hiit-webapp",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./server.mjs"
+  },
+  "author": "",
+  "license": "ISC"
 }
