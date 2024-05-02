@@ -19,8 +19,8 @@ export class Timer extends HTMLElement {
     this.shadow.append(style);
 
     // Getting time attributes
-    this.workoutTime = parseInt(this.getAttribute('workoutTime'));
-    this.exerciseTime = parseInt(this.getAttribute('exerciseTime'));
+    this.workoutTime = 0;
+    this.exerciseTime = 0;
 
     // Getting shadowDOM HTML elements
     this.wrkCountDisplay = this.shadow.querySelector('#workoutCountdown');
@@ -46,6 +46,14 @@ export class Timer extends HTMLElement {
   setTimer() {
     this.wrkCountDisplay.textContent = this.formatTime(this.workoutTime);
     this.exCountDisplay.textContent = this.formatTime(this.exerciseTime);
+  }
+
+  getExerciseTime(exerciseDuration) {
+    this.exerciseTime = exerciseDuration;
+  }
+
+  getWorkoutTime(workoutDuration) {
+    this.workoutTime = workoutDuration;
   }
 
   // Returns the time in an hour, minutes and seconds format (array structure [hour, minutes, seconds])

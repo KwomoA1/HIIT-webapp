@@ -7,13 +7,11 @@ BUGS:
 
 */
 
-// Imports
-import { Timer } from './components/countdownTimer/timer.mjs';
-
 // Stores references to objects
 const ui = {};
 const formElements = {};
 let workoutObj = {};
+const workoutExDurations = [];
 
 
 // Stores main DOM ui element handles in ui
@@ -186,10 +184,19 @@ function clearInputFields() {
   }
 }
 
+function exerciseTimeArray() {
+  for (const exercise of workoutObj.exercises) {
+    workoutExDurations.push(exercise['exercise-dur']);
+  }
+}
+
 // Set the workout countdown and exercise countdown
 function submitWorkout() {
   const timeComponent = document.querySelector('timer-item');
   if (timeComponent) {
+    exerciseTimeArray();
+    timeComponent.getWorkoutTime(workoutObj.totalWorkoutDuration);
+    timeComponent.getExerciseTime(workoutExDurations[0]);
     timeComponent.setTimer();
   } else {
     console.log('element not found');
