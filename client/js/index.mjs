@@ -1,12 +1,4 @@
-/*
-
-TODO:
-
-BUGS:
-- None
-
-*/
-
+// TODO : Add CSS to workout main page and form
 // Stores references to objects
 const ui = {};
 const formElements = {};
