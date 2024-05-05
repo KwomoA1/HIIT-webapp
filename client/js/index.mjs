@@ -10,8 +10,7 @@ BUGS:
 // Stores references to objects
 const ui = {};
 const formElements = {};
-let workoutObj = {};
-const workoutExDurations = [];
+export let workoutObj = {};
 
 
 // Stores main DOM ui element handles in ui
@@ -78,8 +77,8 @@ function cloneTemplate(exerciseIndex) {
   group.forEach((inputBox) => {
     inputBox.dataset.exerciseIndex = exerciseIndex;
   });
-  const navBtns = document.querySelector('#nav-buttons');
-  step2Form.insertBefore(cloned, navBtns);
+  const restInputs = document.querySelector('#rest-inputs');
+  step2Form.insertBefore(cloned, restInputs);
 }
 
 // Create workout object and clone input boxes
@@ -88,6 +87,7 @@ function createWrkObject() {
     if (event.target.classList.contains('submitWrkData')) {
       workoutObj.workoutName = formElements.workoutNameInput.value;
       workoutObj.exercises = [];
+      workoutObj.restDuration = 0;
       for (let i = 0; i < formElements.numExInput.value; i++) {
         const exerciseObj = {
           'exercise-name': `exercises ${i + 1}`,
@@ -96,10 +96,6 @@ function createWrkObject() {
           'exercise-min': '',
           'exercise-sec': '',
           'exercise-dur': '',
-          'rest-hour': '',
-          'rest-min': '',
-          'rest-sec': '',
-          'rest-dur': '',
         };
         workoutObj.exercises.push(exerciseObj);
         cloneTemplate(i);
@@ -120,18 +116,31 @@ function submitExercises() {
   for (const exercise of workoutDuration) {
     workoutObj.totalWorkoutDuration += exercise['exercise-dur'];
   }
+
+  workoutObj.totalWorkoutDuration = workoutObj.totalWorkoutDuration + (workoutObj.restDuration * workoutObj.exercises.length);
 }
 
-// Calculate the total duration of the exercise and its rest period using the hour, minutes, seconds values
+// Calculate rest duration
+function calculateRestDuration() {
+  const restInputs = [...document.querySelectorAll('.restInput')];
+  const values = [];
+  for (const input of restInputs) {
+    values.push(parseInt(input.value));
+  }
+  workoutObj.restDuration = convertToSeconds(values);
+}
+
+
+// Calculate the total duration of the exercise using the hour, minutes, seconds values
 function calculateDuration() {
   const exercises = workoutObj.exercises;
   for (const exercise of exercises) {
     const exerciseDuration = [parseInt(exercise['exercise-hour']), parseInt(exercise['exercise-min']), parseInt(exercise['exercise-sec'])];
-    const restDuration = [parseInt(exercise['rest-hour']), parseInt(exercise['rest-min']), parseInt(exercise['rest-sec'])];
     exercise['exercise-dur'] = convertToSeconds(exerciseDuration);
-    exercise['rest-dur'] = convertToSeconds(restDuration);
   }
+  calculateRestDuration();
 }
+
 
 // Converts time duration to seconds array format must be [hour, minutes, seconds]
 function convertToSeconds(digitalTime) {
@@ -157,12 +166,12 @@ function formStep3Handler() {
     const exerciseDurItem = document.createElement('li');
     exerciseDurItem.textContent = `Exercise duration: ${workoutObj.exercises[exerciseIndex]['exercise-hour']}:${workoutObj.exercises[exerciseIndex]['exercise-min']}:${workoutObj.exercises[exerciseIndex]['exercise-sec']}`;
     exerciseList.append(exerciseDurItem);
-    const restDurItem = document.createElement('li');
-    restDurItem.textContent = `Rest duration: ${workoutObj.exercises[exerciseIndex]['rest-hour']}:${workoutObj.exercises[exerciseIndex]['rest-min']}:${workoutObj.exercises[exerciseIndex]['rest-sec']}`;
-    exerciseList.append(restDurItem);
-
     mainBody.append(exerciseList);
   }
+
+  const restDurItem = document.createElement('li');
+  restDurItem.textContent = `Rest Duration: ${workoutObj.restDuration}`;
+  mainBody.append(restDurItem);
 
   formElements.workoutForm.addEventListener('click', event => {
     if (event.target.classList.contains('submitBtns')) {
@@ -184,23 +193,12 @@ function clearInputFields() {
   }
 }
 
-function exerciseTimeArray() {
-  for (const exercise of workoutObj.exercises) {
-    workoutExDurations.push(exercise['exercise-dur']);
-  }
-}
 
 // Set the workout countdown and exercise countdown
 function submitWorkout() {
-  const timeComponent = document.querySelector('timer-item');
-  if (timeComponent) {
-    exerciseTimeArray();
-    timeComponent.getWorkoutTime(workoutObj.totalWorkoutDuration);
-    timeComponent.getExerciseTime(workoutExDurations[0]);
-    timeComponent.setTimer();
-  } else {
-    console.log('element not found');
-  }
+  const timeElement = document.createElement('timer-item');
+  const timeContainer = document.querySelector('.timer');
+  timeContainer.append(timeElement);
 }
 
 

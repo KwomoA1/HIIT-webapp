@@ -1,10 +1,14 @@
 // The key to solving this problem is setInterval and understanding how many milisecs in a sec, minute , hour
-// import { workoutObj } from '/client/js/index.mjs';
+
+import { workoutObj } from '/client/js/index.mjs';
 export class Timer extends HTMLElement {
   constructor() {
     super();
     this.shadow = this.attachShadow({ mode: 'open' });
     this.shadow.innerHTML = `
+        <div id='exercise'></div>
+        <div id='description'></div>
+        <div id= 'exerciseStatus'></div>
         <div id='workoutCountdown'></div>
         <div id='exerciseCountdown'></div>
         <button type='button' class='resetBtn'> Reset </button>
@@ -19,16 +23,26 @@ export class Timer extends HTMLElement {
     this.shadow.append(style);
 
     // Getting time attributes
-    this.workoutTime = 0;
-    this.exerciseTime = 0;
+    this.exerciseIndex = 0;
+    this.workoutStatus = 'workout';
+    this.exercises = workoutObj.exercises;
+    this.workoutTime = workoutObj.totalWorkoutDuration;
+    this.exerciseTime = this.exercises[this.exerciseIndex]['exercise-dur'];
+    this.workoutStatus = 'workout';
 
     // Getting shadowDOM HTML elements
+    this.exerciseDisplay = this.shadow.querySelector('#exercise');
+    this.descriptionDisplay = this.shadow.querySelector('#description');
     this.wrkCountDisplay = this.shadow.querySelector('#workoutCountdown');
     this.exCountDisplay = this.shadow.querySelector('#exerciseCountdown');
+    this.statusDisplay = this.shadow.querySelector('#exerciseStatus');
 
     // Setting time display components by default countdown is display as 0
-    this.wrkCountDisplay.textContent = this.formatTime(0);
-    this.exCountDisplay.textContent = this.formatTime(0);
+    this.wrkCountDisplay.textContent = this.formatTime(this.workoutTime);
+    this.exCountDisplay.textContent = this.formatTime(this.exerciseTime);
+    this.statusDisplay.textContent = this.workoutStatus;
+    this.exerciseDisplay.textContent = this.exercises[this.exerciseIndex]['exercise-name'];
+    this.descriptionDisplay.textContent = this.exercises[this.exerciseIndex]['exercise-desc'];
 
     // Getting buttons
     this.startBtn = this.shadow.querySelector('.startBtn');
@@ -39,21 +53,9 @@ export class Timer extends HTMLElement {
     this.start = this.start.bind(this);
     this.pause = this.pause.bind(this);
     this.reset = this.reset.bind(this);
-    this.updateTimer = this.updateTimer.bind(this);
+    this.updateWorkoutTimer = this.updateWorkoutTimer.bind(this);
+    this.updateExerciseTimer = this.updateExerciseTimer.bind(this);
     this.formatTime = this.formatTime.bind(this);
-  }
-
-  setTimer() {
-    this.wrkCountDisplay.textContent = this.formatTime(this.workoutTime);
-    this.exCountDisplay.textContent = this.formatTime(this.exerciseTime);
-  }
-
-  getExerciseTime(exerciseDuration) {
-    this.exerciseTime = exerciseDuration;
-  }
-
-  getWorkoutTime(workoutDuration) {
-    this.workoutTime = workoutDuration;
   }
 
   // Returns the time in an hour, minutes and seconds format (array structure [hour, minutes, seconds])
@@ -71,20 +73,43 @@ export class Timer extends HTMLElement {
   }
 
   // Update the text content div element and time provided as an argument
-  updateTimer(duration, elementHandle) {
-    let timeDuration = duration;
+  updateWorkoutTimer() {
+    let timeDuration = this.workoutTime;
     this.intervalID = window.setInterval(() => {
-      if (duration > 0) {
+      if (timeDuration > 0) {
         timeDuration -= 1;
-        elementHandle.textContent = this.formatTime(timeDuration);
+        this.wrkCountDisplay.textContent = this.formatTime(timeDuration);
+      }
+    }, 1000);
+  }
+
+  updateExerciseTimer() {
+    let timeSeconds = this.exerciseTime;
+    this.intervalID = window.setInterval(() => {
+      if (timeSeconds > 0) {
+        timeSeconds -= 1;
+        this.exCountDisplay.textContent = this.formatTime(timeSeconds);
+      } else if (timeSeconds === 0 && this.workoutStatus === 'workout') {
+        this.workoutStatus = 'rest';
+        this.statusDisplay.textContent = this.workoutStatus;
+        this.exerciseTime = workoutObj.restDuration;
+        timeSeconds = this.exerciseTime;
+      } else if (timeSeconds === 0 && this.workoutStatus === 'rest') {
+        this.exerciseIndex += 1;
+        this.workoutStatus = 'workout';
+        this.exerciseDisplay.textContent = this.exercises[this.exerciseIndex]['exercise-name'];
+        this.descriptionDisplay.textContent = this.exercises[this.exerciseIndex]['exercise-desc'];
+        this.statusDisplay.textContent = this.workoutStatus;
+        this.exerciseTime = this.exercises[this.exerciseIndex]['exercise-dur'];
+        timeSeconds = this.exerciseTime;
       }
     }, 1000);
   }
 
   // Starts the countdown functions one click event runs on start button
   start() {
-    this.updateTimer(this.workoutTime, this.wrkCountDisplay);
-    this.updateTimer(this.exerciseTime, this.exCountDisplay);
+    this.updateWorkoutTimer();
+    this.updateExerciseTimer();
   }
 
   // Pause the countdown by clearing the setInterval
