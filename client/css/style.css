@@ -35,7 +35,7 @@ body {
     padding: 0; /* Remove any horizontal padding */
 }
 
-#create-Btn {
+.setupTimer-btn {
     border: none;
     font-size: 1.5rem;
     font-family: Arial, Helvetica, sans-serif;
@@ -50,11 +50,11 @@ body {
     margin: 40px auto 20px;
 }
 
-#create-Btn:hover {
+.setupTimer-btn:hover {
     background-color: var(--hoverBtn); /* Adjusted color on hover */
 }
 
-#create-Btn:active {
+.setupTimer-btn:active {
     background-color: var(--clickBtn); /* Adjusted color when clicked */
 }
 
@@ -75,6 +75,7 @@ body {
     max-width: 440px; /* Adjust the maximum width as needed */
     width: 100%; /* Ensure it takes the full available width */
     margin: 0 auto;
+    margin-top: 10px;
 }
 
 .form-group {
@@ -166,9 +167,13 @@ timer-item {
     display:none;
 }
 
-.nextStepBtns,
-.prevStepBtns,
-.submitBtns {
+.next-btn {
+    float: right;
+}
+
+.next-btn,
+.prev-btn,
+.submit-btn {
     border: none;
     width: calc(50% - 5px); /* Adjusted width for both buttons */
     text-align: center;
@@ -182,21 +187,21 @@ timer-item {
     margin-right: 5px; /* Added margin between the buttons */
 }
 
-.nextStepBtns:hover,
-.prevStepBtns:hover,
-.submitBtns:hover {
+.next-btn:hover,
+.prev-btn:hover,
+.submit-btn:hover {
     background-color: var(--darkerColor);
 }
 
-.nextStepBtns:active,
-.prevStepBtns:active,
-.submitBtns:active {
+.next-btn:active,
+.prev-btn:active,
+.submit-btn:active {
     background-color: var(--backgroundColor);
 }
 
-.nextStepBtns:last-child,
-.prevStepBtns:last-child,
-.submitBtns:last-child {
+.next-btn:last-child,
+.prev-btn:last-child,
+.submit-btn:last-child {
     margin-right: 0; /* Remove margin for the last button */
 }
 
