@@ -29,28 +29,6 @@ function displayForm() {
   stepButtonsHandler();
 }
 
-
-// Increments or decrements the current step ind
-function stepButtonsHandler() {
-  formElements.workoutForm.addEventListener('click', event => {
-    if (event.target.classList.contains('next-btn')) {
-      formElements.formIndex += 1;
-      toggleActive(formElements.formIndex);
-      if (formElements.formIndex === 3) {
-        submitExercises();
-        formStep3Handler();
-      }
-    } else if (event.target.classList.contains('prev-btn')) {
-      formElements.formIndex -= 1;
-      toggleActive(formElements.formIndex);
-      if (formElements.formIndex === 1) {
-        clearWorkoutObj();
-        clearInputFields();
-      }
-    }
-  });
-}
-
 // Adds the 'active' class when the data attribute step matches the current step
 function toggleActive(formIndex) {
   formElements.formSteps.forEach((step) => {
@@ -58,17 +36,55 @@ function toggleActive(formIndex) {
   });
 }
 
+// Increments or decrements the current step ind
+function stepButtonsHandler() {
+  formElements.workoutForm.addEventListener('click', formNavigation);
+}
+
+// runs form next and previous button functionality 
+function formNavigation(event) {
+  if (event.target.classList.contains('next-btn')) {
+    nextBtnHandler();
+  } else if (event.target.classList.contains('prev-btn')) {
+    prevBtnHandler();
+  }
+}
+
+// Handles the functionality for the next button 
+function nextBtnHandler() {
+  formElements.formIndex += 1;
+  toggleActive(formElements.formIndex);
+  if (formElements.formIndex === 3) {
+    submitExercises(); 
+    formStep3Handler();
+  }
+}
+
+// Handles the functionality for the previous button 
+function prevBtnHandler() {
+  formElements.formindex -= 1;
+  toggleActive(formElements.formIndex);
+  if (formElements.formIndex === 1) {
+    clearWorkoutObj();
+    clearInputsFields();
+  }
+}
+
 // Populate workout object with default data and set step 2 form input elements
 function createWrkObject() {
-  formElements.workoutForm.addEventListener('click', event => {
-    if (event.target.classList.contains('submitWrkData')) {
-      workoutObj.workoutName = formElements.workoutNameInput.value;
-      workoutObj.exercises = [];
-      workoutObj.restDuration = 0;
-      createExerciseObj(formElements.numExInput.value);
-      cloneTemplate(formElements.numExInput.value);
-    }
-  });
+  formElements.workoutForm.addEventListener('click', populateObject);
+}
+
+// Sets the workout name and generates default data for exercises based on form section 1 input
+function populateObject(event) {
+  if(event.target.classList.contains('submitWrkData')) {
+    workoutObj.workoutName = formElements.workoutNameInput.value;
+    workoutObj.exercises = [];
+    workoutObj.restDuration = 0; 
+    createExerciseObj(formElements.numExInput.value);
+    // Generates form inputs for workoutObj 
+    cloneTemplate(formElements.numExInput.value);
+  }
 }
 
 // Remove annoymous functions 
@@ -212,6 +228,8 @@ function main() {
   formElemHandles();
   timerSetupBtn.addEventListener('click', displayForm);
   timerSetupBtn.addEventListener('click', createWrkObject);
+  // formElements.workoutForm.addEventListener('click', populateObject); 
+  // formElements.workoutForm.addEvenetListener('click', formNavigation); 
 }
 
 // starts application
