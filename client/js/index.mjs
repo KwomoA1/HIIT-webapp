@@ -1,24 +1,24 @@
-// TODO : Increase code functionality and readability and finish timer to include reset and transition between status better
+// TODO : Increase code maintainability
+
 // Stores references to objects
 const formElements = {};
 export let workoutObj = {};
 
 // Stores the form element ui handles in formElements
 function formElemHandles() {
-  formElements.title = document.querySelector('.formTitle');
   formElements.workoutForm = document.querySelector('#workout-form');
-  formElements.formSteps = [...formElements.workoutForm.querySelectorAll('.formSection')];
-  formElements.workoutNameInput = document.querySelector('#workout-name');
+  formElements.formSections = [...formElements.workoutForm.querySelectorAll('.formSection')];
+  formElements.wrkNameInput = document.querySelector('#workout-name');
   formElements.numExInput = document.querySelector('#num-exercises');
 }
 
-// Sets the formIndex and displays the form section that which index correponds with the formIndex
+// Sets the formIndex and toggles the active class on the form section which index corresponds with the formIndex
 function displayForm() {
   const setupBtn = document.querySelector('.setupTimer-btn');
-  setupBtn.classList.add('hidden'); 
+  setupBtn.classList.add('hidden');
 
   formElements.formIndex = parseInt(
-    formElements.formSteps.find((step) => {
+    formElements.formSections.find((step) => {
       return step.classList.contains('active');
     })?.dataset.step); // If not active class is found it sets it to null
 
@@ -26,22 +26,16 @@ function displayForm() {
     formElements.formIndex = 1;
     toggleActive(formElements.formIndex);
   }
-  stepButtonsHandler();
 }
 
 // Adds the 'active' class when the data attribute step matches the current step
 function toggleActive(formIndex) {
-  formElements.formSteps.forEach((step) => {
+  formElements.formSections.forEach((step) => {
     step.classList.toggle('active', parseInt(step.dataset.step) === formIndex);
   });
 }
 
-// Increments or decrements the current step ind
-function stepButtonsHandler() {
-  formElements.workoutForm.addEventListener('click', formNavigation);
-}
-
-// runs form next and previous button functionality 
+// runs form next and previous button functionality
 function formNavigation(event) {
   if (event.target.classList.contains('next-btn')) {
     nextBtnHandler();
@@ -50,46 +44,42 @@ function formNavigation(event) {
   }
 }
 
-// Handles the functionality for the next button 
+// Handles the functionality for the next button
 function nextBtnHandler() {
   formElements.formIndex += 1;
   toggleActive(formElements.formIndex);
   if (formElements.formIndex === 3) {
-    submitExercises(); 
+    submitExercises();
     formStep3Handler();
   }
 }
 
-// Handles the functionality for the previous button 
+// Handles the functionality for the previous button
 function prevBtnHandler() {
   formElements.formindex -= 1;
   toggleActive(formElements.formIndex);
   if (formElements.formIndex === 1) {
     clearWorkoutObj();
-    clearInputsFields();
+    clearInputFields();
   }
-}
-
-// Populate workout object with default data and set step 2 form input elements
-function createWrkObject() {
-  formElements.workoutForm.addEventListener('click', populateObject);
 }
 
 // Sets the workout name and generates default data for exercises based on form section 1 input
 function populateObject(event) {
-  if(event.target.classList.contains('submitWrkData')) {
-    workoutObj.workoutName = formElements.workoutNameInput.value;
+  if (event.target.classList.contains('submitWrkData')) {
+    workoutObj.workoutName = formElements.wrkNameInput.value;
     workoutObj.exercises = [];
-    workoutObj.restDuration = 0; 
+    workoutObj.restDuration = 0;
     createExerciseObj(formElements.numExInput.value);
-    // Generates form inputs for workoutObj 
+
+    // Generates form inputs for workoutObj
     cloneTemplate(formElements.numExInput.value);
   }
 }
 
-// Remove annoymous functions 
+// Remove annoymous functions
 
-// Create exercise objects with default values a number of times.
+// Creates several exercise objects based on the number input from the form and pushes them in an array stored in workoutObj
 function createExerciseObj(number) {
   for (let i = 0; i < number; i++) {
     const exerciseObj = {
@@ -106,18 +96,23 @@ function createExerciseObj(number) {
 
 // Duplicates exercises form template to DOM
 function cloneTemplate(number) {
-  const exInputForm = document.querySelector('#exerciseFormTemplate');
-  const step2Form = document.querySelector('#exercise-form');
+  const exFormTemplate = document.querySelector('#exerciseFormTemplate');
+  const formSection2 = document.querySelector('#exercise-form');
+
   for (let i = 0; i < number; i++) {
-    const cloned = exInputForm.content.cloneNode(true);
+    const cloned = exFormTemplate.content.cloneNode(true);
     const exerciseHeader = cloned.querySelector('#exercise-title');
     exerciseHeader.textContent = `exercise ${i + 1}`;
-    const group = [...cloned.querySelectorAll('.exerciseInput')];
-    group.forEach((inputBox) => {
-      inputBox.dataset.exerciseIndex = i;
-    });
-    const restInputs = document.querySelector('#rest-inputs');
-    step2Form.insertBefore(cloned, restInputs);
+    const templateInputs = [...cloned.querySelectorAll('.exerciseInput')];
+    setExerciseIndex(templateInputs, i);
+    formSection2.insertBefore(cloned, document.querySelector('#rest-inputs'));
+  }
+}
+
+// Sets the each input custom attribute exercise index to the matching index
+function setExerciseIndex(clonedInputsBoxes, index) {
+  for (const input of clonedInputsBoxes) {
+    input.dataset.exerciseIndex = index;
   }
 }
 
@@ -127,19 +122,23 @@ function submitExercises() {
   for (const input of exerciseInputBoxes) {
     workoutObj.exercises[input.dataset.exerciseIndex][input.id] = input.value;
   }
-  calculateDuration();
-  const workoutDuration = [...workoutObj.exercises];
-  workoutObj.totalWorkoutDuration = 0;
-  for (const exercise of workoutDuration) {
-    workoutObj.totalWorkoutDuration += exercise['exercise-dur'];
-  }
-
-  workoutObj.totalWorkoutDuration = workoutObj.totalWorkoutDuration + (workoutObj.restDuration * workoutObj.exercises.length);
+  calcExerciseDuration();
+  calcRestDuration();
+  calcWorkoutDuration();
 }
 
-// Calculate rest duration
-function calculateRestDuration() {
-  const restInputs = [...document.querySelectorAll('.restInput')];
+// Calculate the total duration of the exercise using the hour, minutes, seconds values
+function calcExerciseDuration() {
+  const exercises = workoutObj.exercises;
+  for (const exercise of exercises) {
+    const exerciseDuration = [parseInt(exercise['exercise-hour']), parseInt(exercise['exercise-min']), parseInt(exercise['exercise-sec'])];
+    exercise['exercise-dur'] = convertToSeconds(exerciseDuration);
+  }
+}
+
+// Calculate rest duration for each interval
+function calcRestDuration() {
+  const restInputs = document.querySelectorAll('.restInput');
   const values = [];
   for (const input of restInputs) {
     values.push(parseInt(input.value));
@@ -147,17 +146,16 @@ function calculateRestDuration() {
   workoutObj.restDuration = convertToSeconds(values);
 }
 
-
-// Calculate the total duration of the exercise using the hour, minutes, seconds values
-function calculateDuration() {
+// Calculate the overall workout duration
+function calcWorkoutDuration() {
   const exercises = workoutObj.exercises;
+  workoutObj.workoutDuration = 0;
   for (const exercise of exercises) {
-    const exerciseDuration = [parseInt(exercise['exercise-hour']), parseInt(exercise['exercise-min']), parseInt(exercise['exercise-sec'])];
-    exercise['exercise-dur'] = convertToSeconds(exerciseDuration);
+    workoutObj.workoutDuration += exercise['exercise-dur'];
   }
-  calculateRestDuration();
+  const totalRestDuration = workoutObj.restDuration * workoutObj.exercises.length;
+  workoutObj.workoutDuration = workoutObj.workoutDuration + totalRestDuration;
 }
-
 
 // Converts time duration to seconds array format must be [hour, minutes, seconds]
 function convertToSeconds(digitalTime) {
@@ -217,7 +215,7 @@ function submitWorkout() {
   const timeElement = document.createElement('timer-item');
   const timeContainer = document.querySelector('.timer');
   timeContainer.append(timeElement);
-  const formContainer = document.querySelector('#workout-form')
+  const formContainer = document.querySelector('#workout-form');
   formContainer.classList.add('hidden');
 }
 
@@ -227,9 +225,8 @@ function main() {
   const timerSetupBtn = document.querySelector('.setupTimer-btn');
   formElemHandles();
   timerSetupBtn.addEventListener('click', displayForm);
-  timerSetupBtn.addEventListener('click', createWrkObject);
-  // formElements.workoutForm.addEventListener('click', populateObject); 
-  // formElements.workoutForm.addEvenetListener('click', formNavigation); 
+  formElements.workoutForm.addEventListener('click', formNavigation);
+  formElements.workoutForm.addEventListener('click', populateObject);
 }
 
 // starts application

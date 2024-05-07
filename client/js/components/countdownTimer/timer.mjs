@@ -30,7 +30,7 @@ export class Timer extends HTMLElement {
     this.exerciseIndex = 0;
     this.workoutStatus = 'workout';
     this.exercises = workoutObj.exercises;
-    this.workoutTime = workoutObj.totalWorkoutDuration;
+    this.workoutTime = workoutObj.workoutDuration;
     this.exerciseTime = this.exercises[this.exerciseIndex]['exercise-dur'];
     this.workoutStatus = 'workout';
 
