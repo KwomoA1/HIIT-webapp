@@ -30,9 +30,11 @@
 </template>
 
 <!-- Creating template for exercise validation -->
-<template id="exerciseDisplay">
-    <ul>
-        <li></li>
+<template id="exerciseDisplayTemplate">
+    <ul class="exerciseDis-container">
+        <li class="exerciseDis-name"></li>
+        <li class="exerciseDis-desc"></li>
+        <li class="exerciseDis-dur"> </li>
     </ul>
 </template>
 
@@ -81,7 +83,10 @@
                 <section class="formSection inactive" data-step="3">
                     <div class="form-group">
                         <h2> workout validation </h2>
-                        <div id="validationContainer"></div>
+                        <div id="validationContainer">
+                            <h2 class="workout-title"></h2>
+                            <span class="rest-info"> </span>
+                        </div>
                         <div>
                             <button type="button" class="prev-btn">previous</button>
                             <button type="button" class="submit-btn">submit</button>

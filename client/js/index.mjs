@@ -50,7 +50,7 @@ function nextBtnHandler() {
   toggleActive(formElements.formIndex);
   if (formElements.formIndex === 3) {
     submitExercises();
-    formStep3Handler();
+    displayWorkoutObj();
   }
 }
 
@@ -61,6 +61,19 @@ function prevBtnHandler() {
   if (formElements.formIndex === 1) {
     clearWorkoutObj();
     clearInputFields();
+  }
+}
+
+// Clears the entire workout object
+function clearWorkoutObj() {
+  workoutObj = {};
+}
+
+// Removes the clone template fields from step 2 of the form
+function clearInputFields() {
+  const exerciseInputField = [...document.querySelectorAll('.exerciseInput'), ...document.querySelectorAll('.exerciseLabel'), ...document.querySelectorAll('ul'), ...document.querySelectorAll('h2')];
+  for (const input of exerciseInputField) {
+    input.remove();
   }
 }
 
@@ -77,8 +90,6 @@ function populateObject(event) {
   }
 }
 
-// Remove annoymous functions
-
 // Creates several exercise objects based on the number input from the form and pushes them in an array stored in workoutObj
 function createExerciseObj(number) {
   for (let i = 0; i < number; i++) {
@@ -94,7 +105,7 @@ function createExerciseObj(number) {
   }
 }
 
-// Duplicates exercises form template to DOM
+// Clones a template to the webpage accepts a number as an argument will produce clones
 function cloneTemplate(number) {
   const exFormTemplate = document.querySelector('#exerciseFormTemplate');
   const formSection2 = document.querySelector('#exercise-form');
@@ -163,60 +174,38 @@ function convertToSeconds(digitalTime) {
   return totalSeconds;
 }
 
-// Turn into template
-function formStep3Handler() {
-  const mainBody = document.querySelector('#validationContainer');
-  const workoutTitle = document.createElement('h2');
+// Displays a list of each exercise in the workout for validation
+function displayWorkoutObj() {
+  const workoutTitle = document.querySelector('.workout-title');
   workoutTitle.textContent = `Workout name: ${workoutObj.workoutName}`;
-  mainBody.append(workoutTitle);
+  const restDurItem = document.querySelector('.rest-info');
+  restDurItem.textContent = `Rest intervals: ${workoutObj.restDuration}`;
+  cloneDisplayTemplate();
+}
+
+// Clones the display template and adds it to the main DOM
+function cloneDisplayTemplate() {
+  const displayTemplate = document.querySelector('#exerciseDisplayTemplate');
+  const displayContainer = document.querySelector('#validationContainer');
 
   for (const exercise of workoutObj.exercises) {
-    const exerciseIndex = workoutObj.exercises.indexOf(exercise);
-    const exerciseList = document.createElement('ul');
-    const exerciseNameItem = document.createElement('li');
-    exerciseNameItem.textContent = `Exercise name: ${workoutObj.exercises[exerciseIndex]['exercise-name']}`;
-    exerciseList.append(exerciseNameItem);
-    const exerciseDescItem = document.createElement('li');
-    exerciseDescItem.textContent = `Exercise description: ${workoutObj.exercises[exerciseIndex]['exercise-desc']}`;
-    exerciseList.append(exerciseDescItem);
-    const exerciseDurItem = document.createElement('li');
-    exerciseDurItem.textContent = `Exercise duration: ${workoutObj.exercises[exerciseIndex]['exercise-hour']}:${workoutObj.exercises[exerciseIndex]['exercise-min']}:${workoutObj.exercises[exerciseIndex]['exercise-sec']}`;
-    exerciseList.append(exerciseDurItem);
-    mainBody.append(exerciseList);
-  }
-
-  const restDurItem = document.createElement('li');
-  restDurItem.textContent = `Rest Duration: ${workoutObj.restDuration}`;
-  mainBody.append(restDurItem);
-
-  formElements.workoutForm.addEventListener('click', event => {
-    if (event.target.classList.contains('submit-btn')) {
-      submitWorkout();
-    }
-  });
-}
-
-// Clears the entire workout object
-function clearWorkoutObj() {
-  workoutObj = {};
-}
-
-// Removes the clone template fields from step 2 of the form
-function clearInputFields() {
-  const exerciseInputField = [...document.querySelectorAll('.exerciseInput'), ...document.querySelectorAll('.exerciseLabel'), ...document.querySelectorAll('ul'), ...document.querySelectorAll('h2')];
-  for (const input of exerciseInputField) {
-    input.remove();
+    const cloned = displayTemplate.content.cloneNode(true);
+    cloned.querySelector('.exerciseDis-name').textContent = `Exercise name: ${exercise['exercise-name']}`;
+    cloned.querySelector('.exerciseDis-desc').textContent = `Exercise Description ${exercise['exercise-desc']}`;
+    cloned.querySelector('.exerciseDis-dur').textContent = `Exercise duration: ${exercise['exercise-hour']}:${exercise['exercise-min']}:${exercise['exercise-sec']}`;
+    displayContainer.append(cloned);
   }
 }
-
 
 // Set the workout countdown and exercise countdown
-function submitWorkout() {
-  const timeElement = document.createElement('timer-item');
-  const timeContainer = document.querySelector('.timer');
-  timeContainer.append(timeElement);
-  const formContainer = document.querySelector('#workout-form');
-  formContainer.classList.add('hidden');
+function submitWorkout(event) {
+  if (event.target.classList.contains('submit-btn')) {
+    const timeElement = document.createElement('timer-item');
+    const timeContainer = document.querySelector('.timer');
+    timeContainer.append(timeElement);
+    const formContainer = document.querySelector('#workout-form');
+    formContainer.classList.add('hidden');
+  }
 }
 
 
@@ -227,6 +216,7 @@ function main() {
   timerSetupBtn.addEventListener('click', displayForm);
   formElements.workoutForm.addEventListener('click', formNavigation);
   formElements.workoutForm.addEventListener('click', populateObject);
+  formElements.workoutForm.addEventListener('click', submitWorkout);
 }
 
 // starts application
