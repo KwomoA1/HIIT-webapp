@@ -12,35 +12,38 @@ function formElemHandles() {
   formElements.numExInput = document.querySelector('#num-exercises');
 }
 
-// This function displays the step in the multi-step form which contains the class 'active'
+// Sets the formIndex and displays the form section that which index correponds with the formIndex
 function displayForm() {
-  document.querySelector('.setupTimer-btn').classList.add('hidden');
-  formElements.currentStep = parseInt(
+  const setupBtn = document.querySelector('.setupTimer-btn');
+  setupBtn.classList.add('hidden'); 
+
+  formElements.formIndex = parseInt(
     formElements.formSteps.find((step) => {
       return step.classList.contains('active');
     })?.dataset.step); // If not active class is found it sets it to null
 
-  if (isNaN(formElements.currentStep)) { /* Checks if the value is NaN and sets it to 1 */
-    formElements.currentStep = 1;
-    toggleActive(formElements.currentStep);
+  if (isNaN(formElements.formIndex)) { /* Checks if the value is NaN and sets it to 1 */
+    formElements.formIndex = 1;
+    toggleActive(formElements.formIndex);
   }
-
   stepButtonsHandler();
 }
 
+
+// Increments or decrements the current step ind
 function stepButtonsHandler() {
   formElements.workoutForm.addEventListener('click', event => {
     if (event.target.classList.contains('next-btn')) {
-      formElements.currentStep += 1;
-      toggleActive(formElements.currentStep);
-      if (formElements.currentStep === 3) {
+      formElements.formIndex += 1;
+      toggleActive(formElements.formIndex);
+      if (formElements.formIndex === 3) {
         submitExercises();
         formStep3Handler();
       }
     } else if (event.target.classList.contains('prev-btn')) {
-      formElements.currentStep -= 1;
-      toggleActive(formElements.currentStep);
-      if (formElements.currentStep === 1) {
+      formElements.formIndex -= 1;
+      toggleActive(formElements.formIndex);
+      if (formElements.formIndex === 1) {
         clearWorkoutObj();
         clearInputFields();
       }
@@ -49,9 +52,9 @@ function stepButtonsHandler() {
 }
 
 // Adds the 'active' class when the data attribute step matches the current step
-function toggleActive(currentStep) {
+function toggleActive(formIndex) {
   formElements.formSteps.forEach((step) => {
-    step.classList.toggle('active', parseInt(step.dataset.step) === currentStep);
+    step.classList.toggle('active', parseInt(step.dataset.step) === formIndex);
   });
 }
 
@@ -67,6 +70,8 @@ function createWrkObject() {
     }
   });
 }
+
+// Remove annoymous functions 
 
 // Create exercise objects with default values a number of times.
 function createExerciseObj(number) {
@@ -144,6 +149,7 @@ function convertToSeconds(digitalTime) {
   return totalSeconds;
 }
 
+// Turn into template
 function formStep3Handler() {
   const mainBody = document.querySelector('#validationContainer');
   const workoutTitle = document.createElement('h2');
@@ -195,6 +201,8 @@ function submitWorkout() {
   const timeElement = document.createElement('timer-item');
   const timeContainer = document.querySelector('.timer');
   timeContainer.append(timeElement);
+  const formContainer = document.querySelector('#workout-form')
+  formContainer.classList.add('hidden');
 }
 
 

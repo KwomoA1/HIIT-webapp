@@ -1,6 +1,6 @@
 // The key to solving this problem is setInterval and understanding how many milisecs in a sec, minute , hour
 
-import { workoutObj } from '/client/js/index.mjs';
+import { workoutObj } from '/js/index.mjs';
 export class Timer extends HTMLElement {
   constructor() {
     super();
