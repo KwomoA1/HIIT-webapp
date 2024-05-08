@@ -34,9 +34,10 @@ export class Timer extends HTMLElement {
     // Setting custom element attributes
     this.exerciseIndex = 0;
     this.workoutStatus = 'workout';
-    this.exercises = workoutObj.exercises;
     this.workoutTime = workoutObj.workoutDuration;
-    this.exerciseTime = this.exercises[this.exerciseIndex]['exercise-dur'];
+    this.exerciseTime = workoutObj.exercises[this.exerciseIndex]['exercise-dur'];
+    this.workoutID = null;
+    this.exerciseID = null;
 
     // Getting shadowDOM HTML elements
     this.wrkProgressDisplay = this.shadow.querySelector('.wrkProgress');
@@ -47,11 +48,11 @@ export class Timer extends HTMLElement {
     this.nxtExercise = this.shadow.querySelector('.next-exercise');
 
     // Setting the display
-    this.wrkProgressDisplay.textContent = `Exercise ${this.exerciseIndex + 1}/${this.exercises.length}`;
-    this.nxtExercise.textContent = `up next: ${this.exercises[this.exerciseIndex + 1]['exercise-name']}`;
+    this.wrkProgressDisplay.textContent = `Exercise ${this.exerciseIndex + 1}/${workoutObj.exercises.length}`;
+    this.nxtExercise.textContent = `up next: ${workoutObj.exercises[this.exerciseIndex + 1]['exercise-name']}`;
     this.wrkCountDisplay.textContent = `WorkoutCountdown: ${this.formatTime(this.workoutTime)}`;
-    this.exerciseDisplay.textContent = `${this.exercises[this.exerciseIndex]['exercise-name']}`;
-    this.descriptionDisplay.textContent = this.exercises[this.exerciseIndex]['exercise-desc'];
+    this.exerciseDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-name'];
+    this.descriptionDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-desc'];
     this.exCountDisplay.textContent = this.formatTime(this.exerciseTime);
 
     // Getting buttons
@@ -66,9 +67,8 @@ export class Timer extends HTMLElement {
     this.updateWorkoutTimer = this.updateWorkoutTimer.bind(this);
     this.updateExerciseTimer = this.updateExerciseTimer.bind(this);
     this.formatTime = this.formatTime.bind(this);
-    this.displayRestDetails = this.displayRestDetails.bind(this);
-    this.updateDisplayContent = this.updateDisplayContent.bind(this);
-    this.updateExerciseTime = this.updateExerciseTime.bind(this);
+    this.testing = this.testing.bind(this);
+    this.testing2 = this.testing2.bind(this);
   }
 
   // Returns the time in an hour, minutes and seconds format (array structure [hour, minutes, seconds])
@@ -85,55 +85,51 @@ export class Timer extends HTMLElement {
     return `${time[0]}:${time[1]}:${time[2]}`;
   }
 
-  // Update the text content div element and time provided as an argument
-  updateWorkoutTimer() {
-    let workoutDuration = this.workoutTime;
-    this.intervalID = window.setInterval(() => {
-      if (workoutDuration > 0) {
-        workoutDuration -= 1;
-        this.wrkCountDisplay.textContent = `Workout Duration: ${this.formatTime(workoutDuration)}`;
+  testing() {
+    this.exerciseTime -= 1;
+    this.exCountDisplay.textContent = this.formatTime(this.exerciseTime);
+  }
+
+  testing2() {
+    if (this.exerciseIndex !== workoutObj.exercises.length - 1) {
+      if (this.workoutStatus === 'workout') {
+        this.workoutStatus = 'rest';
+        this.exerciseTime = workoutObj.restDuration;
+        this.exerciseDisplay.textContent = 'Rest';
+        this.descriptionDisplay.textContent = 'Active rest';
+      } else if (this.workoutStatus === 'rest') {
+        this.workoutStatus = 'workout';
+        this.exerciseIndex += 1;
+        this.wrkProgressDisplay.textContent = `Exercise ${this.exerciseIndex + 1}/${workoutObj.exercises.length}`;
+        // this.nxtExercise.textContent = `up next:${workoutObj.exercises[this.exerciseIndex + 1]['exercise-name']}`;
+        this.exerciseTime = workoutObj.exercises[this.exerciseIndex]['exercise-dur'];
+        this.exerciseDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-name'];
+        this.descriptionDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-desc'];
+      }
+    } else {
+      this.exerciseDisplay.textContent = 'Workout completed';
+      this.descriptionDisplay.textContent = "Congrats you're finished";
+      clearInterval(this.exerciseID);
+      clearInterval(this.workoutID);
+    }
+  }
+
+  updateExerciseTimer() {
+    this.exerciseID = window.setInterval(() => {
+      if (this.exerciseTime > 0) {
+        this.testing();
+      } else if (this.exerciseTime === 0) {
+        this.testing2();
       }
     }, 1000);
   }
 
-  // Update the exercise countdown timer
-  updateExerciseTime(exerciseDuration) {
-    exerciseDuration -= 1;
-    this.exCountDisplay.textContent = this.formatTime(exerciseDuration);
-    return exerciseDuration;
-  }
-
-  displayRestDetails(exerciseDuration) {
-    this.workoutStatus = 'rest';
-    this.exerciseDisplay.textContent = 'Rest';
-    this.descriptionDisplay.textContent = '';
-    this.exerciseTime = workoutObj.restDuration;
-    exerciseDuration = this.exerciseTime;
-    return exerciseDuration;
-  }
-
-  updateDisplayContent(exerciseDuration) {
-    this.exerciseIndex += 1;
-    this.workoutStatus = 'workout';
-    this.wrkProgressDisplay.textContent = `Exercise ${this.exercisesIndex + 1}/${this.exercises.length}`;
-    this.nxtExercise.textContent = `up next: ${this.exercises[this.exerciseIndex + 1]['exercise-name']}`;
-    this.exerciseDisplay.textContent = `${this.exercises[this.exerciseIndex]['exercise-name']}`;
-    this.descriptionDisplay.textContent = `Description: ${this.exercises[this.exerciseIndex]['exercise-desc']}`;
-    this.exerciseTime = this.exercises[this.exerciseIndex]['exercise-dur'];
-    exerciseDuration = this.exerciseTime;
-    return exerciseDuration;
-  }
-
-  updateExerciseTimer() {
-    let exerciseDuration = this.exerciseTime;
-    this.intervalID = window.setInterval(() => {
-      if (exerciseDuration > 0) {
-        exerciseDuration = this.updateExerciseTime(exerciseDuration);
-        console.log(exerciseDuration);
-      } else if (exerciseDuration === 0 && this.workoutStatus === 'workout') {
-        exerciseDuration = this.displayRestDetails(exerciseDuration);
-      } else if (exerciseDuration === 0 && this.workoutStatus === 'rest') {
-        exerciseDuration = this.updateDisplayContent(exerciseDuration);
+  // Update the text content div element and time provided as an argument
+  updateWorkoutTimer() {
+    this.workoutID = window.setInterval(() => {
+      if (this.workoutTime > 0) {
+        this.workoutTime -= 1;
+        this.wrkCountDisplay.textContent = this.formatTime(this.workoutTime);
       }
     }, 1000);
   }
@@ -146,8 +142,8 @@ export class Timer extends HTMLElement {
 
   // Pause the countdown by clearing the setInterval
   pause() {
-    clearInterval(this.intervalID);
-    clearInterval(this.intervalID);
+    clearInterval(this.exerciseID);
+    clearInterval(this.workoutID);
   }
 
   // Resets the countdown back to what is was.

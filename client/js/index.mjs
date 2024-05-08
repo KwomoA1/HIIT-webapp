@@ -56,7 +56,7 @@ function nextBtnHandler() {
 
 // Handles the functionality for the previous button
 function prevBtnHandler() {
-  formElements.formindex -= 1;
+  formElements.formIndex -= 1;
   toggleActive(formElements.formIndex);
   if (formElements.formIndex === 1) {
     clearWorkoutObj();

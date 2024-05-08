@@ -59,7 +59,7 @@
     height: 80%;
 
     /* Background color */
-    background-color: var(--lightColor);
+    background-color: var(--primaryColor);
     border-radius: 50px;
 
     /* text */
@@ -99,8 +99,8 @@
 button {
     border: none;
     text-align: center;
-    background-color: var(--primaryColor);
-    color: var(--backgroundColor);
+    background-color: var(--backgroundColor);
+    color: var(--hoverBtn);
     border-radius: 10px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
