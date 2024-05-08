@@ -1,4 +1,4 @@
-// TODO : Increase code maintainability
+// TODO :
 
 // Stores references to objects
 const formElements = {};
