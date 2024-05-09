@@ -131,3 +131,9 @@ button {
     align-self: flex-start;
 }
 
+@media (max-width:480px) {
+    #focal-point {
+        width: 480px;
+        height: auto;
+    }
+}
