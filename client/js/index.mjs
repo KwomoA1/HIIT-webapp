@@ -201,8 +201,10 @@ function cloneDisplayTemplate() {
 function submitWorkout(event) {
   if (event.target.classList.contains('submit-btn')) {
     const timeElement = document.createElement('timer-item');
+    const visualQue = document.createElement('round-visuals');
     const timeContainer = document.querySelector('.timer');
     timeContainer.append(timeElement);
+    timeContainer.append(visualQue);
     const formContainer = document.querySelector('#workout-form');
     formContainer.classList.add('hidden');
   }

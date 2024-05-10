@@ -1,0 +1,50 @@
+:root {
+    --backgroundColor: #f8f7f6;
+    --darkColor: #403e49;
+    --primaryColor: #d35548;
+    --hoverBtn: #8b2b21;
+    --clickBtn: #d35548;
+    --lightColor: #d96b60;
+    --textColor: #83281f;
+}
+
+:host{
+    display: flex;
+}
+
+.main-container {
+
+    /* Size*/
+    border-radius: 10px;
+
+    /* Color */
+    border-color: black;
+    border-width: 5;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+}
+
+.visual-container {
+    /* flex */
+    display: flex;
+    flex-direction: row;
+}
+
+.exercise-circle {
+    /*Size */
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+
+    /* Color */
+    background-color: var(--primaryColor);
+    opacity: 0.5;
+}
+
+.exercise-circle > .completed{
+    /* Color */
+    background-color: var(--primaryColor);
+    opacity: 1;
+}

@@ -1,7 +1,7 @@
 // The key to solving this problem is setInterval and understanding how many milisecs in a sec, minute , hour
 
 import { workoutObj } from '/js/index.mjs';
-export class Timer extends HTMLElement {
+class Timer extends HTMLElement {
   constructor() {
     super();
     this.shadow = this.attachShadow({ mode: 'open' });
@@ -9,7 +9,6 @@ export class Timer extends HTMLElement {
     <div id='component-container'>
       <div id='workout-info'> 
         <span class='wrkProgress'></span> 
-        <span class='next-exercise'></span>
         <span class='workoutCountdown'></span>
       </div> 
       <div id='focal-point'>
@@ -45,11 +44,9 @@ export class Timer extends HTMLElement {
     this.exerciseDisplay = this.shadow.querySelector('.exercise');
     this.descriptionDisplay = this.shadow.querySelector('.description');
     this.exCountDisplay = this.shadow.querySelector('.exerciseCountdown');
-    this.nxtExercise = this.shadow.querySelector('.next-exercise');
 
     // Setting the display
     this.wrkProgressDisplay.textContent = `Exercise ${this.exerciseIndex + 1}/${workoutObj.exercises.length}`;
-    this.nxtExercise.textContent = `up next: ${workoutObj.exercises[this.exerciseIndex + 1]['exercise-name']}`;
     this.wrkCountDisplay.textContent = `WorkoutCountdown: ${this.formatTime(this.workoutTime)}`;
     this.exerciseDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-name'];
     this.descriptionDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-desc'];
@@ -101,7 +98,6 @@ export class Timer extends HTMLElement {
         this.workoutStatus = 'workout';
         this.exerciseIndex += 1;
         this.wrkProgressDisplay.textContent = `Exercise ${this.exerciseIndex + 1}/${workoutObj.exercises.length}`;
-        // this.nxtExercise.textContent = `up next:${workoutObj.exercises[this.exerciseIndex + 1]['exercise-name']}`;
         this.exerciseTime = workoutObj.exercises[this.exerciseIndex]['exercise-dur'];
         this.exerciseDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-name'];
         this.descriptionDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-desc'];
