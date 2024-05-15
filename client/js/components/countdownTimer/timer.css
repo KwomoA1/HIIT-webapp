@@ -69,15 +69,15 @@
 }
 
 .exercise {
-    font-size: calc(2.5vh + 2.5vw); /* Adjust the value as needed */
+    font-size: calc(2.5vh + 2.5vw); 
 }
 
 .description {
-    font-size: calc(1vh + 1vw); /* Adjust the value as needed */
+    font-size: calc(1vh + 1vw);
 }
 
 .exerciseCountdown {
-    font-size: calc(3.5vh + 3.5vw); /* Adjust the value as needed */
+    font-size: calc(3.5vh + 3.5vw); 
 }
 
 .button-container {
@@ -131,9 +131,10 @@ button {
     align-self: flex-start;
 }
 
-@media (max-width:480px) {
-    #focal-point {
-        width: 480px;
-        height: auto;
-    }
+:host #focalPoint .restColor {
+    background-color: #7d2323;
+}
+
+:host #focalPoint > .workoutColor {
+    background-color: #265E37;
 }

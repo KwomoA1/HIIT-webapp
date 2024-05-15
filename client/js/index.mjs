@@ -1,4 +1,5 @@
-// TODO :
+// imports
+import * as userData from './user_data.mjs';
 
 // Stores references to objects
 const formElements = {};
@@ -7,7 +8,9 @@ export let workoutObj = {};
 // Stores the form element ui handles in formElements
 function formElemHandles() {
   formElements.workoutForm = document.querySelector('#workout-form');
-  formElements.formSections = [...formElements.workoutForm.querySelectorAll('.formSection')];
+  formElements.formSections = [
+    ...formElements.workoutForm.querySelectorAll('.formSection'),
+  ];
   formElements.wrkNameInput = document.querySelector('#workout-name');
   formElements.numExInput = document.querySelector('#num-exercises');
 }
@@ -20,9 +23,11 @@ function displayForm() {
   formElements.formIndex = parseInt(
     formElements.formSections.find((step) => {
       return step.classList.contains('active');
-    })?.dataset.step); // If not active class is found it sets it to null
+    })?.dataset.step
+  ); // If not active class is found it sets it to null
 
-  if (isNaN(formElements.formIndex)) { /* Checks if the value is NaN and sets it to 1 */
+  if (isNaN(formElements.formIndex)) {
+    /* Checks if the value is NaN and sets it to 1 */
     formElements.formIndex = 1;
     toggleActive(formElements.formIndex);
   }
@@ -71,7 +76,12 @@ function clearWorkoutObj() {
 
 // Removes the clone template fields from step 2 of the form
 function clearInputFields() {
-  const exerciseInputField = [...document.querySelectorAll('.exerciseInput'), ...document.querySelectorAll('.exerciseLabel'), ...document.querySelectorAll('ul'), ...document.querySelectorAll('h2')];
+  const exerciseInputField = [
+    ...document.querySelectorAll('.exerciseInput'),
+    ...document.querySelectorAll('.exerciseLabel'),
+    ...document.querySelectorAll('ul'),
+    ...document.querySelectorAll('h2'),
+  ];
   for (const input of exerciseInputField) {
     input.remove();
   }
@@ -142,7 +152,11 @@ function submitExercises() {
 function calcExerciseDuration() {
   const exercises = workoutObj.exercises;
   for (const exercise of exercises) {
-    const exerciseDuration = [parseInt(exercise['exercise-hour']), parseInt(exercise['exercise-min']), parseInt(exercise['exercise-sec'])];
+    const exerciseDuration = [
+      parseInt(exercise['exercise-hour']),
+      parseInt(exercise['exercise-min']),
+      parseInt(exercise['exercise-sec']),
+    ];
     exercise['exercise-dur'] = convertToSeconds(exerciseDuration);
   }
 }
@@ -164,13 +178,15 @@ function calcWorkoutDuration() {
   for (const exercise of exercises) {
     workoutObj.workoutDuration += exercise['exercise-dur'];
   }
-  const totalRestDuration = workoutObj.restDuration * workoutObj.exercises.length;
+  const totalRestDuration =
+    workoutObj.restDuration * workoutObj.exercises.length;
   workoutObj.workoutDuration = workoutObj.workoutDuration + totalRestDuration;
 }
 
 // Converts time duration to seconds array format must be [hour, minutes, seconds]
 function convertToSeconds(digitalTime) {
-  const totalSeconds = digitalTime[0] * 3600 + digitalTime[1] * 60 + digitalTime[2];
+  const totalSeconds =
+    digitalTime[0] * 3600 + digitalTime[1] * 60 + digitalTime[2];
   return totalSeconds;
 }
 
@@ -200,16 +216,14 @@ function cloneDisplayTemplate() {
 // Set the workout countdown and exercise countdown
 function submitWorkout(event) {
   if (event.target.classList.contains('submit-btn')) {
+    userData.addWorkout(workoutObj);
+    userData.saveData();
     const timeElement = document.createElement('timer-item');
-    const visualQue = document.createElement('round-visuals');
     const timeContainer = document.querySelector('.timer');
     timeContainer.append(timeElement);
-    timeContainer.append(visualQue);
-    const formContainer = document.querySelector('#workout-form');
-    formContainer.classList.add('hidden');
+    formElements.workoutForm.classList.add('hidden');
   }
 }
-
 
 // calls every function to run application
 function main() {

@@ -34,7 +34,8 @@ class Timer extends HTMLElement {
     this.exerciseIndex = 0;
     this.workoutStatus = 'workout';
     this.workoutTime = workoutObj.workoutDuration;
-    this.exerciseTime = workoutObj.exercises[this.exerciseIndex]['exercise-dur'];
+    this.exerciseTime =
+      workoutObj.exercises[this.exerciseIndex]['exercise-dur'];
     this.workoutID = null;
     this.exerciseID = null;
 
@@ -44,6 +45,7 @@ class Timer extends HTMLElement {
     this.exerciseDisplay = this.shadow.querySelector('.exercise');
     this.descriptionDisplay = this.shadow.querySelector('.description');
     this.exCountDisplay = this.shadow.querySelector('.exerciseCountdown');
+    this.focalPoint = this.shadow.querySelector('#focal-point');
 
     // Setting the display
     this.wrkProgressDisplay.textContent = `Exercise ${this.exerciseIndex + 1}/${workoutObj.exercises.length}`;
@@ -64,13 +66,17 @@ class Timer extends HTMLElement {
     this.updateWorkoutTimer = this.updateWorkoutTimer.bind(this);
     this.updateExerciseTimer = this.updateExerciseTimer.bind(this);
     this.formatTime = this.formatTime.bind(this);
-    this.testing = this.testing.bind(this);
-    this.testing2 = this.testing2.bind(this);
+    this.decrementTimer = this.decrementTimer.bind(this);
+    this.updateDisplays = this.updateDisplays.bind(this);
   }
 
   // Returns the time in an hour, minutes and seconds format (array structure [hour, minutes, seconds])
   formatTime(timeSecs) {
-    const time = [Math.floor(timeSecs / 3600), Math.floor((timeSecs % 3600) / 60), timeSecs % 60];
+    const time = [
+      Math.floor(timeSecs / 3600),
+      Math.floor((timeSecs % 3600) / 60),
+      timeSecs % 60,
+    ];
     for (const unit of time) {
       if (unit.toString().length === 1) {
         const number = unit;
@@ -82,25 +88,32 @@ class Timer extends HTMLElement {
     return `${time[0]}:${time[1]}:${time[2]}`;
   }
 
-  testing() {
+  decrementTimer() {
     this.exerciseTime -= 1;
     this.exCountDisplay.textContent = this.formatTime(this.exerciseTime);
   }
 
-  testing2() {
+  updateDisplays() {
     if (this.exerciseIndex !== workoutObj.exercises.length - 1) {
       if (this.workoutStatus === 'workout') {
         this.workoutStatus = 'rest';
+        this.focalPoint.classList.toggle('restColor');
+        console.log(this.focalPoint);
         this.exerciseTime = workoutObj.restDuration;
         this.exerciseDisplay.textContent = 'Rest';
         this.descriptionDisplay.textContent = 'Active rest';
       } else if (this.workoutStatus === 'rest') {
         this.workoutStatus = 'workout';
+        this.focalPoint.classList.toggle('workoutColor');
         this.exerciseIndex += 1;
-        this.wrkProgressDisplay.textContent = `Exercise ${this.exerciseIndex + 1}/${workoutObj.exercises.length}`;
-        this.exerciseTime = workoutObj.exercises[this.exerciseIndex]['exercise-dur'];
-        this.exerciseDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-name'];
-        this.descriptionDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-desc'];
+        this.wrkProgressDisplay.textContent = `Exercise ${this.exerciseIndex + 1
+          }/${workoutObj.exercises.length}`;
+        this.exerciseTime =
+          workoutObj.exercises[this.exerciseIndex]['exercise-dur'];
+        this.exerciseDisplay.textContent =
+          workoutObj.exercises[this.exerciseIndex]['exercise-name'];
+        this.descriptionDisplay.textContent =
+          workoutObj.exercises[this.exerciseIndex]['exercise-desc'];
       }
     } else {
       this.exerciseDisplay.textContent = 'Workout completed';
@@ -113,9 +126,9 @@ class Timer extends HTMLElement {
   updateExerciseTimer() {
     this.exerciseID = window.setInterval(() => {
       if (this.exerciseTime > 0) {
-        this.testing();
+        this.decrementTimer();
       } else if (this.exerciseTime === 0) {
-        this.testing2();
+        this.updateDisplays();
       }
     }, 1000);
   }
@@ -154,6 +167,5 @@ class Timer extends HTMLElement {
     this.resetBtn.addEventListener('click', this.reset);
   }
 }
-
 
 customElements.define('timer-item', Timer);
