@@ -199,7 +199,7 @@ function displayWorkoutObj() {
   cloneDisplayTemplate();
 }
 
-// Clones the display template and adds it to the main DOM
+// Clones the display template and adds it to the main DOM (Note: Change function name)
 function cloneDisplayTemplate() {
   const displayTemplate = document.querySelector('#exerciseDisplayTemplate');
   const displayContainer = document.querySelector('#validationContainer');
@@ -208,6 +208,16 @@ function cloneDisplayTemplate() {
     const cloned = displayTemplate.content.cloneNode(true);
     cloned.querySelector('.exerciseDis-name').textContent = `Exercise name: ${exercise['exercise-name']}`;
     cloned.querySelector('.exerciseDis-desc').textContent = `Exercise Description ${exercise['exercise-desc']}`;
+    const timeDisplay = `${exercise['exercise-hour']}:${exercise['exercise-min']}:${exercise['exercise-sec']}`;
+    let index = 0;
+    for (const char of timeDisplay) {
+      if (parseInt(char) > 0) {
+        index = timeDisplay.indexOf(char);
+        break;
+      }
+    }
+    const sliced = timeDisplay.slice(index);
+    console.log(sliced);
     cloned.querySelector('.exerciseDis-dur').textContent = `Exercise duration: ${exercise['exercise-hour']}:${exercise['exercise-min']}:${exercise['exercise-sec']}`;
     displayContainer.append(cloned);
   }
