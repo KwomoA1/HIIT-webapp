@@ -72,11 +72,7 @@ class Timer extends HTMLElement {
 
   // Returns the time in an hour, minutes and seconds format (array structure [hour, minutes, seconds])
   formatTime(timeSecs) {
-    const time = [
-      Math.floor(timeSecs / 3600),
-      Math.floor((timeSecs % 3600) / 60),
-      timeSecs % 60,
-    ];
+    const time = [Math.floor(timeSecs / 3600), Math.floor((timeSecs % 3600) / 60), timeSecs % 60];
     for (const unit of time) {
       if (unit.toString().length === 1) {
         const number = unit;

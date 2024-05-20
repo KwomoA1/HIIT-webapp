@@ -211,7 +211,16 @@ function cloneDisplayTemplate() {
         time[index] = newAttribute;
       }
     }
-    cloned.querySelector('.exerciseDis-dur').textContent = `Exercise duration: ${time[0]}:${time[1]}:${time[2]}`;
+    const timeDisplay = `${time[0]}:${time[1]}:${time[2]}`;
+    let index = 0;
+    for (const char of timeDisplay) {
+      if (parseInt(char) > 0) {
+        index = timeDisplay.indexOf(char);
+        break;
+      }
+    }
+    const sliced = timeDisplay.slice(index);
+    cloned.querySelector('.exerciseDis-dur').textContent = `Exercise duration: ${sliced}`;
     displayContainer.append(cloned);
   }
 }
