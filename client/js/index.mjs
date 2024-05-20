@@ -189,12 +189,12 @@ function displayWorkoutObj() {
   const workoutTitle = document.querySelector('.workout-title');
   workoutTitle.textContent = `Workout name: ${workoutObj.workoutName}`;
   const restDurItem = document.querySelector('.rest-info');
-  restDurItem.textContent = `Rest intervals: ${workoutObj.restDuration}`;
-  cloneDisplayTemplate();
+  restDurItem.textContent = `Rest intervals: ${formatTime(workoutObj.restDuration)}`;
+  cloneDisplayTemplate(restDurItem);
 }
 
 // Clones the display template and adds it to the main DOM (Note: Change function name)
-function cloneDisplayTemplate() {
+function cloneDisplayTemplate(location) {
   const displayTemplate = document.querySelector('#exerciseDisplayTemplate');
   const displayContainer = document.querySelector('#validationContainer');
 
@@ -202,27 +202,37 @@ function cloneDisplayTemplate() {
     const cloned = displayTemplate.content.cloneNode(true);
     cloned.querySelector('.exerciseDis-name').textContent = `Exercise name: ${exercise['exercise-name']}`;
     cloned.querySelector('.exerciseDis-desc').textContent = `Exercise Description ${exercise['exercise-desc']}`;
-    const time = [Math.floor(exercise['exercise-dur'] / 3600), Math.floor((exercise['exercise-dur'] % 3600) / 60), exercise['exercise-dur'] % 60];
-    for (const unit of time) {
-      if (unit.toString().length === 1) {
-        const number = unit;
-        const index = time.indexOf(unit);
-        const newAttribute = `0${number}`;
-        time[index] = newAttribute;
-      }
-    }
-    const timeDisplay = `${time[0]}:${time[1]}:${time[2]}`;
-    let index = 0;
-    for (const char of timeDisplay) {
-      if (parseInt(char) > 0) {
-        index = timeDisplay.indexOf(char);
-        break;
-      }
-    }
-    const sliced = timeDisplay.slice(index);
-    cloned.querySelector('.exerciseDis-dur').textContent = `Exercise duration: ${sliced}`;
-    displayContainer.append(cloned);
+    cloned.querySelector('.exerciseDis-dur').textContent = `Exercise duration: ${formatTime(exercise['exercise-dur'])}`;
+    displayContainer.insertBefore(cloned, location);
   }
+}
+
+// Converts the exercise duration into a digital clock format
+function formatTime(seconds) {
+  const hmsTime = [Math.floor(seconds / 3600), Math.floor((seconds % 3600) / 60), seconds % 60];
+  for (const unit of hmsTime) {
+    if (unit.toString().length === 1) {
+      const duration = unit;
+      const unitIndex = hmsTime.indexOf(unit);
+      const newFormat = `0${duration}`;
+      hmsTime[unitIndex] = newFormat;
+    }
+  }
+  const digiClockFormat = `${hmsTime[0]}:${hmsTime[1]}:${hmsTime[2]}`;
+  const format = sliceTimeFormat(digiClockFormat);
+  return format;
+}
+
+// Removes any units of time not being used e.g. 00:01:00 turns into 1:00
+function sliceTimeFormat(digitalTime) {
+  let index = 0;
+  for (const char of digitalTime) {
+    if (parseInt(char) > 0) {
+      index = digitalTime.indexOf(char);
+      break;
+    }
+  }
+  return digitalTime.slice(index);
 }
 
 // Set the workout countdown and exercise countdown
