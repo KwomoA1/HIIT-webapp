@@ -140,26 +140,21 @@ function setExerciseIndex(clonedInputsBoxes, index) {
 // Adds input values to workout object
 function submitExercises() {
   const exerciseInputBoxes = [...document.querySelectorAll('.exerciseInput')];
+  let exerciseDurationInputs = [];
   for (const input of exerciseInputBoxes) {
+    if (input.classList.contains('time')) {
+      exerciseDurationInputs.push(parseInt(input.value));
+      if (exerciseDurationInputs.length === 3) {
+        workoutObj.exercises[input.dataset.exerciseIndex]['exercise-dur'] = convertToSeconds(exerciseDurationInputs);
+        exerciseDurationInputs = [];
+      }
+    }
     workoutObj.exercises[input.dataset.exerciseIndex][input.id] = input.value;
   }
-  calcExerciseDuration();
   calcRestDuration();
   calcWorkoutDuration();
 }
 
-// Calculate the total duration of the exercise using the hour, minutes, seconds values
-function calcExerciseDuration() {
-  const exercises = workoutObj.exercises;
-  for (const exercise of exercises) {
-    const exerciseDuration = [
-      parseInt(exercise['exercise-hour']),
-      parseInt(exercise['exercise-min']),
-      parseInt(exercise['exercise-sec']),
-    ];
-    exercise['exercise-dur'] = convertToSeconds(exerciseDuration);
-  }
-}
 
 // Calculate rest duration for each interval
 function calcRestDuration() {
@@ -185,8 +180,7 @@ function calcWorkoutDuration() {
 
 // Converts time duration to seconds array format must be [hour, minutes, seconds]
 function convertToSeconds(digitalTime) {
-  const totalSeconds =
-    digitalTime[0] * 3600 + digitalTime[1] * 60 + digitalTime[2];
+  const totalSeconds = digitalTime[0] * 3600 + digitalTime[1] * 60 + digitalTime[2];
   return totalSeconds;
 }
 
@@ -208,17 +202,16 @@ function cloneDisplayTemplate() {
     const cloned = displayTemplate.content.cloneNode(true);
     cloned.querySelector('.exerciseDis-name').textContent = `Exercise name: ${exercise['exercise-name']}`;
     cloned.querySelector('.exerciseDis-desc').textContent = `Exercise Description ${exercise['exercise-desc']}`;
-    const timeDisplay = `${exercise['exercise-hour']}:${exercise['exercise-min']}:${exercise['exercise-sec']}`;
-    let index = 0;
-    for (const char of timeDisplay) {
-      if (parseInt(char) > 0) {
-        index = timeDisplay.indexOf(char);
-        break;
+    const time = [Math.floor(exercise['exercise-dur'] / 3600), Math.floor((exercise['exercise-dur'] % 3600) / 60), exercise['exercise-dur'] % 60];
+    for (const unit of time) {
+      if (unit.toString().length === 1) {
+        const number = unit;
+        const index = time.indexOf(unit);
+        const newAttribute = `0${number}`;
+        time[index] = newAttribute;
       }
     }
-    const sliced = timeDisplay.slice(index);
-    console.log(sliced);
-    cloned.querySelector('.exerciseDis-dur').textContent = `Exercise duration: ${exercise['exercise-hour']}:${exercise['exercise-min']}:${exercise['exercise-sec']}`;
+    cloned.querySelector('.exerciseDis-dur').textContent = `Exercise duration: ${time[0]}:${time[1]}:${time[2]}`;
     displayContainer.append(cloned);
   }
 }
