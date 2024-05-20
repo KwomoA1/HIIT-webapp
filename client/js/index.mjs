@@ -106,9 +106,6 @@ function createExerciseObj(number) {
     const exerciseObj = {
       'exercise-name': `exercises ${i + 1}`,
       'exercise-desc': '',
-      'exercise-hour': '',
-      'exercise-min': '',
-      'exercise-sec': '',
       'exercise-dur': '',
     };
     workoutObj.exercises.push(exerciseObj);

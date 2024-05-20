@@ -6,19 +6,17 @@ class Timer extends HTMLElement {
     super();
     this.shadow = this.attachShadow({ mode: 'open' });
     this.shadow.innerHTML = `
-    <div id='component-container'>
-      <div id='workout-info'> 
-        <span class='wrkProgress'></span> 
-        <span class='workoutCountdown'></span>
-      </div> 
-      <div id='focal-point'>
-        <span class='exercise'></span>
-        <span class='description'></span>
-        <span class='exerciseCountdown'></span>
+    <div class='component-container'>
+      <div class='wrkProgress'></div> 
+      <div class='workoutCountdown'></div>
+      <div class='focal-point'>
+        <div class='exercise'></div>
+        <div class='description'></div>
+        <div class='exerciseCountdown'></div>
         <div class='button-container'>
           <button type='button' class='resetBtn'> Reset </button>
           <button type='button' class='startBtn'> Start </button>
-          <button type='button' class='pauseBtn'> Pause </button>
+          <button type='button' class='pauseBtn'> Pause </button
         </div>
       </div>
     </div>
@@ -45,7 +43,7 @@ class Timer extends HTMLElement {
     this.exerciseDisplay = this.shadow.querySelector('.exercise');
     this.descriptionDisplay = this.shadow.querySelector('.description');
     this.exCountDisplay = this.shadow.querySelector('.exerciseCountdown');
-    this.focalPoint = this.shadow.querySelector('#focal-point');
+    this.focalPoint = this.shadow.querySelector('.focal-point');
 
     // Setting the display
     this.wrkProgressDisplay.textContent = `Exercise ${this.exerciseIndex + 1}/${workoutObj.exercises.length}`;

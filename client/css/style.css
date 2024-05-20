@@ -1,165 +1,146 @@
-
-/* Setting CSS variable */
 * {
-    padding:0;
-    margin:0;
+    margin: 0;
+    padding: 0;
 }
 
 :root {
+    /*Color properties*/
     --backgroundColor: #f8f7f6;
     --darkerColor: #edebe8;
-    --click: #f8f7f6;
-    --darkColor: #403e49;
     --primaryColor: #d35548;
     --hoverBtn: #8b2b21;
     --clickBtn: #d35548;
-    --lightColor: #d96b60;
+
+    --columns: 1fr;
+    --layout: 'header' 'main';
+    --space-between-content: 0;
 }
 
-body {
+@media (min-width: 500px) {
+    .main > .setupTimer-btn {
+        /* sizing */
+        max-width: 50vw;
+        width: 100%;
+        font-size: 5vw;
+        padding: 1%;
+    }
+}
+
+@media(min-width: 1200px) {
+    .main > .setupTimer-btn {
+        /* sizing */
+        max-width: 50vw;
+        width: 20%;
+
+        font-size: 2vw;
+        padding: 1%;
+    }
+}
+
+main {
     background: var(--backgroundColor);
-}
 
-.logo{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: var(--primaryColor);
-    height: 50px;
-    color: var(--backgroundColor);
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 35px;
-    line-height: 60px;
-    font-weight: bold;
-    width: 100%; /* Set width to 100% */
-    padding: 0; /* Remove any horizontal padding */
-}
-
-.setupTimer-btn {
-    border: none;
-    font-size: 1.5rem;
-    font-family: Arial, Helvetica, sans-serif;
-    border-radius: 3px;
-    background-color: var(--primaryColor);
-    color: var(--backgroundColor);
-    text-align: center;
-    width: 50%;
-    padding: 10px 20px;
-    max-width: 200px;
-    display: block;
-    margin: 40px auto 20px;
-}
-
-.setupTimer-btn:hover {
-    background-color: var(--hoverBtn); /* Adjusted color on hover */
-}
-
-.setupTimer-btn:active {
-    background-color: var(--clickBtn); /* Adjusted color when clicked */
-}
-
-
-.form{
-    display:block;
-    padding-bottom: 10px;
-}
-
-.formSection {
-    display: inline-flex;
-    flex-direction: column; /* Stack elements vertically */
-    justify-content: center;
-    align-items: center;
-    background-color: var(--primaryColor);
-    padding: 0.5rem; /* Optional: Add padding for spacing */
-    border-radius: 0.5rem;
-    max-width: 440px; /* Adjust the maximum width as needed */
-    width: 100%; /* Ensure it takes the full available width */
+    /* positon */
+    max-width: 100%;
     margin: 0 auto;
-    margin-top: 10px;
+
+    /* Grid */
+    grid-template-areas: var(--layout);
+    grid-template-columns: var(--columns);
+    gap: var(--space-between-content);
 }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
+/* Header styling */
+.logo {
 
-
-.form-group > label {
-    font-weight: bold;
-    font-size: 1em;
+    /* Text */
+    font-family: Arial, Helvetica, sans-serif;
     color: var(--backgroundColor);
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.form-group > input {
-    margin-top: 10;
-    border: 0.5px solid #333;
-    border-radius: 0.25em;
-    font-size: 1rem;
-    text-align: left;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-#rest-inputs > label {
-    margin-top: 10px;
+    font-size: 2.5rem;
     font-weight: bold;
-    font-size: 1em;
-    color: var(--backgroundColor);
-    font-family: Arial, Helvetica, sans-serif;
+
+    /*background*/
+    background-color: var(--primaryColor);
+
+    /* Grid and positioning */
+    display: grid;
+    grid-area: header;
+    place-items: center;
+    
+}
+
+main>.main {
+    grid-area: main;
+
+    height: 100vh;
 }
 
 
-#rest-inputs > input {
-    border: 0.5px solid #333;
-    border-radius: 0.25em;
-    font-size: 1rem;
-    text-align: left;
-    font-family: Arial, Helvetica, sans-serif;
-}
+/* Buttons styling */
+.setupTimer-btn {
 
-.rest-info{
-    list-style-type:none;
-    color: var(--backgroundColor);
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-}
+    /* Positioning */
+    margin: 2% auto 0 auto;
 
-li {
-    list-style-type:none;
+    /* sizing */
+    max-width: 70vw;
+    width: 50%;
+
+
+    /* styling */
+    background-color: var(--primaryColor);
     color: var(--backgroundColor);
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
+    font-size: 5vw;
+    padding: 1%;
+    border: none;
+    border-radius: 10px;
+
+    /* Grid */
+    display: grid;
+
 }
 
-ul {
-    margin-bottom: 15px;
+.setupTimer-btn:hover{
+    background-color: var(--hoverBtn);
 }
 
-h2 {
-    display: flex;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 1.5em;
-    color: var(--backgroundColor);
-    font-family: Arial, Helvetica, sans-serif;
-    margin-top: 10px;
+.setupTimer-btn:focus{
+    background-color: var(--clickBtn);
 }
 
-timer-item {
-    display: flex;
+.setupTimer-btn.hidden{
+    display: none;
+}
+
+
+/* Form styling */
+.formSection {
+
+    /*Positioning */
+    margin: 2% auto 0 auto;
+
+    /*sizing */
+    max-width: 440px;
+    width: 100%;
+    padding: 0.5rem;
+
+
+    /* styling */
+    background-color: var(--primaryColor);
+
+    /* Grid */
+    display: inline-flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
 }
 
-.timer-item > button {
-    display: inline-block; /* Change display to inline-block */
-    margin: 5px; /* Add margin between buttons */
-}
-
-#nav-buttons {
-    margin-top: 15px;
+.form-group{
+    display: flex;
+    flex-direction: column;
 }
 
 .formSection.inactive {
@@ -174,46 +155,37 @@ timer-item {
     display:none;
 }
 
-.next-btn {
-    float: right;
+
+.blue{
+    background: blue;
 }
 
-.next-btn,
-.prev-btn,
-.submit-btn {
-    border: none;
-    width: calc(50% - 5px); /* Adjusted width for both buttons */
-    text-align: center;
-    display: inline-block; /* Changed display to inline-block */
-    background-color: var(--backgroundColor);
-    color: var(--primaryColor);
-    border-radius: 5px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    font-size: 1.2rem;
-    margin-right: 5px; /* Added margin between the buttons */
+.center {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100vh;
 }
 
-.next-btn:hover,
-.prev-btn:hover,
-.submit-btn:hover {
-    background-color: var(--darkerColor);
+.circle{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 1px 1px #0000001a;
 }
 
-.next-btn:active,
-.prev-btn:active,
-.submit-btn:active {
-    background-color: var(--backgroundColor);
+.pulse {
+    animation: pulse-animation 2s infinite;
 }
 
-.next-btn:last-child,
-.prev-btn:last-child,
-.submit-btn:last-child {
-    margin-right: 0; /* Remove margin for the last button */
+@keyframes pulse-animation {
+    0%{
+        box-shadow: 0 0 0 0px rgba(9, 7, 143, 0.781);
+    }
+    100% {
+        box-shadow: 0 0 0 20px rgba(42, 214, 8, 0);
+    }
 }
 
-
-.timer{
-    display: inline-block;
-}
+/* All css above needs redoing */
 
