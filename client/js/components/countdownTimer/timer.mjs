@@ -7,12 +7,16 @@ class Timer extends HTMLElement {
     this.shadow = this.attachShadow({ mode: 'open' });
     this.shadow.innerHTML = `
     <div class='component-container'>
-      <div class='wrkProgress'></div> 
-      <div class='workoutCountdown'></div>
+      <div class="wrk-info">
+        <div class='workoutCountdown'></div>
+        <div class='wrkProgress'></div> 
+      </div>
       <div class='focal-point'>
-        <div class='exercise'></div>
-        <div class='description'></div>
-        <div class='exerciseCountdown'></div>
+        <div class='ex-info'>
+          <div class='exercise'></div>
+          <div class='description'></div>
+          <div class='exerciseCountdown'></div>
+        </div>
         <div class='button-container'>
           <button type='button' class='resetBtn'> Reset </button>
           <button type='button' class='startBtn'> Start </button>
@@ -91,14 +95,15 @@ class Timer extends HTMLElement {
     if (this.exerciseIndex !== workoutObj.exercises.length - 1) {
       if (this.workoutStatus === 'workout') {
         this.workoutStatus = 'rest';
-        this.focalPoint.classList.toggle('restColor');
-        console.log(this.focalPoint);
+        this.focalPoint.classList.remove('workoutPulse');
+        this.focalPoint.classList.add('resting');
         this.exerciseTime = workoutObj.restDuration;
         this.exerciseDisplay.textContent = 'Rest';
         this.descriptionDisplay.textContent = 'Active rest';
       } else if (this.workoutStatus === 'rest') {
         this.workoutStatus = 'workout';
-        this.focalPoint.classList.toggle('workoutColor');
+        this.focalPoint.class.remove('resting');
+        this.focalPoint.classList.add('workoutPulse');
         this.exerciseIndex += 1;
         this.wrkProgressDisplay.textContent = `Exercise ${this.exerciseIndex + 1
           }/${workoutObj.exercises.length}`;
@@ -129,6 +134,7 @@ class Timer extends HTMLElement {
 
   // Update the text content div element and time provided as an argument
   updateWorkoutTimer() {
+    this.focalPoint.classList.add('workoutPulse');
     this.workoutID = window.setInterval(() => {
       if (this.workoutTime > 0) {
         this.workoutTime -= 1;

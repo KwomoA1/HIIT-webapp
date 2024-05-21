@@ -7,4 +7,134 @@
     --buttonColor: #fe6d6d;
     --hoverColor: #fe8989;
     --focusColor: #fe5b5b;
+
+    /* Root colors */
+    --backgroundColor: #f8f7f6;
+    --darkerColor: #edebe8;
+    --primaryColor: #d35548;
+    --hoverBtn: #8b2b21;
+    --clickBtn: #d35548;
+
+    /* Grid layout */
+    --columns: 1fr;
+    --rows: repeat(2,1fr);
+    --layoutComponent: 'workoutInfo' 'buttons';
+}
+
+.wrk-info {
+    display: grid;
+    grid-template-columns: 2fr;
+    grid-template-areas: 'wrkProgress' 'exProgress';
+    justify-items: center;
+    margin-bottom: 4%;
+}
+
+.wrkProgress {
+    grid-area: wrkProgress;
+
+    /* style */
+    color: var(--primaryColor);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.workoutCountdown {
+    grid-area: exProgress;
+
+    /* style */
+    color: var(--primaryColor);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+
+
+.focal-point {
+
+    /* Size */
+    height: 25vh;
+    /* Style */
+    background-color: var(--primaryColor);
+    border-radius: 20px;
+
+    /*Grid*/
+    display: grid;
+    grid-template-columns: var(--columns);
+    grid-template-rows: var(--rows);
+    grid-template-areas: var(--layoutComponent);
+    align-items: center;
+
+}
+
+.focal-point.workoutPulse{
+    background-color: var(--workoutColor);
+    animation: pulse-animation 2s infinite;
+}
+
+.focal-point.resting {
+    background-color: var(--restColor);
+    animation: none;
+}
+
+
+
+@keyframes pulse-animation {
+    0% {
+        transform: scale(0.9);
+        box-shadow: 0 0 0 0 rgba(38, 135, 78, 0.7);
+      }
+    
+
+    70%{
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(38, 135, 78, 0);
+    }
+
+    100% {
+        transform: scale(0.9);
+    }
+}
+
+.ex-info{
+    grid-area: workoutInfo;
+    margin: 0 auto;
+    
+}
+
+.ex-info > div {
+    /*style */
+    color:var(--backgroundColor);
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    
+}
+
+button {
+    
+    width: 30%;
+
+    /* styling */
+    background-color: var(--backgroundColor);
+    color: black;
+    border: none;
+    border-radius: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.button-container {
+    width: 100%;
+    height: 30%;
+
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+
+    grid-area: buttons;
+    margin: 0 auto;
 }

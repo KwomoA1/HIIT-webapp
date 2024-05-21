@@ -349,6 +349,53 @@ li {
      text-align: center;
 }
 
+.timer{
+
+    /* size */
+    max-width: 45vw;
+    width: 35%;
+
+    /* Positioning */
+    margin: 10% auto;
+}
+
+@media (min-width: 375px) {
+    /* Form styling */
+    .formSection {
+
+        /*Positioning */
+        margin: 2% auto 0 auto;
+
+        /*sizing */
+        max-width: 440px;
+        width: 80%;
+    }
+
+    
+    .formSection > h2 {
+        font-size: 1rem;
+    }
+
+    .time-input-container > label {
+        font-size: 1rem;
+    }
+
+    .time-input-container > input {
+        width: 90%;
+    }
+
+    #rest-inputs > input {
+        width: 90%;
+    }
+
+    .workout-title {
+        /* Styling */
+        font-size: 1.5rem;
+    }
+    
+
+}
+
 @media (min-width: 500px) {
     .setupTimer-btn {
         /* sizing */
@@ -366,9 +413,37 @@ li {
         margin: 2% auto 0 auto;
     
         /*sizing */
-        max-width: 440px;
-        width: 87%;
+        max-width: 600px;
+        width: 90%;
         padding: 0.5rem;   
+    }
+
+    .formSection > h2 {
+        font-size: 1.5rem;
+       
+    }
+
+    .time-input-container > label {
+        font-size: 1rem;
+    }
+
+    .time-input-container > input {
+        width: 90%;
+    }
+
+    li {
+
+        font-size: 1.5rem;
+    }
+    
+    .workout-title {
+        /* Styling */
+        font-size: 2rem;
+    }
+    
+    .rest-info {
+        /* Styling */
+        font-size: 1.5rem;
     }
 }
 
