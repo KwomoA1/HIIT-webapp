@@ -123,7 +123,7 @@ function cloneTemplate(number) {
     exerciseHeader.textContent = `exercise ${i + 1}`;
     const templateInputs = [...cloned.querySelectorAll('.exerciseInput')];
     setExerciseIndex(templateInputs, i);
-    formSection2.insertBefore(cloned, document.querySelector('#rest-inputs'));
+    formSection2.insertBefore(cloned, document.querySelector('.rest-label'));
   }
 }
 

@@ -14,37 +14,27 @@
     --columns: 1fr;
     --layout: 'header' 'main';
     --space-between-content: 0;
+
+    --formRows: repeat(3, 1fr);
+    --formLayout: 'sectionTitle' 'inputs' 'button1' 'button2';
+
 }
 
-@media (min-width: 500px) {
-    .main > .setupTimer-btn {
-        /* sizing */
-        max-width: 50vw;
-        width: 100%;
-        font-size: 5vw;
-        padding: 1%;
-    }
-}
 
-@media(min-width: 1200px) {
-    .main > .setupTimer-btn {
-        /* sizing */
-        max-width: 50vw;
-        width: 20%;
-
-        font-size: 2vw;
-        padding: 1%;
-    }
+body {
+    width: 100vw;
+    height: 100vh;
 }
 
 main {
     background: var(--backgroundColor);
 
-    /* positon */
-    max-width: 100%;
-    margin: 0 auto;
+    /* size */
+    height: 100%;
 
     /* Grid */
+    display: grid;
+    grid-area: main;
     grid-template-areas: var(--layout);
     grid-template-columns: var(--columns);
     gap: var(--space-between-content);
@@ -69,11 +59,6 @@ main {
     
 }
 
-main>.main {
-    grid-area: main;
-
-    height: 100vh;
-}
 
 
 /* Buttons styling */
@@ -84,7 +69,11 @@ main>.main {
 
     /* sizing */
     max-width: 70vw;
-    width: 50%;
+    width: 70%;
+    max-height: 50vh;
+    height: 17%;
+
+
 
 
     /* styling */
@@ -92,7 +81,7 @@ main>.main {
     color: var(--backgroundColor);
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
-    font-size: 5vw;
+    font-size: 2.5rem;
     padding: 1%;
     border: none;
     border-radius: 10px;
@@ -119,29 +108,193 @@ main>.main {
 .formSection {
 
     /*Positioning */
-    margin: 2% auto 0 auto;
+    margin: 2% auto 0 3%;
 
     /*sizing */
     max-width: 440px;
-    width: 100%;
+    width: 87%;
     padding: 0.5rem;
 
 
     /* styling */
     background-color: var(--primaryColor);
+    border-radius: 10px;
 
     /* Grid */
-    display: inline-flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: var(--columns);
+    grid-template-rows: var(--formRows);
+    grid-template-areas: var(--formLayout);
+    gap: 5000px;
     
 }
 
-.form-group{
-    display: flex;
-    flex-direction: column;
+.formSection > h2 {
+    display: grid;
+    grid-area: sectionTitle;
+    place-items: center;
+
+    /* Styling */
+    color: var(--backgroundColor);
+    font-size: 1.5rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-style: oblique;
 }
+
+
+.formSection > label,
+.formSection > input {
+    display: grid;
+    grid-area: inputs;
+    place-items: center;
+
+    /*positioning*/
+    text-align: center;
+
+    /* Styling */
+    color: black;
+    font-size: 1.2rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+}
+
+.formSection > label {
+    color: var(--backgroundColor);
+}
+
+#num-exercises {
+    margin: 0 auto;
+    border-radius: 5px;
+    border-width: 1.5px;
+    border-color: grey;
+}
+#workout-name {
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 5px;
+    border-width: 1.5px;
+    border-color: grey;
+    
+}
+
+#exercise-name {
+    /* size */
+    width: 50%;
+    /* Positioning */
+    margin: 1% auto;
+}
+
+#exercise-desc {
+    /* size */
+    width: 90%;
+
+    /* positioning */
+    margin: 1% auto;
+}
+
+.time-input-container, 
+#rest-inputs {
+    margin: 1% 0;
+    display:grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-areas: 'hour' 'hour-input' 'minutes' 'minutes-input' 'seconds' 'seconds-input';
+}
+
+label > #exercise-hour {
+    grid-area: hour;
+}
+
+
+label > #exercise-min {
+    grid-area: minutes;
+}
+
+label > #exercise-sec {
+    grid-area: seconds;
+}
+
+label > #rest-hour {
+    grid-area: rest-hour;
+}
+
+label > #rest-min {
+    grid-area: rest-min;
+}
+
+label > #rest-sec {
+    grid-area: rest-sec;
+}
+
+.time-input-container > label {
+    color: var(--backgroundColor);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.time-input-container > input {
+    width: 50%;
+    border-width: 1.5px;
+    border-radius: 5px;
+    border-color: grey;
+    text-align: center;
+}
+
+#rest-inputs > label {
+    color: var(--backgroundColor);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+#rest-inputs > input {
+    width: 50%;
+    border-width: 1.5px;
+    border-radius: 5px;
+    border-color: grey;
+    text-align: center;
+}
+
+input > #exercise-hour {
+    grid-area: hour-input;
+}
+
+input > #exercise-min {
+    grid-area: minutes-input;
+}
+
+
+label > #exercise-sec {
+    grid-area: seconds-input;
+}
+
+
+button {
+
+    /* Styling */
+    background-color: var(--backgroundColor);
+    color: var(--primaryColor);
+    border: none;
+    border-radius: 5px;
+
+    /* Sizing */
+    font-size: 1em;
+    width: 45%;
+    font-weight: bold;
+
+    /* Positioning */
+    margin-left: 1px;
+}
+
+#nav-buttons {
+    display:flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    justify-content: center;
+    margin-top: 1%;
+}
+
 
 .formSection.inactive {
     display: none;
@@ -155,37 +308,81 @@ main>.main {
     display:none;
 }
 
-
-.blue{
-    background: blue;
+.line {
+    margin-top: 1%;
+    margin-bottom: 1%;
+    width: 100%;
+    height: 1.5px;
+    background-color: var(--backgroundColor);
 }
 
-.center {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    height: 100vh;
+li {
+    /* Styling */
+    color: var(--backgroundColor);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    list-style: none;
 }
 
-.circle{
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    box-shadow: 0px 0px 1px 1px #0000001a;
+.workout-title {
+    /* Styling */
+    color: var(--backgroundColor);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+
+    /* Positioning */
+    text-align: center;
+
 }
 
-.pulse {
-    animation: pulse-animation 2s infinite;
+.rest-info {
+    /* Styling */
+    color: var(--backgroundColor);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+
+     /* Positioning */
+     margin: 0 auto;
+     text-align: center;
 }
 
-@keyframes pulse-animation {
-    0%{
-        box-shadow: 0 0 0 0px rgba(9, 7, 143, 0.781);
+@media (min-width: 500px) {
+    .setupTimer-btn {
+        /* sizing */
+        max-width: 50vw;
+        width: 70%;
+        max-height: 50vh;
+        height: 20%;
+        font-size: 2.5rem;
+        padding: 1%;
     }
-    100% {
-        box-shadow: 0 0 0 20px rgba(42, 214, 8, 0);
+
+    .formSection {
+
+        /*Positioning */
+        margin: 2% auto 0 auto;
+    
+        /*sizing */
+        max-width: 440px;
+        width: 87%;
+        padding: 0.5rem;   
     }
 }
 
-/* All css above needs redoing */
+@media(min-width: 1200px) {
+    .setupTimer-btn {
 
+        /* sizing */
+        max-width: 50vw;
+        width: 20%;
+        max-height: 50vh;
+        height: 19%;
+
+        font-size: 2.2rem;
+        
+        padding: 1%;
+    }
+}
