@@ -102,7 +102,7 @@ class Timer extends HTMLElement {
     if (this.exerciseIndex !== workoutObj.exercises.length - 1) {
       this.upNext.textContent = `UP NEXT: ${workoutObj.exercises[this.exerciseIndex + 1]['exercise-name']}`;
     } else {
-      this.upNext.textContent = 'workout over!';
+      this.upNext.textContent = 'UP NEXT: Workout Completed!';
     }
   }
 
@@ -123,7 +123,7 @@ class Timer extends HTMLElement {
       this.focalPoint.classList.remove('workout');
       this.focalPoint.classList.add('completed');
       this.exerciseDisplay.textContent = 'Workout completed';
-      this.descriptionDisplay.textContent = "Congrats you're finished";
+      this.descriptionDisplay.textContent = 'Congrats !';
       clearInterval(this.intervalID);
       this.intervalID = null;
     }
@@ -142,7 +142,7 @@ class Timer extends HTMLElement {
 
   // Starts the countdown functions one click event runs on start button
   start() {
-    this.focalPoint.classList.add('workout');
+    this.focalPoint.classList.toggle('workout', true);
     this.focalPoint.classList.toggle('paused', false);
     if (!this.intervalID) {
       this.intervalID = setInterval(this.updateTimer, 1000);

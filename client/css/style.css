@@ -356,7 +356,8 @@ li {
     width: 35%;
 
     /* Positioning */
-    margin: 10% auto;
+    margin-right:20px;
+    margin: 20% auto;
 }
 
 @media (min-width: 375px) {
@@ -367,6 +368,7 @@ li {
 
         max-height: 70vh;
         margin-left: 10px;
+        margin-top: 10%;
     }
 
     /* Form styling */
@@ -454,9 +456,17 @@ li {
         /* Styling */
         font-size: 1.5rem;
     }
+
+    .timer{
+        margin-top: 10%;
+    }
 }
 
 @media(min-width: 1200px) {
+    .timer{
+        margin: 0 auto;
+    }
+
     .setupTimer-btn {
 
         /* sizing */
