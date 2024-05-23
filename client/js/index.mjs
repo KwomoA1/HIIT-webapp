@@ -170,8 +170,7 @@ function calcWorkoutDuration() {
   for (const exercise of exercises) {
     workoutObj.workoutDuration += exercise['exercise-dur'];
   }
-  const totalRestDuration =
-    workoutObj.restDuration * workoutObj.exercises.length;
+  const totalRestDuration = workoutObj.restDuration * (workoutObj.exercises.length - 1); // Final exercise should not have a rest period after it
   workoutObj.workoutDuration = workoutObj.workoutDuration + totalRestDuration;
 }
 

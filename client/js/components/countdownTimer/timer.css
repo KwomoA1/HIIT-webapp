@@ -10,7 +10,8 @@
 
     /* Root colors */
     --backgroundColor: #f8f7f6;
-    --darkerColor: #edebe8;
+    --darkerColor: #ddd9d3;
+    --clickcolor: #d2cdc6;
     --primaryColor: #d35548;
     --hoverBtn: #8b2b21;
     --clickBtn: #d35548;
@@ -68,13 +69,22 @@
 
 }
 
-.focal-point.workoutPulse{
+.focal-point.workout{
     background-color: var(--workoutColor);
     animation: pulse-animation 2s infinite;
 }
 
 .focal-point.resting {
     background-color: var(--restColor);
+    animation: none;
+}
+
+.focal-point.completed {
+    background-color: var(--primaryColor);
+    animation: none;
+}
+
+.focal-point.paused{
     animation: none;
 }
 
@@ -125,6 +135,14 @@ button {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1rem;
     font-weight: bold;
+}
+
+button:hover {
+    background-color: var(--darkerColor);
+}
+
+button:focus {
+    background-color: var(--clickcolor);
 }
 
 .button-container {

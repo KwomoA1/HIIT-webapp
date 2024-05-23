@@ -23,6 +23,7 @@ class Timer extends HTMLElement {
           <button type='button' class='pauseBtn'> Pause </button
         </div>
       </div>
+      <div class='up-next'></div>
     </div>
     `;
 
@@ -34,12 +35,9 @@ class Timer extends HTMLElement {
 
     // Setting custom element attributes
     this.exerciseIndex = 0;
-    this.workoutStatus = 'workout';
     this.workoutTime = workoutObj.workoutDuration;
-    this.exerciseTime =
-      workoutObj.exercises[this.exerciseIndex]['exercise-dur'];
-    this.workoutID = null;
-    this.exerciseID = null;
+    this.exerciseTime = workoutObj.exercises[this.exerciseIndex]['exercise-dur'];
+    this.intervalID = null;
 
     // Getting shadowDOM HTML elements
     this.wrkProgressDisplay = this.shadow.querySelector('.wrkProgress');
@@ -48,6 +46,7 @@ class Timer extends HTMLElement {
     this.descriptionDisplay = this.shadow.querySelector('.description');
     this.exCountDisplay = this.shadow.querySelector('.exerciseCountdown');
     this.focalPoint = this.shadow.querySelector('.focal-point');
+    this.upNext = this.shadow.querySelector('.up-next');
 
     // Setting the display
     this.wrkProgressDisplay.textContent = `Exercise ${this.exerciseIndex + 1}/${workoutObj.exercises.length}`;
@@ -55,6 +54,7 @@ class Timer extends HTMLElement {
     this.exerciseDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-name'];
     this.descriptionDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-desc'];
     this.exCountDisplay.textContent = this.formatTime(this.exerciseTime);
+    this.upNext.textContent = `Up next: ${workoutObj.exercises[this.exerciseIndex + 1]['exercise-name']}`;
 
     // Getting buttons
     this.startBtn = this.shadow.querySelector('.startBtn');
@@ -65,10 +65,8 @@ class Timer extends HTMLElement {
     this.start = this.start.bind(this);
     this.pause = this.pause.bind(this);
     this.reset = this.reset.bind(this);
-    this.updateWorkoutTimer = this.updateWorkoutTimer.bind(this);
-    this.updateExerciseTimer = this.updateExerciseTimer.bind(this);
+    this.updateTimer = this.updateTimer.bind(this);
     this.formatTime = this.formatTime.bind(this);
-    this.decrementTimer = this.decrementTimer.bind(this);
     this.updateDisplays = this.updateDisplays.bind(this);
   }
 
@@ -86,79 +84,92 @@ class Timer extends HTMLElement {
     return `${time[0]}:${time[1]}:${time[2]}`;
   }
 
-  decrementTimer() {
-    this.exerciseTime -= 1;
-    this.exCountDisplay.textContent = this.formatTime(this.exerciseTime);
+  restDisplayInfo(restDescription) {
+    this.exerciseTime = workoutObj.restDuration;
+    this.exerciseDisplay.textContent = 'Rest';
+    this.descriptionDisplay.textContent = restDescription;
   }
 
-  updateDisplays() {
+  exerciseDisplayInfo() {
+    this.wrkProgressDisplay.textContent = `Exercise: ${this.exerciseIndex + 1}/${workoutObj.exercises.length}`;
+    this.exerciseTime = workoutObj.exercises[this.exerciseIndex]['exercise-dur'];
+    this.exerciseDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-name'];
+    this.descriptionDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-desc'];
     if (this.exerciseIndex !== workoutObj.exercises.length - 1) {
-      if (this.workoutStatus === 'workout') {
-        this.workoutStatus = 'rest';
-        this.focalPoint.classList.remove('workoutPulse');
-        this.focalPoint.classList.add('resting');
-        this.exerciseTime = workoutObj.restDuration;
-        this.exerciseDisplay.textContent = 'Rest';
-        this.descriptionDisplay.textContent = 'Active rest';
-      } else if (this.workoutStatus === 'rest') {
-        this.workoutStatus = 'workout';
-        this.focalPoint.class.remove('resting');
-        this.focalPoint.classList.add('workoutPulse');
-        this.exerciseIndex += 1;
-        this.wrkProgressDisplay.textContent = `Exercise ${this.exerciseIndex + 1
-          }/${workoutObj.exercises.length}`;
-        this.exerciseTime =
-          workoutObj.exercises[this.exerciseIndex]['exercise-dur'];
-        this.exerciseDisplay.textContent =
-          workoutObj.exercises[this.exerciseIndex]['exercise-name'];
-        this.descriptionDisplay.textContent =
-          workoutObj.exercises[this.exerciseIndex]['exercise-desc'];
-      }
+      this.upNext.textContent = `Up next: ${workoutObj.exercises[this.exerciseIndex + 1]['exercise-name']}`;
     } else {
-      this.exerciseDisplay.textContent = 'Workout completed';
-      this.descriptionDisplay.textContent = "Congrats you're finished";
-      clearInterval(this.exerciseID);
-      clearInterval(this.workoutID);
+      this.upNext.textContent = 'workout over!';
     }
   }
 
-  updateExerciseTimer() {
-    this.exerciseID = window.setInterval(() => {
-      if (this.exerciseTime > 0) {
-        this.decrementTimer();
-      } else if (this.exerciseTime === 0) {
-        this.updateDisplays();
+  updateDisplays() {
+    if (this.exerciseIndex < workoutObj.exercises.length - 1) {
+      if (this.focalPoint.classList.contains('workout')) {
+        this.focalPoint.classList.toggle('workout', false);
+        this.focalPoint.classList.toggle('resting', true);
+        this.restDisplayInfo('Active rest');
+      } else if (this.focalPoint.classList.contains('resting')) {
+        this.workoutStatus = 'workout';
+        this.focalPoint.classList.toggle('resting', false);
+        this.focalPoint.classList.toggle('workout', true);
+        this.exerciseIndex += 1;
+        this.exerciseDisplayInfo();
       }
-    }, 1000);
+    } else {
+      this.focalPoint.classList.remove('workout');
+      this.focalPoint.classList.add('completed');
+      this.exerciseDisplay.textContent = 'Workout completed';
+      this.descriptionDisplay.textContent = "Congrats you're finished";
+      clearInterval(this.intervalID);
+      this.intervalID = null;
+    }
   }
 
   // Update the text content div element and time provided as an argument
-  updateWorkoutTimer() {
-    this.focalPoint.classList.add('workoutPulse');
-    this.workoutID = window.setInterval(() => {
-      if (this.workoutTime > 0) {
-        this.workoutTime -= 1;
-        this.wrkCountDisplay.textContent = this.formatTime(this.workoutTime);
-      }
-    }, 1000);
+  updateTimer() {
+    this.workoutTime -= 1;
+    this.exerciseTime -= 1;
+    this.wrkCountDisplay.textContent = `Workout Countdown: ${this.formatTime(this.workoutTime)}`;
+    this.exCountDisplay.textContent = this.formatTime(this.exerciseTime);
+    if (this.exerciseTime === 0) {
+      this.updateDisplays();
+    }
   }
 
   // Starts the countdown functions one click event runs on start button
   start() {
-    this.updateWorkoutTimer();
-    this.updateExerciseTimer();
+    this.focalPoint.classList.add('workout');
+    this.focalPoint.classList.toggle('paused', false);
+    if (!this.intervalID) {
+      this.intervalID = setInterval(this.updateTimer, 1000);
+    }
   }
 
   // Pause the countdown by clearing the setInterval
   pause() {
-    clearInterval(this.exerciseID);
-    clearInterval(this.workoutID);
+    this.focalPoint.classList.toggle('paused', true);
+    clearInterval(this.intervalID);
+    this.intervalID = null;
   }
 
   // Resets the countdown back to what is was.
   reset() {
-    this.wrkCountDisplay.textContent = this.formatTime(this.workoutTime);
+    clearInterval(this.intervalID);
+    this.intervalID = null;
+    this.focalPoint.classList.toggle('paused', false);
+    this.focalPoint.classList.toggle('workout', false);
+    this.focalPoint.classList.toggle('rest', false);
+
+    this.exerciseIndex = 0;
+    this.workoutTime = workoutObj.workoutDuration;
+    this.exerciseTime = workoutObj.exercises[this.exerciseIndex]['exercise-dur'];
+
+    this.wrkProgressDisplay.textContent = `Exercise ${this.exerciseIndex + 1}/${workoutObj.exercises.length}`;
+    this.wrkCountDisplay.textContent = `WorkoutCountdown: ${this.formatTime(this.workoutTime)}`;
+    this.exerciseDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-name'];
+    this.descriptionDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-desc'];
     this.exCountDisplay.textContent = this.formatTime(this.exerciseTime);
+    this.upNext.textContent = `Up next: ${workoutObj.exercises[this.exerciseIndex + 1]['exercise-name']}`;
   }
 
   connectedCallback() {
