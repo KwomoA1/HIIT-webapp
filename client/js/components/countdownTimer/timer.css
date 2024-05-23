@@ -18,16 +18,28 @@
 
     /* Grid layout */
     --columns: 1fr;
-    --rows: repeat(2,1fr);
-    --layoutComponent: 'workoutInfo' 'buttons';
+    --rows: repeat(3,1fr);
+    --layoutComponent: 'workoutInfo' 'buttons' 'footer';
 }
+
+
 
 .wrk-info {
     display: grid;
     grid-template-columns: 2fr;
-    grid-template-areas: 'wrkProgress' 'exProgress';
+    grid-template-areas: 'workoutTitle' 'wrkProgress' 'exProgress';
     justify-items: center;
     margin-bottom: 4%;
+    gap: 5px;
+}
+
+.workout-title {
+    grid-area: workoutTitle;
+
+    color: var(--primaryColor);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 1.6rem;
 }
 
 .wrkProgress {
@@ -110,18 +122,50 @@
 .ex-info{
     grid-area: workoutInfo;
     margin: 0 auto;
-    
+    gap: 0px;
 }
-
+/*
 .ex-info > div {
-    /*style */
+
     color:var(--backgroundColor);
     font-size: 2rem;
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     
+} 
+*/
+
+.exercise {
+    /*style */
+    color:var(--backgroundColor);
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
 }
+
+.description{
+    /*style */
+    color:var(--backgroundColor);
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+
+.exerciseCountdown {
+
+    margin-top: 7%;
+   /*style */
+   color:var(--backgroundColor);
+   font-size: 2.8rem;
+   font-weight: bold;
+   font-family: Arial, Helvetica, sans-serif;
+   text-align: center;
+}
+
+
 
 button {
     
@@ -155,4 +199,45 @@ button:focus {
 
     grid-area: buttons;
     margin: 0 auto;
+}
+
+.up-next {
+    /*style */
+    color:var(--backgroundColor);
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+
+    grid-area: footer;
+    margin: 0 auto;
+}
+
+
+@media (min-width: 375px){
+
+    .wrkProgress{
+        font-size: 1.3rem;
+    }
+
+    .workoutCountdown{
+        font-size: 1.3rem;
+    }
+
+    .focal-point{
+        height: 50vh;
+        margin-left: 10px;
+    }
+
+    button {
+        padding: 5%;
+    }
+}
+
+@media (min-width: 500px){
+
+}
+
+@media (min-width: 1200px){
+
 }

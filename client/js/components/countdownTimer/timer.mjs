@@ -8,6 +8,7 @@ class Timer extends HTMLElement {
     this.shadow.innerHTML = `
     <div class='component-container'>
       <div class="wrk-info">
+        <div class='workout-title'></div>
         <div class='workoutCountdown'></div>
         <div class='wrkProgress'></div> 
       </div>
@@ -40,6 +41,7 @@ class Timer extends HTMLElement {
     this.intervalID = null;
 
     // Getting shadowDOM HTML elements
+    this.workoutTitleDisplay = this.shadow.querySelector('.workout-title');
     this.wrkProgressDisplay = this.shadow.querySelector('.wrkProgress');
     this.wrkCountDisplay = this.shadow.querySelector('.workoutCountdown');
     this.exerciseDisplay = this.shadow.querySelector('.exercise');
@@ -48,13 +50,15 @@ class Timer extends HTMLElement {
     this.focalPoint = this.shadow.querySelector('.focal-point');
     this.upNext = this.shadow.querySelector('.up-next');
 
+
     // Setting the display
+    this.workoutTitleDisplay.textContent = `Workout: ${workoutObj.workoutName}`;
     this.wrkProgressDisplay.textContent = `Exercise ${this.exerciseIndex + 1}/${workoutObj.exercises.length}`;
-    this.wrkCountDisplay.textContent = `WorkoutCountdown: ${this.formatTime(this.workoutTime)}`;
+    this.wrkCountDisplay.textContent = `Workout Countdown: ${this.formatTime(this.workoutTime)}`;
     this.exerciseDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-name'];
     this.descriptionDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-desc'];
     this.exCountDisplay.textContent = this.formatTime(this.exerciseTime);
-    this.upNext.textContent = `Up next: ${workoutObj.exercises[this.exerciseIndex + 1]['exercise-name']}`;
+    this.upNext.textContent = `UP NEXT: ${workoutObj.exercises[this.exerciseIndex + 1]['exercise-name']}`;
 
     // Getting buttons
     this.startBtn = this.shadow.querySelector('.startBtn');
@@ -96,7 +100,7 @@ class Timer extends HTMLElement {
     this.exerciseDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-name'];
     this.descriptionDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-desc'];
     if (this.exerciseIndex !== workoutObj.exercises.length - 1) {
-      this.upNext.textContent = `Up next: ${workoutObj.exercises[this.exerciseIndex + 1]['exercise-name']}`;
+      this.upNext.textContent = `UP NEXT: ${workoutObj.exercises[this.exerciseIndex + 1]['exercise-name']}`;
     } else {
       this.upNext.textContent = 'workout over!';
     }
@@ -158,7 +162,7 @@ class Timer extends HTMLElement {
     this.intervalID = null;
     this.focalPoint.classList.toggle('paused', false);
     this.focalPoint.classList.toggle('workout', false);
-    this.focalPoint.classList.toggle('rest', false);
+    this.focalPoint.classList.toggle('resting', false);
 
     this.exerciseIndex = 0;
     this.workoutTime = workoutObj.workoutDuration;
