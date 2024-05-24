@@ -25,7 +25,7 @@ class Timer extends HTMLElement {
         </div>
       </div>
       <div class='up-next'></div>
-      <button class='refresh'> Refresh</button>
+      <button class='refresh'> Return to start </button>
     </div>
     `;
 

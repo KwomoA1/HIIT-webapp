@@ -1,13 +1,14 @@
 :host {
     /*focal point color properties */
     --workoutColor: #26874e;
-    --restColor: #9b111e;
+    --restColor: #a41220;
 
     /*Button color properties */
     --buttonColor: #fe6d6d;
-    --Darkbuttoncolor: #31363F;
+    
+    --Darkbuttoncolor: #5e6879;
     --hoverColor: #fe8989;
-    --darkHoverColor: #5e6879;
+    --darkHoverColor: #31363F;
     --focusColor: #fe5b5b;
     --darkFocusColor: #292d35;
 
