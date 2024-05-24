@@ -1,7 +1,6 @@
 # HIIT up2114687
 
 ## Key features
--- Visual cues (Pulsing colors)
 
 ### Workout multi-step form:
 A multi-step form used to collect data necessary to setup the interval-timer for the workout.
@@ -50,3 +49,6 @@ After reading the code example, I didn't fully understand the purpose of grid-te
 > (Pasted code from [grid-media-vars-css](https://github.com/portsoc/css-layout/blob/main/gridcustom/grid-media-vars.css)) Explain this css for me
 I wanted a simple explanation of what this code was doing to then understand and implement specific features into my own code, this prompt was particular useful as it provided and in-depth analysis on each segment of the code and explained what it was doing.
 
+
+## Impact on the overall final design
+I mostly made use of AI to provide explanations to any coded examples, assist with errors/bugs and assist with any built-in-methods etc explaining what to do and how to use them particularly when documentation proved to be a bit difficult to understand due to the excessive use of jargon etc. These prompts had a large impact on the final product as they furthered my understanding of certain concepts taught in lesson such as web components and CSS layouts tips which I then implemented in my code to make maintaining this code easier, my goal wasn't to have AI do the work for me but help me understand how to do things so that I can use that knowledge to create a functional and maintainable final product.
