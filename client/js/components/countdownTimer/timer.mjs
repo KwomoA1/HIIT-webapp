@@ -25,6 +25,7 @@ class Timer extends HTMLElement {
         </div>
       </div>
       <div class='up-next'></div>
+      <button class='refresh'> Refresh</button>
     </div>
     `;
 
@@ -51,6 +52,7 @@ class Timer extends HTMLElement {
     this.upNext = this.shadow.querySelector('.up-next');
 
 
+
     // Setting the display
     this.workoutTitleDisplay.textContent = `Workout: ${workoutObj.workoutName}`;
     this.wrkProgressDisplay.textContent = `Exercise ${this.exerciseIndex + 1}/${workoutObj.exercises.length}`;
@@ -64,11 +66,13 @@ class Timer extends HTMLElement {
     this.startBtn = this.shadow.querySelector('.startBtn');
     this.pauseBtn = this.shadow.querySelector('.pauseBtn');
     this.resetBtn = this.shadow.querySelector('.resetBtn');
+    this.refreshBtn = this.shadow.querySelector('.refresh');
 
     // Binding function buttons
     this.start = this.start.bind(this);
     this.pause = this.pause.bind(this);
     this.reset = this.reset.bind(this);
+    this.refresh = this.refresh.bind(this);
     this.updateTimer = this.updateTimer.bind(this);
     this.formatTime = this.formatTime.bind(this);
     this.updateDisplays = this.updateDisplays.bind(this);
@@ -193,11 +197,16 @@ class Timer extends HTMLElement {
     this.upNext.textContent = `Up next: ${workoutObj.exercises[this.exerciseIndex + 1]['exercise-name']}`;
   }
 
+  refresh() {
+    window.location.reload();
+  }
+
   // Initialises event listeners once the workout timer is created on the DOM.
   connectedCallback() {
     this.pauseBtn.addEventListener('click', this.pause);
     this.startBtn.addEventListener('click', this.start);
     this.resetBtn.addEventListener('click', this.reset);
+    this.refreshBtn.addEventListener('click', this.refresh);
   }
 }
 

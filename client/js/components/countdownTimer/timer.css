@@ -5,8 +5,11 @@
 
     /*Button color properties */
     --buttonColor: #fe6d6d;
+    --Darkbuttoncolor: #31363F;
     --hoverColor: #fe8989;
+    --darkHoverColor: #5e6879;
     --focusColor: #fe5b5b;
+    --darkFocusColor: #292d35;
 
     /* Root colors */
     --backgroundColor: #f8f7f6;
@@ -169,6 +172,19 @@ button {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1rem;
     font-weight: bold;
+}
+
+.refresh{
+    margin: 0 auto;
+    background-color: var(--Darkbuttoncolor);
+}
+
+.refresh:hover{
+    background-color: var(--darkHoverColor);
+}
+
+.refresh:focus{
+    background-color: var(--darkFocusColor);
 }
 
 button:hover {
