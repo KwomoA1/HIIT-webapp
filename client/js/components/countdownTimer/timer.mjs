@@ -85,15 +85,30 @@ class Timer extends HTMLElement {
         time[index] = newAttribute;
       }
     }
-    return `${time[0]}:${time[1]}:${time[2]}`;
+    const digitalFormat = this.sliceTimeFormat(`${time[0]}:${time[1]}:${time[2]}`);
+    return digitalFormat;
   }
 
+  // Slices the format
+  sliceTimeFormat(digitalTime) {
+    let index = 0;
+    for (const char of digitalTime) {
+      if (parseInt(char) > 0) {
+        index = digitalTime.indexOf(char);
+        break;
+      }
+    }
+    return digitalTime.slice(index);
+  }
+
+  // Sets the rest display info on the timer
   restDisplayInfo(restDescription) {
     this.exerciseTime = workoutObj.restDuration;
     this.exerciseDisplay.textContent = 'Rest';
     this.descriptionDisplay.textContent = restDescription;
   }
 
+  // Sets the exercise display info on the timer
   exerciseDisplayInfo() {
     this.wrkProgressDisplay.textContent = `Exercise: ${this.exerciseIndex + 1}/${workoutObj.exercises.length}`;
     this.exerciseTime = workoutObj.exercises[this.exerciseIndex]['exercise-dur'];
@@ -106,6 +121,7 @@ class Timer extends HTMLElement {
     }
   }
 
+  // Updates the timer workout, exercise and rest information as long as the workout isn't over.
   updateDisplays() {
     if (this.exerciseIndex < workoutObj.exercises.length - 1) {
       if (this.focalPoint.classList.contains('workout')) {
@@ -124,6 +140,7 @@ class Timer extends HTMLElement {
       this.focalPoint.classList.add('completed');
       this.exerciseDisplay.textContent = 'Workout completed';
       this.descriptionDisplay.textContent = 'Congrats !';
+      this.upNext.textContent = '';
       clearInterval(this.intervalID);
       this.intervalID = null;
     }
@@ -169,13 +186,14 @@ class Timer extends HTMLElement {
     this.exerciseTime = workoutObj.exercises[this.exerciseIndex]['exercise-dur'];
 
     this.wrkProgressDisplay.textContent = `Exercise ${this.exerciseIndex + 1}/${workoutObj.exercises.length}`;
-    this.wrkCountDisplay.textContent = `WorkoutCountdown: ${this.formatTime(this.workoutTime)}`;
+    this.wrkCountDisplay.textContent = `Workout Countdown: ${this.formatTime(this.workoutTime)}`;
     this.exerciseDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-name'];
     this.descriptionDisplay.textContent = workoutObj.exercises[this.exerciseIndex]['exercise-desc'];
     this.exCountDisplay.textContent = this.formatTime(this.exerciseTime);
     this.upNext.textContent = `Up next: ${workoutObj.exercises[this.exerciseIndex + 1]['exercise-name']}`;
   }
 
+  // Initialises event listeners once the workout timer is created on the DOM.
   connectedCallback() {
     this.pauseBtn.addEventListener('click', this.pause);
     this.startBtn.addEventListener('click', this.start);

@@ -16,6 +16,11 @@ Workout = green and pulsing animation.
 Rest = red and a static focal point.
 I used this featured to help provide further clarification and indication to the user if they should be moving or resting. The animation is visually captivating and is centered around the critical information for the workout such as the exercise name, description and countdown. As a result the users attention will be focused on that critical information and won't even require looking at the countdown to know if should rest or not just the surrounding box.
 
+### Mobile Responsive
+Attempted to make the app as mobile responsive as I could've. 
+To view this simply view certain mobile devices length in the inspect menu.
+I used this feature so users would be able to use it on multiple devices, while this was achieved to some degree, I think my CSS code wasn't great some parts messy and overall some of the units of length used may be incorrectly, despite this the desired feature was achieved to some degree.
+
 ## AI
 REMOVE ME: Detail your use of AI, listing of the prompts you used, and whether the results formed or inspired part of your final submission and where we can see this (and if not, why not?). You may wish to group prompts into headings/sections - use markdown in any way that it helps you communicate your use of AI. 
 
