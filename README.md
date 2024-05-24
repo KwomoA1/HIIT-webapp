@@ -22,7 +22,6 @@ To view this simply view certain mobile devices length in the inspect menu.
 I used this feature so users would be able to use it on multiple devices, while this was achieved to some degree, I think my CSS code wasn't great some parts messy and overall some of the units of length used may be incorrectly, despite this the desired feature was achieved to some degree.
 
 ## AI
-REMOVE ME: Detail your use of AI, listing of the prompts you used, and whether the results formed or inspired part of your final submission and where we can see this (and if not, why not?). You may wish to group prompts into headings/sections - use markdown in any way that it helps you communicate your use of AI. 
 
 ### Prompts to include functionality for the buttons on the web component 
 These prompts helped me understand web components further to add functionality to the timer web component:
